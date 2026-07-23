@@ -13,7 +13,7 @@
  */
 
 interface SkeletonCardProps {
-  variant?: 'stat' | 'list-item' | 'activity' | 'bar-chart' | 'default';
+  variant?: 'stat' | 'list-item' | 'activity' | 'bar-chart' | 'header' | 'default';
   count?: number;
   className?: string;
 }
