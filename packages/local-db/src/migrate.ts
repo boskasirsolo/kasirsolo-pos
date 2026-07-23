@@ -75,8 +75,6 @@ export interface KspPosDB {
 export const CURRENT_VERSION = 1;
 
 type UpgradeDB = IDBPDatabase<KspPosDB>;
-type UpgradeTx = IDBPTransaction<KspPosDB, Array<keyof KspPosDB>, "versionchange">;
-
 /**
  * Run all necessary migrations from oldVersion to newVersion.
  */
@@ -84,7 +82,7 @@ export function runMigrations(
   db: UpgradeDB,
   oldVersion: number,
   newVersion: number,
-  _tx: UpgradeTx
+  _tx: IDBPTransaction<KspPosDB, Array<keyof KspPosDB>, "versionchange">
 ): void {
   if (oldVersion < 1) {
     migrateV1(db);
