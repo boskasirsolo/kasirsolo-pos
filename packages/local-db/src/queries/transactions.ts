@@ -1,4 +1,4 @@
-import { get, put, getAll, query } from "../engine";
+import { get, put, query } from "../engine";
 import type { PosTransaction, PosTransactionItem } from "../types/transaction";
 import type { SyncStatus } from "../types/product";
 import { updateProductStock, getProductById } from "./products";

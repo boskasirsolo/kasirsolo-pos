@@ -1,6 +1,13 @@
 import { openDB, IDBPDatabase, IDBPTransaction, StoreNames } from "idb";
 import type { KspPosDB } from "./migrate";
 
+/** Extract value type from an idb store definition */
+type DBValue<DB, S> = S extends keyof DB
+  ? DB[S] extends { value: infer V }
+    ? V
+    : never
+  : never;
+
 const DB_NAME = "kasirsolo-pos";
 
 let dbInstance: IDBPDatabase<KspPosDB> | null = null;
@@ -18,7 +25,16 @@ export async function openDatabase(
 
   dbInstance = await openDB<KspPosDB>(DB_NAME, version ?? CURRENT_VERSION, {
     upgrade(db, oldVersion, newVersion, transaction) {
-      runMigrations(db, oldVersion, newVersion ?? CURRENT_VERSION, transaction);
+      runMigrations(
+        db,
+        oldVersion,
+        newVersion ?? CURRENT_VERSION,
+        transaction as IDBPTransaction<
+          KspPosDB,
+          Array<keyof KspPosDB>,
+          "versionchange"
+        >
+      );
     },
     blocked() {
       console.warn("[local-db] Database upgrade blocked by another tab");
@@ -51,7 +67,7 @@ export function closeDatabase(): void {
 export async function get<S extends StoreNames<KspPosDB>>(
   storeName: S,
   key: string
-): Promise<KspPosDB[S]["value"] | undefined> {
+): Promise<DBValue<KspPosDB, S> | undefined> {
   const db = await openDatabase();
   return db.get(storeName, key);
 }
@@ -61,7 +77,7 @@ export async function get<S extends StoreNames<KspPosDB>>(
  */
 export async function put<S extends StoreNames<KspPosDB>>(
   storeName: S,
-  value: KspPosDB[S]["value"]
+  value: DBValue<KspPosDB, S>
 ): Promise<string> {
   const db = await openDatabase();
   return db.put(storeName, value) as Promise<string>;
@@ -83,7 +99,7 @@ export async function del<S extends StoreNames<KspPosDB>>(
  */
 export async function getAll<S extends StoreNames<KspPosDB>>(
   storeName: S
-): Promise<KspPosDB[S]["value"][]> {
+): Promise<DBValue<KspPosDB, S>[]> {
   const db = await openDatabase();
   return db.getAll(storeName);
 }
@@ -95,7 +111,7 @@ export async function getAllByIndex<S extends StoreNames<KspPosDB>>(
   storeName: S,
   indexName: string,
   value: IDBValidKey
-): Promise<KspPosDB[S]["value"][]> {
+): Promise<DBValue<KspPosDB, S>[]> {
   const db = await openDatabase();
   return db.getAllFromIndex(storeName, indexName, value);
 }
@@ -112,7 +128,7 @@ export async function query<S extends StoreNames<KspPosDB>>(
     limit?: number;
     offset?: number;
   }
-): Promise<KspPosDB[S]["value"][]> {
+): Promise<DBValue<KspPosDB, S>[]> {
   const db = await openDatabase();
   const { indexName, range, direction = "next", limit, offset = 0 } = options ?? {};
 
@@ -120,7 +136,7 @@ export async function query<S extends StoreNames<KspPosDB>>(
   const source = indexName ? tx.store.index(indexName) : tx.store;
   let cursor = await source.openCursor(range, direction);
 
-  const results: KspPosDB[S]["value"][] = [];
+  const results: DBValue<KspPosDB, S>[] = [];
   let skipped = 0;
 
   while (cursor) {
@@ -130,7 +146,7 @@ export async function query<S extends StoreNames<KspPosDB>>(
       continue;
     }
     if (limit !== undefined && results.length >= limit) break;
-    results.push(cursor.value as KspPosDB[S]["value"]);
+    results.push(cursor.value as DBValue<KspPosDB, S>);
     cursor = await cursor.continue();
   }
 
@@ -144,12 +160,12 @@ export async function query<S extends StoreNames<KspPosDB>>(
 export async function count<S extends StoreNames<KspPosDB>>(
   storeName: S,
   indexName?: string,
-  range?: IDBKeyRange
+  keyRange?: IDBKeyRange
 ): Promise<number> {
   const db = await openDatabase();
   const tx = db.transaction(storeName, "readonly");
   const source = indexName ? tx.store.index(indexName) : tx.store;
-  const result = await source.count(range);
+  const result = await source.count(keyRange);
   await tx.done;
   return result;
 }
