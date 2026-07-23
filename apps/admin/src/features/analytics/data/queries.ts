@@ -56,8 +56,9 @@ export async function getAnalyticsData(supabase: SupabaseClient): Promise<Analyt
   const appMap: Record<string, { name: string; count: number; revenue: number }> = {};
   for (const l of allLicenses) {
     if (l.plan_type === "trial") continue;
-    const rec = l as { ksp_apps?: { name: string } | null; amount_paid?: number };
-    const appName = rec.ksp_apps?.name ?? "Unknown";
+    const rec = l as { ksp_apps?: Array<{ name: string }> | null; amount_paid?: number };
+    const apps = rec.ksp_apps;
+    const appName = apps && apps.length > 0 ? (apps[0].name ?? "Unknown") : "Unknown";
     if (!appMap[l.app_id]) {
       appMap[l.app_id] = { name: appName, count: 0, revenue: 0 };
     }
