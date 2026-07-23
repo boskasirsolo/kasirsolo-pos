@@ -12,9 +12,9 @@
     "clean": "rm -rf .next .turbo node_modules"
   },
   "dependencies": {
-    "@kasirsolo/db": "*",
-    "@kasirsolo/ui": "*",
-    "@kasirsolo/utils": "*",
+    "@kasirsolo/db": "workspace:*",
+    "@kasirsolo/ui": "workspace:*",
+    "@kasirsolo/utils": "workspace:*",
     "@supabase/supabase-js": "^2.49.0",
     "next": "^14.2.0",
     "react": "^18.3.0",
