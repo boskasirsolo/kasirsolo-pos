@@ -1,9 +1,8 @@
 'use client';
 
+import { waLink } from '@/lib/wa';
 import { useTrialForm } from '../logic/useTrialForm';
 import { TrialBenefits } from './TrialBenefits';
-
-const WA_NUMBER = '628816566935';
 
 const appOptions = [
   { value: '', label: 'Pilih aplikasi...' },
@@ -61,7 +60,7 @@ export function TrialForm() {
                 WhatsApp untuk panduan penggunaan dan aktivasi akun Anda.
               </p>
               <a
-                href={`https://wa.me/${WA_NUMBER}?text=${waMessage}`}
+                href={waLink(waMessage)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-wa btn-lg"

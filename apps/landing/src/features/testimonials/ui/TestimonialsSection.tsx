@@ -1,47 +1,25 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useTestimonials } from '../logic/useTestimonials';
-
-const testimonials = [
-  {
-    name: 'Budi Santoso',
-    initials: 'BS',
-    role: 'Pemilik Toko Sejahtera, Solo',
-    text: 'Sejak pakai Kasir Retail KASIRSOLO, omzet toko saya naik 30%. Stok terkontrol, laporan jelas, dan yang paling penting bayar sekali doang!',
-    stars: 5,
-  },
-  {
-    name: 'Siti Aminah',
-    initials: 'SA',
-    role: 'Pengelola Apotek Sehat, Semarang',
-    text: 'Expired date tracking-nya sangat membantu. Tidak ada lagi obat kadaluarsa yang terlewat. Support WA-nya juga responsif banget.',
-    stars: 5,
-  },
-  {
-    name: 'Ahmad Fauzi',
-    initials: 'AF',
-    role: 'Takmir Masjid Al-Ikhlas, Sukoharjo',
-    text: 'Alhamdulillah laporan keuangan masjid sekarang transparan. Jamaah bisa lihat langsung pemasukan dan pengeluaran. Harganya juga sangat terjangkau.',
-    stars: 5,
-  },
-  {
-    name: 'Dewi Rahayu',
-    initials: 'DR',
-    role: 'Pemilik Bengkel Jaya Motor, Blora',
-    text: 'Antrian service jadi teratur, stok sparepart terpantau. Pelanggan juga senang karena ada riwayat service kendaraan mereka.',
-    stars: 5,
-  },
-  {
-    name: 'Hendra Wijaya',
-    initials: 'HW',
-    role: 'Owner Konveksi Batik Jawa, Pekalongan',
-    text: 'Tracking order dari desain sampai pengiriman jadi mudah. HPP otomatis terhitung, profit margin lebih jelas. Recommended!',
-    stars: 5,
-  },
-];
+import type { Testimonial } from '../data/queries';
+import { fetchTestimonials } from '../data/queries';
 
 export function TestimonialsSection() {
   const { scrollRef, scrollLeft, scrollRight } = useTestimonials();
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchTestimonials().then((data) => {
+      setTestimonials(data);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading || testimonials.length === 0) {
+    return null;
+  }
 
   return (
     <section className="testimonials-section" id="testimoni">
@@ -59,7 +37,7 @@ export function TestimonialsSection() {
       <div className="testimonials-scroll-wrapper">
         <div className="testimonials-scroll" ref={scrollRef}>
           {testimonials.map((t, i) => (
-            <div key={i} className="testimonial-card">
+            <div key={t.id || i} className="testimonial-card">
               <div className="testimonial-stars">
                 {Array.from({ length: t.stars }).map((_, si) => (
                   <span key={si}>{'\u2B50'}</span>
@@ -70,7 +48,7 @@ export function TestimonialsSection() {
                 <div className="testimonial-avatar">{t.initials}</div>
                 <div>
                   <div className="testimonial-name">{t.name}</div>
-                  <div className="testimonial-role">{t.role}</div>
+                  {t.role && <div className="testimonial-role">{t.role}</div>}
                 </div>
               </div>
             </div>

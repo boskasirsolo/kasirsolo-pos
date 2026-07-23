@@ -1,11 +1,9 @@
 'use client';
 
+import { waLink } from '@/lib/wa';
 import { useFloatingUI } from '../logic/useFloatingUI';
 
-const WA_NUMBER = '628816566935';
-const WA_MESSAGE = encodeURIComponent(
-  'Halo KASIRSOLO, saya tertarik dengan aplikasi kasir Anda. Bisa info lebih lanjut?'
-);
+const WA_MESSAGE = 'Halo KASIRSOLO, saya tertarik dengan aplikasi kasir Anda. Bisa info lebih lanjut?';
 
 export function WaFloat() {
   const { showWa, showTooltip, dismissTooltip } = useFloatingUI();
@@ -23,7 +21,7 @@ export function WaFloat() {
         </div>
       )}
       <a
-        href={`https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`}
+        href={waLink(WA_MESSAGE)}
         target="_blank"
         rel="noopener noreferrer"
         className="wa-float-btn"

@@ -2,13 +2,12 @@
 
 import { useEffect } from 'react';
 import type { AppItem } from '../data/types';
+import { waLink } from '@/lib/wa';
 
 interface AppDetailModalProps {
   app: AppItem | null;
   onClose: () => void;
 }
-
-const WA_NUMBER = '628816566935';
 
 export function AppDetailModal({ app, onClose }: AppDetailModalProps) {
   useEffect(() => {
@@ -76,7 +75,7 @@ export function AppDetailModal({ app, onClose }: AppDetailModalProps) {
             Coba Gratis
           </a>
           <a
-            href={`https://wa.me/${WA_NUMBER}?text=${waMessage}`}
+            href={waLink(waMessage)}
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-wa"

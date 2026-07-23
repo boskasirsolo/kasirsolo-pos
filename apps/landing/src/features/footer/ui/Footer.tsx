@@ -1,3 +1,5 @@
+import { waLink } from '@/lib/wa';
+
 const productLinks = [
   { href: '#aplikasi', label: 'Kasir Retail' },
   { href: '#aplikasi', label: 'Bengkel + Sparepart' },
@@ -33,7 +35,7 @@ export function Footer() {
             </p>
             <div className="footer-social">
               <a
-                href="https://wa.me/628816566935"
+                href={waLink()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer-social-link"
