@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useCallback, createContext, useContext, type ReactNode } from "react";
 import { colors, radii, shadows, spacing, fonts, fontSizes, fontWeights, transitions, zIndex } from "../theme";
 

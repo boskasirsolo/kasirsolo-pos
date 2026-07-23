@@ -39,9 +39,7 @@ const nextConfig = {
     "@kasirsolo/ui",
     "@kasirsolo/utils",
   ],
-  experimental: {
-    serverActions: true,
-  },
+  // experimental serverActions disabled for Vercel compatibility
 };
 
 module.exports = withPWA(nextConfig);

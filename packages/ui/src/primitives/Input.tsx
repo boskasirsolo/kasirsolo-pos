@@ -1,3 +1,5 @@
+"use client";
+
 import React, { forwardRef, useId, type InputHTMLAttributes } from "react";
 import { colors, radii, fonts, fontSizes, fontWeights, transitions, spacing } from "../theme";
 

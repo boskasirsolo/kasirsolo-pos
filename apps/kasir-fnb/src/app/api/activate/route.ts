@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { createServerClient } from "@kasirsolo/db";
 import {
   getLicenseByKey,
@@ -7,17 +8,26 @@ import {
   countActiveDevices,
 } from "@kasirsolo/db";
 
+const activationPayloadSchema = z.object({
+  license_key: z.string().min(1, "Kode lisensi wajib diisi").trim(),
+  fingerprint: z.string().min(1, "Fingerprint perangkat wajib diisi").trim(),
+  device_name: z.string().optional(),
+});
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { license_key, fingerprint, device_name } = body;
+    const validation = activationPayloadSchema.safeParse(body);
 
-    if (!license_key || !fingerprint) {
+    if (!validation.success) {
+      const errors = validation.error.flatten().fieldErrors as Record<string, string[]>;
       return NextResponse.json(
-        { error: "license_key dan fingerprint wajib diisi" },
+        { error: errors.license_key?.[0] || errors.fingerprint?.[0] || "Validasi gagal" },
         { status: 400 }
       );
     }
+
+    const { license_key, fingerprint, device_name } = validation.data;
 
     const supabase = createServerClient();
 

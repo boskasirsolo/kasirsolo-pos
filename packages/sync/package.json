@@ -16,8 +16,8 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@kasirsolo/db": "*",
-    "@kasirsolo/local-db": "*",
+    "@kasirsolo/db": "workspace:*",
+    "@kasirsolo/local-db": "workspace:*",
     "@supabase/supabase-js": "^2.49.0"
   },
   "devDependencies": {

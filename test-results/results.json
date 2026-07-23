@@ -1,0 +1,1466 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-probable-waffle\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--list"
+    ],
+    "configFile": "C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-probable-waffle\\playwright.config.ts",
+    "rootDir": "C:/Users/Admin/.copilot/copilot-worktrees/kasirsolo-pos/boskasirsolo-probable-waffle/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/Admin/.copilot/copilot-worktrees/kasirsolo-pos/boskasirsolo-probable-waffle/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/Admin/.copilot/copilot-worktrees/kasirsolo-pos/boskasirsolo-probable-waffle/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/Admin/.copilot/copilot-worktrees/kasirsolo-pos/boskasirsolo-probable-waffle/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "C:/Users/Admin/.copilot/copilot-worktrees/kasirsolo-pos/boskasirsolo-probable-waffle/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/Admin/.copilot/copilot-worktrees/kasirsolo-pos/boskasirsolo-probable-waffle/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "C:/Users/Admin/.copilot/copilot-worktrees/kasirsolo-pos/boskasirsolo-probable-waffle/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "test-results/junit.xml"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.61.1",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "fnb.spec.ts",
+      "file": "fnb.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "KASIRSOLO FnB - Restaurant POS Flow",
+          "file": "fnb.spec.ts",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "FnB-01: Should load FnB app successfully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-6d32e1ee86351f930a27",
+              "file": "fnb.spec.ts",
+              "line": 11,
+              "column": 7
+            },
+            {
+              "title": "FnB-02: Should display product catalog",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-6b992ef02ec667e0a45d",
+              "file": "fnb.spec.ts",
+              "line": 18,
+              "column": 7
+            },
+            {
+              "title": "FnB-03: Should add single item to cart",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-59444a0fd09c0d243863",
+              "file": "fnb.spec.ts",
+              "line": 24,
+              "column": 7
+            },
+            {
+              "title": "FnB-04: Should add multiple items to cart",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-7682b87ed532e620d656",
+              "file": "fnb.spec.ts",
+              "line": 38,
+              "column": 7
+            },
+            {
+              "title": "FnB-05: Should open cart and view items",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-26d118f1723cb43160c0",
+              "file": "fnb.spec.ts",
+              "line": 53,
+              "column": 7
+            },
+            {
+              "title": "FnB-06: Should update item quantity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-133cf0022e41c4a20915",
+              "file": "fnb.spec.ts",
+              "line": 68,
+              "column": 7
+            },
+            {
+              "title": "FnB-07: Should proceed to checkout",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-29a0dbd84b11d07bc64c",
+              "file": "fnb.spec.ts",
+              "line": 87,
+              "column": 7
+            },
+            {
+              "title": "FnB-08: Should handle empty cart removal",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-a847c687c6c33d78c773",
+              "file": "fnb.spec.ts",
+              "line": 104,
+              "column": 7
+            },
+            {
+              "title": "FnB-09: Should validate price display",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-2bf6406f8d59f62a66e2",
+              "file": "fnb.spec.ts",
+              "line": 120,
+              "column": 7
+            },
+            {
+              "title": "FnB-10: Should support keyboard navigation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-e24c3e83a4c7d3618555",
+              "file": "fnb.spec.ts",
+              "line": 126,
+              "column": 7
+            },
+            {
+              "title": "FnB-01: Should load FnB app successfully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-670da67fbd868734337a",
+              "file": "fnb.spec.ts",
+              "line": 11,
+              "column": 7
+            },
+            {
+              "title": "FnB-02: Should display product catalog",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-e0c9bd064e60f9bfbe12",
+              "file": "fnb.spec.ts",
+              "line": 18,
+              "column": 7
+            },
+            {
+              "title": "FnB-03: Should add single item to cart",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-dc6436555fb19ad7e5fc",
+              "file": "fnb.spec.ts",
+              "line": 24,
+              "column": 7
+            },
+            {
+              "title": "FnB-04: Should add multiple items to cart",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-e8bc355990068aa6b495",
+              "file": "fnb.spec.ts",
+              "line": 38,
+              "column": 7
+            },
+            {
+              "title": "FnB-05: Should open cart and view items",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-54ebaf0be0c0b151b507",
+              "file": "fnb.spec.ts",
+              "line": 53,
+              "column": 7
+            },
+            {
+              "title": "FnB-06: Should update item quantity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-a66c3912de78159d5ccf",
+              "file": "fnb.spec.ts",
+              "line": 68,
+              "column": 7
+            },
+            {
+              "title": "FnB-07: Should proceed to checkout",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-39b15e04ff8cb6f2dfbe",
+              "file": "fnb.spec.ts",
+              "line": 87,
+              "column": 7
+            },
+            {
+              "title": "FnB-08: Should handle empty cart removal",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-03ced18f54ff2d1a4492",
+              "file": "fnb.spec.ts",
+              "line": 104,
+              "column": 7
+            },
+            {
+              "title": "FnB-09: Should validate price display",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-db9be314d709c7a95142",
+              "file": "fnb.spec.ts",
+              "line": 120,
+              "column": 7
+            },
+            {
+              "title": "FnB-10: Should support keyboard navigation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-50b17d9cf7087937592f",
+              "file": "fnb.spec.ts",
+              "line": 126,
+              "column": 7
+            },
+            {
+              "title": "FnB-01: Should load FnB app successfully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-92b70d1616fd3460ec7e",
+              "file": "fnb.spec.ts",
+              "line": 11,
+              "column": 7
+            },
+            {
+              "title": "FnB-02: Should display product catalog",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-07c0f15d513da78cd1fc",
+              "file": "fnb.spec.ts",
+              "line": 18,
+              "column": 7
+            },
+            {
+              "title": "FnB-03: Should add single item to cart",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-c86f24c91ad3a69b240f",
+              "file": "fnb.spec.ts",
+              "line": 24,
+              "column": 7
+            },
+            {
+              "title": "FnB-04: Should add multiple items to cart",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-508a0125cf51c499f6af",
+              "file": "fnb.spec.ts",
+              "line": 38,
+              "column": 7
+            },
+            {
+              "title": "FnB-05: Should open cart and view items",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-00725dc20f1495185662",
+              "file": "fnb.spec.ts",
+              "line": 53,
+              "column": 7
+            },
+            {
+              "title": "FnB-06: Should update item quantity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-94a3469255dc1da60884",
+              "file": "fnb.spec.ts",
+              "line": 68,
+              "column": 7
+            },
+            {
+              "title": "FnB-07: Should proceed to checkout",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-df9755db1a7f8153cc5e",
+              "file": "fnb.spec.ts",
+              "line": 87,
+              "column": 7
+            },
+            {
+              "title": "FnB-08: Should handle empty cart removal",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-04b24e21055adb1c2ce6",
+              "file": "fnb.spec.ts",
+              "line": 104,
+              "column": 7
+            },
+            {
+              "title": "FnB-09: Should validate price display",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-855c788b39e11c25c6df",
+              "file": "fnb.spec.ts",
+              "line": 120,
+              "column": 7
+            },
+            {
+              "title": "FnB-10: Should support keyboard navigation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5dae2c31116c2f08d7aa-b30fbae019a79323ca73",
+              "file": "fnb.spec.ts",
+              "line": 126,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "retail.spec.ts",
+      "file": "retail.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "KASIRSOLO Retail - Store POS Flow",
+          "file": "retail.spec.ts",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Retail-01: Should load Retail app successfully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-88d15e75ea8d22d7c479",
+              "file": "retail.spec.ts",
+              "line": 11,
+              "column": 7
+            },
+            {
+              "title": "Retail-02: Should display product list",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-b5a035badd8f357f6e77",
+              "file": "retail.spec.ts",
+              "line": 18,
+              "column": 7
+            },
+            {
+              "title": "Retail-03: Should add single product to cart",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-76137dfcfb02358122c3",
+              "file": "retail.spec.ts",
+              "line": 24,
+              "column": 7
+            },
+            {
+              "title": "Retail-04: Should add multiple products",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-d60d8dcf5dfde7c5e507",
+              "file": "retail.spec.ts",
+              "line": 38,
+              "column": 7
+            },
+            {
+              "title": "Retail-05: Should view shopping cart",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-3a5d83353ba6914e3bdb",
+              "file": "retail.spec.ts",
+              "line": 55,
+              "column": 7
+            },
+            {
+              "title": "Retail-06: Should modify item quantity in cart",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-592754f359477454f485",
+              "file": "retail.spec.ts",
+              "line": 70,
+              "column": 7
+            },
+            {
+              "title": "Retail-07: Should calculate total correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-f0e72ff01fd07c0698dc",
+              "file": "retail.spec.ts",
+              "line": 87,
+              "column": 7
+            },
+            {
+              "title": "Retail-08: Should proceed to payment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-0d3e8f04d470fff79b2f",
+              "file": "retail.spec.ts",
+              "line": 105,
+              "column": 7
+            },
+            {
+              "title": "Retail-09: Should remove item from cart",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-05ccd3cf1876bb1db870",
+              "file": "retail.spec.ts",
+              "line": 122,
+              "column": 7
+            },
+            {
+              "title": "Retail-10: Should handle currency formatting",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-ff2e0b020b6d38aa0f65",
+              "file": "retail.spec.ts",
+              "line": 139,
+              "column": 7
+            },
+            {
+              "title": "Retail-11: Should support discount/promo input",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-27889548f480fce56990",
+              "file": "retail.spec.ts",
+              "line": 148,
+              "column": 7
+            },
+            {
+              "title": "Retail-12: Should support search functionality",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-02ebc2e020b341bc2d14",
+              "file": "retail.spec.ts",
+              "line": 165,
+              "column": 7
+            },
+            {
+              "title": "Retail-01: Should load Retail app successfully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-757b19ca053012575223",
+              "file": "retail.spec.ts",
+              "line": 11,
+              "column": 7
+            },
+            {
+              "title": "Retail-02: Should display product list",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-2851fad5af83f8f2dc27",
+              "file": "retail.spec.ts",
+              "line": 18,
+              "column": 7
+            },
+            {
+              "title": "Retail-03: Should add single product to cart",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-d3ac61b3f827299a34d6",
+              "file": "retail.spec.ts",
+              "line": 24,
+              "column": 7
+            },
+            {
+              "title": "Retail-04: Should add multiple products",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-edfdf17fc7568baa1757",
+              "file": "retail.spec.ts",
+              "line": 38,
+              "column": 7
+            },
+            {
+              "title": "Retail-05: Should view shopping cart",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-791941647d8f1f1004ea",
+              "file": "retail.spec.ts",
+              "line": 55,
+              "column": 7
+            },
+            {
+              "title": "Retail-06: Should modify item quantity in cart",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-3e18f99aa9496b517fa1",
+              "file": "retail.spec.ts",
+              "line": 70,
+              "column": 7
+            },
+            {
+              "title": "Retail-07: Should calculate total correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-b4a0e48c238e2110ce34",
+              "file": "retail.spec.ts",
+              "line": 87,
+              "column": 7
+            },
+            {
+              "title": "Retail-08: Should proceed to payment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-1450c4948bf230664813",
+              "file": "retail.spec.ts",
+              "line": 105,
+              "column": 7
+            },
+            {
+              "title": "Retail-09: Should remove item from cart",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-d79b21b830ef5a6c818b",
+              "file": "retail.spec.ts",
+              "line": 122,
+              "column": 7
+            },
+            {
+              "title": "Retail-10: Should handle currency formatting",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-bf2f1b237a8f94bbd5d7",
+              "file": "retail.spec.ts",
+              "line": 139,
+              "column": 7
+            },
+            {
+              "title": "Retail-11: Should support discount/promo input",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-a95b14e987e626def949",
+              "file": "retail.spec.ts",
+              "line": 148,
+              "column": 7
+            },
+            {
+              "title": "Retail-12: Should support search functionality",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-cad07ef874bc70a4e159",
+              "file": "retail.spec.ts",
+              "line": 165,
+              "column": 7
+            },
+            {
+              "title": "Retail-01: Should load Retail app successfully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-503471fda2d9f4074222",
+              "file": "retail.spec.ts",
+              "line": 11,
+              "column": 7
+            },
+            {
+              "title": "Retail-02: Should display product list",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-f1cc3e5b072128c88f5c",
+              "file": "retail.spec.ts",
+              "line": 18,
+              "column": 7
+            },
+            {
+              "title": "Retail-03: Should add single product to cart",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-33537a9761a12701fca5",
+              "file": "retail.spec.ts",
+              "line": 24,
+              "column": 7
+            },
+            {
+              "title": "Retail-04: Should add multiple products",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-e909e9b33f4757fd71fd",
+              "file": "retail.spec.ts",
+              "line": 38,
+              "column": 7
+            },
+            {
+              "title": "Retail-05: Should view shopping cart",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-1a729fa42f2f2566fbe1",
+              "file": "retail.spec.ts",
+              "line": 55,
+              "column": 7
+            },
+            {
+              "title": "Retail-06: Should modify item quantity in cart",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-27b6bce80bd1c69b2ad2",
+              "file": "retail.spec.ts",
+              "line": 70,
+              "column": 7
+            },
+            {
+              "title": "Retail-07: Should calculate total correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-f256eab28aa4684ca4bf",
+              "file": "retail.spec.ts",
+              "line": 87,
+              "column": 7
+            },
+            {
+              "title": "Retail-08: Should proceed to payment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-62c485bd484804490ab5",
+              "file": "retail.spec.ts",
+              "line": 105,
+              "column": 7
+            },
+            {
+              "title": "Retail-09: Should remove item from cart",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-4755da70f07290464ade",
+              "file": "retail.spec.ts",
+              "line": 122,
+              "column": 7
+            },
+            {
+              "title": "Retail-10: Should handle currency formatting",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-67a8c486b953770e9af7",
+              "file": "retail.spec.ts",
+              "line": 139,
+              "column": 7
+            },
+            {
+              "title": "Retail-11: Should support discount/promo input",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-f039627469f4b0402245",
+              "file": "retail.spec.ts",
+              "line": 148,
+              "column": 7
+            },
+            {
+              "title": "Retail-12: Should support search functionality",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0bc7e47b229430fd6d75-558eddfc3b8e4ffcd72b",
+              "file": "retail.spec.ts",
+              "line": 165,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-07-23T06:28:52.526Z",
+    "duration": 438.55099999999993,
+    "expected": 0,
+    "skipped": 66,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

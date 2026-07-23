@@ -17,8 +17,8 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@kasirsolo/db": "*",
-    "@kasirsolo/ui": "*"
+    "@kasirsolo/db": "workspace:*",
+    "@kasirsolo/ui": "workspace:*"
   },
   "peerDependencies": {
     "@supabase/supabase-js": "^2.49.0",
