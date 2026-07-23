@@ -1,0 +1,36 @@
+{
+  "name": "@kasirsolo/kasir-fnb",
+  "version": "0.1.0",
+  "private": true,
+  "description": "KASIRSOLO F&B - Aplikasi Kasir Offline-First untuk Restoran, Kafe & Warung Makan",
+  "scripts": {
+    "dev": "next dev --port 3003",
+    "build": "next build",
+    "start": "next start --port 3003",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf .next .turbo node_modules"
+  },
+  "dependencies": {
+    "@kasirsolo/db": "*",
+    "@kasirsolo/local-db": "*",
+    "@kasirsolo/sync": "*",
+    "@kasirsolo/ui": "*",
+    "@kasirsolo/utils": "*",
+    "@supabase/supabase-js": "^2.49.0",
+    "next": "^14.2.0",
+    "next-pwa": "^5.6.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.7.0"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "kasirsolo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "KASIRSOLO - POS & Business Management Platform by PT Mesin Kasir Solo",
+  "author": {
+    "name": "PT Mesin Kasir Solo",
+    "email": "owner.kasirsolo@gmail.com"
+  },
+  "license": "UNLICENSED",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean",
+    "typecheck": "turbo run typecheck"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "npm@10.0.0"
+}

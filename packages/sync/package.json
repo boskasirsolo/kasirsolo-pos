@@ -1,0 +1,26 @@
+{
+  "name": "@kasirsolo/sync",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bidirectional sync engine between IndexedDB and Supabase for KASIRSOLO POS",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./engine": "./src/engine.ts",
+    "./types": "./src/types.ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@kasirsolo/db": "*",
+    "@kasirsolo/local-db": "*",
+    "@supabase/supabase-js": "^2.49.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}

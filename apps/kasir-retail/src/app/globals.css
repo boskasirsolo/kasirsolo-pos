@@ -1,0 +1,218 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-primary: #FF5F1F;
+  --brand-primary-light: #FF7A42;
+  --brand-primary-dark: #F04006;
+  --brand-secondary: #F7A237;
+  --brand-accent: #FFCE55;
+  --brand-dark: #0D0D0D;
+  --pos-bg: #F5F5F5;
+  --pos-surface: #FFFFFF;
+  --pos-border: #E5E5E5;
+  --pos-success: #22C55E;
+  --pos-warning: #F59E0B;
+  --pos-danger: #EF4444;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --bottom-nav-height: 64px;
+  --top-bar-height: 48px;
+}
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    touch-action: manipulation;
+  }
+
+  body {
+    @apply bg-pos-bg text-gray-900 font-body antialiased;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+    padding-top: var(--safe-top);
+  }
+
+  input, textarea, select {
+    @apply text-base;
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+  }
+}
+
+@layer components {
+  /* Bottom nav safe area */
+  .pb-safe {
+    padding-bottom: calc(var(--bottom-nav-height) + var(--safe-bottom) + 8px);
+  }
+
+  /* Number pad button */
+  .numpad-btn {
+    @apply flex items-center justify-center rounded-xl font-semibold text-xl
+           active:scale-95 transition-transform duration-100 select-none;
+    min-height: 56px;
+    min-width: 56px;
+  }
+
+  .numpad-btn-number {
+    @apply numpad-btn bg-white text-gray-800 border border-pos-border shadow-sm;
+  }
+
+  .numpad-btn-action {
+    @apply numpad-btn bg-brand-primary text-white shadow-md;
+  }
+
+  .numpad-btn-delete {
+    @apply numpad-btn bg-gray-200 text-gray-600;
+  }
+
+  /* Product tile in POS */
+  .product-tile {
+    @apply flex flex-col items-center justify-center p-3 rounded-xl bg-white
+           border border-pos-border shadow-sm active:scale-95 active:bg-orange-50
+           transition-all duration-100 select-none cursor-pointer;
+    min-height: 88px;
+  }
+
+  /* Cart item row */
+  .cart-item {
+    @apply flex items-center gap-3 py-3 px-4 border-b border-pos-border
+           last:border-b-0;
+  }
+
+  /* Quick action button */
+  .quick-action-btn {
+    @apply flex flex-col items-center justify-center gap-1 px-3 py-2
+           rounded-lg text-xs font-medium text-gray-600
+           active:bg-gray-100 transition-colors select-none;
+    min-width: 60px;
+  }
+
+  /* POS bottom sheet handle */
+  .sheet-handle {
+    @apply w-10 h-1 rounded-full bg-gray-300 mx-auto mb-2;
+  }
+
+  /* Badge pulse for alerts */
+  .pulse-dot {
+    @apply relative;
+  }
+  .pulse-dot::before {
+    content: "";
+    @apply absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full;
+    animation: pulse-ring 1.5s ease-out infinite;
+  }
+  @keyframes pulse-ring {
+    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
+    100% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+}
+
+/* Receipt print styles */
+@media print {
+  @page {
+    margin: 0;
+    size: 58mm auto;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: white;
+  }
+
+  /* Hide everything except receipt */
+  body > *:not(.receipt-print) {
+    display: none !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .receipt-print {
+    display: block !important;
+    width: 58mm;
+    padding: 4mm;
+    margin: 0;
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    line-height: 1.4;
+    color: black;
+    background: white;
+  }
+
+  .receipt-print .receipt-header {
+    text-align: center;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+
+  .receipt-print .receipt-divider {
+    border-top: 1px dashed black;
+    margin: 4px 0;
+  }
+
+  .receipt-print .receipt-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 2px 0;
+  }
+
+  .receipt-print .receipt-total {
+    font-weight: bold;
+    font-size: 12px;
+    border-top: 1px double black;
+    padding-top: 4px;
+    margin-top: 4px;
+  }
+
+  .receipt-print .receipt-footer {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 9px;
+  }
+}
+
+/* Spinner animation (used by @kasirsolo/ui Button loading state) */
+@keyframes ksp-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ksp-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ksp-scale-in {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
