@@ -53,3 +53,34 @@ export interface ActivityLogEntry {
   createdAt: string;
   performedBy: string | null;
 }
+
+// ─── Supabase relational row types (untuk join queries) ─────────────────
+
+/** Hasil dari `.select("..., ksp_clients(name)")` di ksp_payments */
+export interface PaymentWithClientRaw {
+  id: string;
+  client_id: string;
+  amount: number;
+  method: string;
+  created_at: string;
+  proof_url: string | null;
+  ksp_clients: { name: string } | null;
+}
+
+/** Hasil dari `.select("..., ksp_clients(name), ksp_apps(name)")` di ksp_licenses */
+export interface LicenseWithRelationsRaw {
+  id: string;
+  client_id: string;
+  license_key: string;
+  plan_type: string;
+  purchased_at: string;
+  app_id: string | null;
+  ksp_clients: { name: string } | null;
+  ksp_apps: { name: string } | null;
+}
+
+/** Hasil dari `.select("app_id, ksp_apps(name)")` di ksp_licenses (status active) */
+export interface LicenseAppRaw {
+  app_id: string | null;
+  ksp_apps: { name: string } | null;
+}

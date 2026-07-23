@@ -1,5 +1,5 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-import type { DeviceFilter, DeviceWithRelations } from "./types";
+import type { DeviceFilter, DeviceWithRelations, KspDevice, DeviceWithRelationsRaw } from "./types";
 
 export async function getDevices(
   supabase: SupabaseClient,
@@ -25,18 +25,13 @@ export async function getDevices(
   const { data, error, count } = await query;
   if (error) throw new Error(error.message);
 
-  const devices: DeviceWithRelations[] = (data ?? []).map((d) => {
-    const rec = d as Record<string, unknown>;
-    const license = rec.ksp_licenses as Record<string, unknown> | null;
+  const devices: DeviceWithRelations[] = (data ?? []).map((d: DeviceWithRelationsRaw) => {
+    const license = d.ksp_licenses;
     return {
       ...d,
-      license_key: license?.license_key as string | undefined,
-      client_name: license?.ksp_clients
-        ? (license.ksp_clients as { name: string }).name
-        : undefined,
-      app_name: license?.ksp_apps
-        ? (license.ksp_apps as { name: string }).name
-        : undefined,
+      license_key: license?.license_key,
+      client_name: license?.ksp_clients?.name,
+      app_name: license?.ksp_apps?.name,
     };
   });
 

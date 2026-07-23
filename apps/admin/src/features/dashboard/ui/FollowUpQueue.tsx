@@ -2,6 +2,7 @@
 
 import { formatDate } from "@/lib/utils";
 import type { FollowUpItem } from "../data/types";
+import { SkeletonCard, SkeletonList } from "@/components/SkeletonLoader";
 
 interface FollowUpQueueProps {
   items: FollowUpItem[];
@@ -10,21 +11,7 @@ interface FollowUpQueueProps {
 
 export default function FollowUpQueue({ items, loading }: FollowUpQueueProps) {
   if (loading) {
-    return (
-      <div className="card">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="font-heading text-base font-semibold text-gray-900">Antrian Follow Up</h3>
-        </div>
-        <div className="space-y-3">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="animate-pulse rounded-lg bg-gray-50 p-3">
-              <div className="h-4 w-32 rounded bg-gray-200" />
-              <div className="mt-2 h-3 w-24 rounded bg-gray-200" />
-            </div>
-          ))}
-        </div>
-      </div>
-    );
+    return <SkeletonList title="Antrian Follow Up" count={3} />;
   }
 
   return (

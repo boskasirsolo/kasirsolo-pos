@@ -1,5 +1,5 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-import type { PaymentFilter, PaymentWithClient, PaymentStatus } from "./types";
+import type { PaymentFilter, PaymentWithClient, PaymentStatus, PaymentClientRaw } from "./types";
 
 export async function getPayments(
   supabase: SupabaseClient,
@@ -25,18 +25,11 @@ export async function getPayments(
   const { data, error, count } = await query;
   if (error) throw new Error(error.message);
 
-  const payments: PaymentWithClient[] = (data ?? []).map((p) => {
-    const rec = p as Record<string, unknown>;
-    return {
-      ...p,
-      client_name: rec.ksp_clients
-        ? (rec.ksp_clients as { name: string }).name
-        : undefined,
-      client_phone: rec.ksp_clients
-        ? (rec.ksp_clients as { phone: string }).phone
-        : undefined,
-    };
-  });
+  const payments: PaymentWithClient[] = (data ?? []).map((p: PaymentClientRaw) => ({
+    ...p,
+    client_name: p.ksp_clients?.name,
+    client_phone: p.ksp_clients?.phone,
+  }));
 
   return { data: payments, total: count ?? 0 };
 }

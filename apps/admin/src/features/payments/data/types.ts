@@ -25,3 +25,21 @@ export interface PaymentFilter {
   page: number;
   perPage: number;
 }
+
+// ─── Supabase relational row type ─────────────────
+
+/** Hasil dari `.select("*, ksp_clients(name, phone)")` di ksp_payments */
+export interface PaymentClientRaw {
+  id: string;
+  client_id: string;
+  license_id: string | null;
+  amount: number;
+  method: string;
+  status: PaymentStatus;
+  proof_url: string | null;
+  verified_by: string | null;
+  verified_at: string | null;
+  notes: string | null;
+  created_at: string;
+  ksp_clients: { name?: string; phone?: string } | null;
+}

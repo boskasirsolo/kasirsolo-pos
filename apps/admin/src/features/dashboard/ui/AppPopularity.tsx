@@ -1,6 +1,7 @@
 "use client";
 
 import type { AppPopularityItem } from "../data/types";
+import { SkeletonList } from "@/components/SkeletonLoader";
 
 interface AppPopularityProps {
   items: AppPopularityItem[];
@@ -19,19 +20,7 @@ const barColors = [
 
 export default function AppPopularity({ items, loading }: AppPopularityProps) {
   if (loading) {
-    return (
-      <div className="card">
-        <h3 className="mb-4 font-heading text-base font-semibold text-gray-900">Popularitas Aplikasi</h3>
-        <div className="space-y-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="animate-pulse">
-              <div className="mb-1 h-3 w-24 rounded bg-gray-200" />
-              <div className="h-6 rounded bg-gray-100" />
-            </div>
-          ))}
-        </div>
-      </div>
-    );
+    return <SkeletonList title="Popularitas Aplikasi" variant="bar-chart" count={4} />;
   }
 
   const maxCount = items.length > 0 ? Math.max(...items.map((i) => i.count)) : 1;

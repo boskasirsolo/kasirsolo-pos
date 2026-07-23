@@ -2,19 +2,11 @@
 
 import { formatRupiah } from "@/lib/utils";
 import type { DashboardStats } from "../data/types";
+import { SkeletonCard, SkeletonList } from "@/components/SkeletonLoader";
 
 interface DashboardGridProps {
   stats: DashboardStats | null;
   loading: boolean;
-}
-
-interface KPICardProps {
-  label: string;
-  value: string | number;
-  icon: React.ReactNode;
-  color: string;
-  bgColor: string;
-  change?: string;
 }
 
 function KPICard({ label, value, icon, color, bgColor }: KPICardProps) {
@@ -31,25 +23,11 @@ function KPICard({ label, value, icon, color, bgColor }: KPICardProps) {
   );
 }
 
-function SkeletonCard() {
-  return (
-    <div className="card flex items-start gap-4 animate-pulse">
-      <div className="h-12 w-12 rounded-xl bg-gray-200" />
-      <div className="flex-1">
-        <div className="h-4 w-20 rounded bg-gray-200" />
-        <div className="mt-2 h-7 w-16 rounded bg-gray-200" />
-      </div>
-    </div>
-  );
-}
-
 export default function DashboardGrid({ stats, loading }: DashboardGridProps) {
   if (loading || !stats) {
     return (
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <SkeletonCard key={i} />
-        ))}
+        <SkeletonCard variant="stat" count={8} />
       </div>
     );
   }

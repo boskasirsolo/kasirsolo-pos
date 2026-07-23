@@ -2,6 +2,7 @@
 
 import { timeAgo } from "@/lib/utils";
 import type { ActivityLogEntry } from "../data/types";
+import { SkeletonCard, SkeletonList } from "@/components/SkeletonLoader";
 
 interface ActivityFeedProps {
   items: ActivityLogEntry[];
@@ -40,22 +41,7 @@ const actionIcons: Record<string, { bg: string; color: string }> = {
 
 export default function ActivityFeed({ items, loading }: ActivityFeedProps) {
   if (loading) {
-    return (
-      <div className="card">
-        <h3 className="mb-4 font-heading text-base font-semibold text-gray-900">Aktivitas Terbaru</h3>
-        <div className="space-y-3">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="flex items-start gap-3 animate-pulse">
-              <div className="h-8 w-8 rounded-full bg-gray-200" />
-              <div className="flex-1">
-                <div className="h-3 w-40 rounded bg-gray-200" />
-                <div className="mt-1 h-3 w-24 rounded bg-gray-200" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
+    return <SkeletonList title="Aktivitas Terbaru" variant="activity" count={5} />;
   }
 
   return (
