@@ -87,9 +87,14 @@ export async function getDashboardStats(
 }
 
 export async function getFollowUpQueue(
-  supabase: SupabaseClient
+  supabase: SupabaseClient,
+  page: number = 0,
+  pageSize: number = 10
 ): Promise<FollowUpItem[]> {
   const sevenDaysFromNow = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+
+  const from = page * pageSize;
+  const to = from + pageSize - 1;
 
   const { data, error } = await supabase
     .from("ksp_clients")
@@ -97,7 +102,7 @@ export async function getFollowUpQueue(
     .eq("status", "trial")
     .lte("trial_expires", sevenDaysFromNow)
     .order("trial_expires", { ascending: true })
-    .limit(10);
+    .range(from, to);
 
   if (error || !data) return [];
 
@@ -122,15 +127,30 @@ export async function getFollowUpQueue(
   });
 }
 
+export async function getFollowUpTotalCount(supabase: SupabaseClient): Promise<number> {
+  const sevenDaysFromNow = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+  const { count } = await supabase
+    .from("ksp_clients")
+    .select("*", { count: "exact", head: true })
+    .eq("status", "trial")
+    .lte("trial_expires", sevenDaysFromNow);
+  return count ?? 0;
+}
+
 export async function getPendingPayments(
-  supabase: SupabaseClient
+  supabase: SupabaseClient,
+  page: number = 0,
+  pageSize: number = 10
 ): Promise<PendingPaymentItem[]> {
+  const from = page * pageSize;
+  const to = from + pageSize - 1;
+
   const { data, error } = await supabase
     .from("ksp_payments")
     .select("id, client_id, amount, method, created_at, proof_url, ksp_clients(name)")
     .eq("status", "pending")
     .order("created_at", { ascending: false })
-    .limit(10);
+    .range(from, to);
 
   if (error || !data) return [];
 
@@ -144,16 +164,29 @@ export async function getPendingPayments(
   }));
 }
 
+export async function getPendingPaymentsTotalCount(supabase: SupabaseClient): Promise<number> {
+  const { count } = await supabase
+    .from("ksp_payments")
+    .select("*", { count: "exact", head: true })
+    .eq("status", "pending");
+  return count ?? 0;
+}
+
 export async function getRecentActivations(
-  supabase: SupabaseClient
+  supabase: SupabaseClient,
+  page: number = 0,
+  pageSize: number = 5
 ): Promise<RecentActivation[]> {
+  const from = page * pageSize;
+  const to = from + pageSize - 1;
+
   const { data, error } = await supabase
     .from("ksp_licenses")
     .select("id, client_id, license_key, plan_type, purchased_at, ksp_clients(name), ksp_apps(name)")
     .eq("status", "active")
     .neq("plan_type", "trial")
     .order("purchased_at", { ascending: false })
-    .limit(5);
+    .range(from, to);
 
   if (error || !data) return [];
 
@@ -167,44 +200,43 @@ export async function getRecentActivations(
   }));
 }
 
+export async function getRecentActivationsTotalCount(supabase: SupabaseClient): Promise<number> {
+  const { count } = await supabase
+    .from("ksp_licenses")
+    .select("*", { count: "exact", head: true })
+    .eq("status", "active")
+    .neq("plan_type", "trial");
+  return count ?? 0;
+}
+
 export async function getAppPopularity(
   supabase: SupabaseClient
 ): Promise<AppPopularityItem[]> {
-  const { data, error } = await supabase
-    .from("ksp_licenses")
-    .select("app_id, ksp_apps(name)")
-    .eq("status", "active");
+  const { data, error } = await supabase.rpc('get_app_popularity_top10');
 
   if (error || !data) return [];
 
-  const counts: Record<string, { name: string; count: number }> = {};
-  for (const l of data) {
-    const appName = l.ksp_apps?.name ?? "Unknown";
-    if (!counts[l.app_id!]) {
-      counts[l.app_id!] = { name: appName, count: 0 };
-    }
-    counts[l.app_id!].count++;
-  }
-
-  const total = data.length || 1;
-  return Object.entries(counts)
-    .map(([appId, { name, count }]) => ({
-      appId,
-      appName: name,
-      count,
-      percentage: Math.round((count / total) * 100),
-    }))
-    .sort((a, b) => b.count - a.count);
+  return data.map((row) => ({
+    appId: row.app_id,
+    appName: row.app_name ?? 'Unknown',
+    count: row.count,
+    percentage: row.percentage,
+  }));
 }
 
 export async function getRecentActivity(
-  supabase: SupabaseClient
+  supabase: SupabaseClient,
+  page: number = 0,
+  pageSize: number = 15
 ): Promise<ActivityLogEntry[]> {
+  const from = page * pageSize;
+  const to = from + pageSize - 1;
+
   const { data, error } = await supabase
     .from("ksp_activity_logs")
     .select("*")
     .order("created_at", { ascending: false })
-    .limit(15);
+    .range(from, to);
 
   if (error || !data) return [];
 
@@ -217,4 +249,11 @@ export async function getRecentActivity(
     createdAt: log.created_at,
     performedBy: log.performed_by,
   }));
+}
+
+export async function getActivityTotalCount(supabase: SupabaseClient): Promise<number> {
+  const { count } = await supabase
+    .from("ksp_activity_logs")
+    .select("*", { count: "exact", head: true });
+  return count ?? 0;
 }

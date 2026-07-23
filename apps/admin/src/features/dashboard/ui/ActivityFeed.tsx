@@ -7,6 +7,8 @@ import { SkeletonCard, SkeletonList } from "@/components/SkeletonLoader";
 interface ActivityFeedProps {
   items: ActivityLogEntry[];
   loading: boolean;
+  onPageChange: (page: number) => void;
+  currentPage: number;
 }
 
 const actionLabels: Record<string, string> = {
@@ -39,7 +41,8 @@ const actionIcons: Record<string, { bg: string; color: string }> = {
   client_suspended: { bg: "bg-red-50", color: "text-red-600" },
 };
 
-export default function ActivityFeed({ items, loading }: ActivityFeedProps) {
+export default function ActivityFeed({ items, loading, onPageChange, currentPage }: ActivityFeedProps) {
+  const loadMore = () => onPageChange(currentPage + 1);
   if (loading) {
     return <SkeletonList title="Aktivitas Terbaru" variant="activity" count={5} />;
   }
@@ -70,6 +73,23 @@ export default function ActivityFeed({ items, loading }: ActivityFeedProps) {
           })}
         </div>
       )}
+      <LoadMoreButton onClick={loadMore} />
+    </div>
+  );
+}
+
+function LoadMoreButton({ onClick }: { onClick: () => void }) {
+  return (
+    <div className="mt-4 flex justify-center">
+      <button
+        onClick={onClick}
+        className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-4 py-2 text-xs font-medium text-gray-600 hover:bg-gray-200"
+      >
+        Muat Lebih Banyak
+        <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
     </div>
   );
 }
