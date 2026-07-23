@@ -1,4 +1,3 @@
-import React from 'react'
 import { brand } from '../brand'
 
 export type LogoSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
