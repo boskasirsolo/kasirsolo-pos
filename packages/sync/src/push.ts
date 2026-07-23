@@ -1,4 +1,3 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
 import { getAll, put } from "@kasirsolo/local-db";
 import type {
   PosProduct,
@@ -7,10 +6,8 @@ import type {
   PosStockAdjustment,
   PosReceipt,
   PosDailyReport,
-  SyncStatus,
 } from "@kasirsolo/local-db";
 import type { SyncConfig, SyncResult, SyncableStore, SyncConflict, SyncLogEntry } from "./types";
-import { STORE_TO_TABLE, ALL_SYNCABLE_STORES } from "./types";
 import {
   mapLocalToCloud,
   toBatches,
@@ -47,7 +44,6 @@ type SyncableRecord = PosProduct | PosTransaction | PosCategory | PosStockAdjust
  */
 export async function pushToCloud(config: SyncConfig): Promise<SyncResult> {
   const startedAt = now();
-  const startTime = Date.now();
   const errors: string[] = [];
   let totalPushed = 0;
 

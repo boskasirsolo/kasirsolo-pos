@@ -146,6 +146,7 @@ export function useSync(options: UseSyncOptions): UseSyncReturn {
     if (!isCloudUser || !licenseId || !deviceId) return;
 
     const supabase = createBrowserClient();
+    if (!supabase) return;
 
     const engine = new SyncEngine({
       supabase,

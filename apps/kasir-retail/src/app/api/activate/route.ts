@@ -30,6 +30,12 @@ export async function POST(request: NextRequest) {
     const { license_key, fingerprint, device_name } = validation.data;
 
     const supabase = createServerClient();
+    if (!supabase) {
+      return NextResponse.json(
+        { error: "Gagal terhubung ke database" },
+        { status: 500 }
+      );
+    }
 
     // Validate license
     const license = await getLicenseByKey(supabase, license_key);
@@ -95,6 +101,7 @@ export async function POST(request: NextRequest) {
       device_name: device_name || null,
       device_number: activeCount + 1,
       is_active: true,
+      last_seen_at: new Date().toISOString(),
     });
 
     return NextResponse.json({

@@ -1,27 +1,15 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
-import { get, put, getAll } from "@kasirsolo/local-db";
-import type {
-  PosProduct,
-  PosTransaction,
-  PosCategory,
-  PosStockAdjustment,
-  PosReceipt,
-  PosDailyReport,
-  PosSettings,
-  SyncStatus,
-} from "@kasirsolo/local-db";
+import { get, put } from "@kasirsolo/local-db";
+import type { PosSettings, SyncStatus } from "@kasirsolo/local-db";
 import type { SyncConfig, SyncResult, SyncableStore, SyncConflict } from "./types";
-import { STORE_TO_TABLE, ALL_SYNCABLE_STORES } from "./types";
+import { ALL_SYNCABLE_STORES } from "./types";
 import {
   mapCloudToLocal,
-  isNewerThan,
   getCloudTable,
   now,
   getErrorMessage,
   logInfo,
   logWarn,
   logError,
-  toBatches,
 } from "./utils";
 import { resolveConflict } from "./conflict";
 
@@ -177,7 +165,7 @@ interface MergeResult {
 }
 
 async function mergeCloudRecord(
-  config: SyncConfig,
+  _config: SyncConfig,
   store: SyncableStore,
   cloudRecord: Record<string, unknown>
 ): Promise<MergeResult> {

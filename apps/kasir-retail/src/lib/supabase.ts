@@ -10,6 +10,9 @@ let supabaseInstance: SupabaseClient | null = null;
 export function getSupabase(): SupabaseClient {
   if (!supabaseInstance) {
     supabaseInstance = createBrowserClient();
+    if (!supabaseInstance) {
+      throw new Error("Failed to create Supabase browser client");
+    }
   }
   return supabaseInstance;
 }
