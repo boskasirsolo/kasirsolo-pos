@@ -1,57 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { z } from 'zod';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
-interface TrialPayload {
-  nama: string;
-  alamat: string;
-  wa: string;
-  app: string;
-}
-
-function validatePayload(body: unknown): { valid: true; data: TrialPayload } | { valid: false; errors: Record<string, string> } {
-  const errors: Record<string, string> = {};
-  const data = body as Record<string, unknown>;
-
-  if (!data || typeof data !== 'object') {
-    return { valid: false, errors: { form: 'Data tidak valid' } };
-  }
-
-  const nama = String(data.nama || '').trim();
-  const alamat = String(data.alamat || '').trim();
-  const wa = String(data.wa || '').trim().replace(/\D/g, '');
-  const app = String(data.app || '').trim();
-
-  if (nama.length < 3) {
-    errors.nama = 'Nama minimal 3 karakter';
-  }
-  if (alamat.length < 5) {
-    errors.alamat = 'Alamat minimal 5 karakter';
-  }
-  if (wa.length < 10 || wa.length > 15) {
-    errors.wa = 'Nomor WA harus 10-15 digit';
-  }
-  if (!app) {
-    errors.app = 'Pilih aplikasi yang diinginkan';
-  }
-
-  if (Object.keys(errors).length > 0) {
-    return { valid: false, errors };
-  }
-
-  return { valid: true, data: { nama, alamat, wa, app } };
-}
+const trialPayloadSchema = z.object({
+  nama: z.string().min(3, 'Nama minimal 3 karakter').trim(),
+  alamat: z.string().min(5, 'Alamat minimal 5 karakter').trim(),
+  wa: z
+    .string()
+    .min(10, 'Nomor WA harus 10-15 digit')
+    .max(15, 'Nomor WA harus 10-15 digit')
+    .regex(/^\d+$/, 'Nomor WA hanya boleh berisi angka')
+    .transform((val) => val.replace(/\D/g, '')),
+  app: z.string().min(1, 'Pilih aplikasi yang diinginkan'),
+});
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const validation = validatePayload(body);
+    const validation = trialPayloadSchema.safeParse(body);
 
-    if (!validation.valid) {
+    if (!validation.success) {
+      const errors = validation.error.flatten().fieldErrors as Record<string, string[]>;
+      const errorMap = Object.entries(errors).reduce(
+        (acc, [key, msgs]) => ({
+          ...acc,
+          [key]: msgs[0] || 'Validasi gagal',
+        }),
+        {} as Record<string, string>
+      );
       return NextResponse.json(
-        { success: false, errors: validation.errors },
+        { success: false, errors: errorMap },
         { status: 400 }
       );
     }
