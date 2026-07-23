@@ -17,7 +17,12 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "clean": "turbo run clean",
-    "typecheck": "turbo run typecheck"
+    "typecheck": "turbo run typecheck",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "test:fnb": "playwright test e2e/fnb.spec.ts",
+    "test:retail": "playwright test e2e/retail.spec.ts"
   },
   "devDependencies": {
     "turbo": "^2.5.0",
@@ -26,5 +31,8 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "packageManager": "pnpm@10.0.0"
+  "packageManager": "pnpm@10.0.0",
+  "dependencies": {
+    "@playwright/test": "^1.61.1"
+  }
 }

@@ -1,0 +1,278 @@
+<testsuites id="" name="" tests="66" failures="0" skipped="66" errors="0" time="0.4385509999999999">
+<testsuite name="fnb.spec.ts" timestamp="2026-07-23T06:28:52.958Z" hostname="chromium" tests="10" failures="0" skipped="10" time="0" errors="0">
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-01: Should load FnB app successfully" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-02: Should display product catalog" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-03: Should add single item to cart" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-04: Should add multiple items to cart" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-05: Should open cart and view items" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-06: Should update item quantity" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-07: Should proceed to checkout" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-08: Should handle empty cart removal" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-09: Should validate price display" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-10: Should support keyboard navigation" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="retail.spec.ts" timestamp="2026-07-23T06:28:52.958Z" hostname="chromium" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-01: Should load Retail app successfully" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-02: Should display product list" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-03: Should add single product to cart" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-04: Should add multiple products" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-05: Should view shopping cart" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-06: Should modify item quantity in cart" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-07: Should calculate total correctly" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-08: Should proceed to payment" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-09: Should remove item from cart" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-10: Should handle currency formatting" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-11: Should support discount/promo input" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-12: Should support search functionality" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="fnb.spec.ts" timestamp="2026-07-23T06:28:52.958Z" hostname="firefox" tests="10" failures="0" skipped="10" time="0" errors="0">
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-01: Should load FnB app successfully" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-02: Should display product catalog" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-03: Should add single item to cart" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-04: Should add multiple items to cart" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-05: Should open cart and view items" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-06: Should update item quantity" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-07: Should proceed to checkout" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-08: Should handle empty cart removal" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-09: Should validate price display" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-10: Should support keyboard navigation" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="retail.spec.ts" timestamp="2026-07-23T06:28:52.958Z" hostname="firefox" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-01: Should load Retail app successfully" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-02: Should display product list" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-03: Should add single product to cart" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-04: Should add multiple products" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-05: Should view shopping cart" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-06: Should modify item quantity in cart" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-07: Should calculate total correctly" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-08: Should proceed to payment" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-09: Should remove item from cart" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-10: Should handle currency formatting" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-11: Should support discount/promo input" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-12: Should support search functionality" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="fnb.spec.ts" timestamp="2026-07-23T06:28:52.958Z" hostname="webkit" tests="10" failures="0" skipped="10" time="0" errors="0">
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-01: Should load FnB app successfully" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-02: Should display product catalog" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-03: Should add single item to cart" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-04: Should add multiple items to cart" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-05: Should open cart and view items" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-06: Should update item quantity" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-07: Should proceed to checkout" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-08: Should handle empty cart removal" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-09: Should validate price display" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO FnB - Restaurant POS Flow › FnB-10: Should support keyboard navigation" classname="fnb.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="retail.spec.ts" timestamp="2026-07-23T06:28:52.958Z" hostname="webkit" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-01: Should load Retail app successfully" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-02: Should display product list" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-03: Should add single product to cart" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-04: Should add multiple products" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-05: Should view shopping cart" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-06: Should modify item quantity in cart" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-07: Should calculate total correctly" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-08: Should proceed to payment" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-09: Should remove item from cart" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-10: Should handle currency formatting" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-11: Should support discount/promo input" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="KASIRSOLO Retail - Store POS Flow › Retail-12: Should support search functionality" classname="retail.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>
