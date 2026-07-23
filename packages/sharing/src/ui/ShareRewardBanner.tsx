@@ -90,7 +90,7 @@ export function ShareRewardBanner({
     borderRadius: radii.full,
     border: "none",
     backgroundColor: "transparent",
-    color: colors.success[400],
+    color: colors.success[500],
     cursor: "pointer",
     fontSize: fontSizes.base,
     transition: `all ${transitions.fast}`,

@@ -1,6 +1,4 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
 import { getAll } from "@kasirsolo/local-db";
-import type { SyncStatus as LocalSyncStatus } from "@kasirsolo/local-db";
 
 import type {
   SyncConfig,
@@ -8,11 +6,9 @@ import type {
   SyncResult,
   SyncEvent,
   SyncEventHandler,
-  SyncDirection,
   SyncConflict,
   SyncPendingByStore,
 } from "./types";
-import { ALL_SYNCABLE_STORES } from "./types";
 import { pushToCloud } from "./push";
 import { pullFromCloud } from "./pull";
 import { SyncQueue } from "./queue";

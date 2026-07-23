@@ -74,7 +74,7 @@ export function SyncFeature({ planType, deviceId }: SyncFeatureProps) {
         onClose={() => setIsPanelOpen(false)}
         status={sync.displayStatus}
         lastSyncLabel={formatLastSync(sync.lastSyncAt)}
-        pendingByStore={pendingByStore}
+        pendingByStore={pendingByStore as unknown as Record<string, number>}
         pendingCount={sync.pendingCount}
         onSyncNow={handleSyncNow}
         history={sync.history}

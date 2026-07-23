@@ -1,13 +1,4 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
-import type {
-  PosProduct,
-  PosTransaction,
-  PosCategory,
-  PosStockAdjustment,
-  PosReceipt,
-  PosDailyReport,
-  SyncStatus,
-} from "@kasirsolo/local-db";
+import type { SyncStatus } from "@kasirsolo/local-db";
 import type { SyncableStore } from "./types";
 import { STORE_TO_TABLE } from "./types";
 
@@ -18,12 +9,12 @@ import { STORE_TO_TABLE } from "./types";
 /**
  * Strip local-only fields and add license_id for cloud storage.
  */
-export function mapLocalToCloud<T extends { sync_status?: SyncStatus }>(
+export function mapLocalToCloud<T>(
   record: T,
   licenseId: string
 ): Omit<T, "sync_status"> & { license_id: string } {
-  const { sync_status, ...rest } = record;
-  return { ...rest, license_id: licenseId };
+  const { sync_status, ...rest } = record as Record<string, unknown>;
+  return { ...rest, license_id: licenseId } as unknown as Omit<T, "sync_status"> & { license_id: string };
 }
 
 /**

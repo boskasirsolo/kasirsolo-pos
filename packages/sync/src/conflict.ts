@@ -1,5 +1,5 @@
 import type { SyncConflict, SyncableStore } from "./types";
-import { isNewerThan, diffRecords, logInfo, logWarn, now } from "./utils";
+import { isNewerThan, diffRecords, logWarn, now } from "./utils";
 
 // ---------------------------------------------------------------------------
 // Conflict Resolution Strategy: Last-Write-Wins

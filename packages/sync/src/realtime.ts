@@ -1,5 +1,5 @@
-import type { SupabaseClient, RealtimeChannel, RealtimePostgresChangesPayload } from "@supabase/supabase-js";
-import type { SyncConfig, SyncableStore, SyncEvent, SyncEventHandler } from "./types";
+import type { RealtimeChannel, RealtimePostgresChangesPayload } from "@supabase/supabase-js";
+import type { SyncConfig, SyncableStore, SyncEvent } from "./types";
 import { STORE_TO_TABLE, ALL_SYNCABLE_STORES } from "./types";
 import { pullSingleRecord } from "./pull";
 import { logInfo, logWarn, logError, getErrorMessage } from "./utils";

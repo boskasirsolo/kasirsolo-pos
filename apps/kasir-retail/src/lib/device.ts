@@ -109,6 +109,7 @@ export async function activateDevice(
     device_name: deviceName,
     device_number: activeCount + 1,
     is_active: true,
+    last_seen_at: new Date().toISOString(),
   });
 
   cacheDevice(device, licenseId);
