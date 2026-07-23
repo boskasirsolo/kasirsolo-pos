@@ -2,6 +2,7 @@
 
 import { formatDate } from "@/lib/utils";
 import type { RecentActivation } from "../data/types";
+import { SkeletonCard, SkeletonList } from "@/components/SkeletonLoader";
 
 interface RecentActivationsProps {
   items: RecentActivation[];
@@ -10,19 +11,7 @@ interface RecentActivationsProps {
 
 export default function RecentActivations({ items, loading }: RecentActivationsProps) {
   if (loading) {
-    return (
-      <div className="card">
-        <h3 className="mb-4 font-heading text-base font-semibold text-gray-900">Aktivasi Terbaru</h3>
-        <div className="space-y-3">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="animate-pulse rounded-lg bg-gray-50 p-3">
-              <div className="h-4 w-32 rounded bg-gray-200" />
-              <div className="mt-2 h-3 w-24 rounded bg-gray-200" />
-            </div>
-          ))}
-        </div>
-      </div>
-    );
+    return <SkeletonList title="Aktivasi Terbaru" variant="list-item" count={3} />;
   }
 
   return (

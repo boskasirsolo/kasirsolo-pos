@@ -56,13 +56,13 @@ export async function getAnalyticsData(supabase: SupabaseClient): Promise<Analyt
   const appMap: Record<string, { name: string; count: number; revenue: number }> = {};
   for (const l of allLicenses) {
     if (l.plan_type === "trial") continue;
-    const rec = l as Record<string, unknown>;
-    const appName = rec.ksp_apps ? (rec.ksp_apps as { name: string }).name : "Unknown";
+    const rec = l as { ksp_apps?: { name: string } | null; amount_paid?: number };
+    const appName = rec.ksp_apps?.name ?? "Unknown";
     if (!appMap[l.app_id]) {
       appMap[l.app_id] = { name: appName, count: 0, revenue: 0 };
     }
     appMap[l.app_id].count++;
-    appMap[l.app_id].revenue += l.amount_paid ?? 0;
+    appMap[l.app_id].revenue += rec.amount_paid ?? 0;
   }
 
   const paidLicenses = allLicenses.filter((l) => l.plan_type !== "trial").length || 1;

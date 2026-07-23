@@ -94,6 +94,11 @@ input, select, textarea {
 }
 
 /* ---- Utility Classes ---- */
+/* TODO: Refactor — .section-badge, .section-title, .section-subtitle punya repetitive pattern
+   (padding + border-radius + font-size + font-weight + margin) yang bisa jadi 1 base class:
+   .section-heading → badge + title + subtitle sebagai sub-classes.
+   Bisa dikonversi ke Tailwind: flex + items-center + gap-2 + px-5 + py-2 + bg-gold/10 + border + border-gold/30 + rounded-full
+   ==================================== */
 .container {
   max-width: var(--container-max);
   margin: 0 auto;
@@ -151,6 +156,14 @@ input, select, textarea {
 }
 
 /* ---- Buttons ---- */
+/* TODO: Refactor — .btn, .btn-primary/secondary/wa, .btn-sm/lg punya repetitive pattern:
+   padding + border-radius + font-weight + transition (diulang 6x).
+   Bisa jadi 1 class .btn + modifier classes, atau konversi ke Tailwind:
+   .btn → inline-flex + items-center + justify-center + gap-2 + px-8 + py-3.5 + rounded-full + font-semibold + text-base
+   .btn-primary → bg-gradient-135 + text-white + shadow-glow + hover:translate-y--0.5
+   .btn-secondary → bg-white/8 + border + border-white/15 + backdrop-blur + md:bg-white/15
+   .btn-wa → bg-[#25D366] + hover:bg-[#20BD5A]
+   ==================================== */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -215,7 +228,17 @@ input, select, textarea {
   font-size: 1.1rem;
 }
 
-/* ---- Pulse Animation ---- */
+/* ============================================================
+   ANIMATIONS / KEYFRAMES
+   TODO: Refactor — 20+ @keyframes ini bisa dikonversi ke Tailwind animate utilities
+   atau dipisah ke file @/styles/animations.css. Pattern yang berulang:
+   - fadeInUp / fadeIn / slideInLeft / slideInRight → Tailwind: animate-fade-in, animate-slide-up
+   - orbFloat1/2/3, chipFloat1/2/3, waFloat → animation dengan durasi berbeda, pisah jadi reusable
+   - pulse / shimmer / progressPulse → bisa jadi Tailwind "animate-pulse" style
+   - scaleIn / bounceIn → modal transitions
+   - spin → Tailwind sudah punya "animate-spin"
+   ==================================== */
+
 @keyframes pulse {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.05); opacity: 0.8; }
@@ -2775,3 +2798,37 @@ input, select, textarea {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }
+
+/* ============================================================
+   CSS REFACTORING SUMMARY (Priority 3 - Nice to Have)
+   ====================================
+   
+   TODO - Repetitive patterns that can be converted to Tailwind / reusable utilities:
+   
+   1. ANIMATIONS (lines ~220-350):
+      - 20+ @keyframes → Pisah ke @/styles/animations.css
+      - Konversi ke Tailwind animate utilities (animate-pulse, animate-spin, animate-bounce)
+      - Variasi durasi (20s, 25s, 18s) bisa jadi custom utility class
+   
+   2. BUTTON STYLES (lines ~158-216):
+      - .btn + .btn-primary/.secondary/.wa/.sm/.lg = 6 repetitive classes
+      - Bisa jadi 1 base + modifier pattern atau Tailwind:
+        .btn → flex items-center justify-center gap-2 px-8 py-3.5 rounded-full font-semibold text-base
+      - Hover states (transform translateY, box-shadow) → Tailwind hover:translate-y--0.5
+   
+   3. SECTION UTILITIES (lines ~97-151):
+      - .section-badge/title/subtitle = repetitif padding/margin/font styling
+      - Konversi: .section-heading → flex items-center gap-2 px-5 py-2 bg-gold/10 rounded-full
+      - .section-title → text-4xl font-bold tracking-tight (Tailwind text-4xl font-bold)
+   
+   4. RESPONSIVE BREAKPOINTS (lines ~xxxx-end):
+      - Grid breakpoints (1fr → 2fr → 4fr) → Tailwind grid-cols-1 md:grid-cols-2 lg:grid-cols-4
+      - Padding adjustments section-padding → Tailwind py-24 md:py-16
+   
+   5. HOVER STATES (tersebar di seluruh file):
+      - transform: translateY(-2px) + box-shadow glow → 15+ instances
+      - Bisa jadi reusable .hover-lift class atau Tailwind utility
+   
+   Catatan: JANGAN hapus — hanya tambah comment dan mulai refactoring bertahap.
+   Landing page ini bergantung pada CSS custom untuk pixel-perfect design.
+   ==================================== */

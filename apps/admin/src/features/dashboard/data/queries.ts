@@ -6,6 +6,9 @@ import type {
   RecentActivation,
   AppPopularityItem,
   ActivityLogEntry,
+  PaymentWithClientRaw,
+  LicenseWithRelationsRaw,
+  LicenseAppRaw,
 } from "./types";
 
 export async function getDashboardStats(
@@ -131,11 +134,9 @@ export async function getPendingPayments(
 
   if (error || !data) return [];
 
-  return data.map((p) => ({
+  return data.map((p: PaymentWithClientRaw) => ({
     id: p.id,
-    clientName: (p as Record<string, unknown>).ksp_clients
-      ? ((p as Record<string, unknown>).ksp_clients as { name: string }).name
-      : "Unknown",
+    clientName: p.ksp_clients?.name ?? "Unknown",
     amount: p.amount,
     method: p.method ?? "-",
     submittedAt: p.created_at,
@@ -156,14 +157,10 @@ export async function getRecentActivations(
 
   if (error || !data) return [];
 
-  return data.map((l) => ({
+  return data.map((l: LicenseWithRelationsRaw) => ({
     id: l.id,
-    clientName: (l as Record<string, unknown>).ksp_clients
-      ? ((l as Record<string, unknown>).ksp_clients as { name: string }).name
-      : "Unknown",
-    appName: (l as Record<string, unknown>).ksp_apps
-      ? ((l as Record<string, unknown>).ksp_apps as { name: string }).name
-      : "Unknown",
+    clientName: l.ksp_clients?.name ?? "Unknown",
+    appName: l.ksp_apps?.name ?? "Unknown",
     planType: l.plan_type,
     activatedAt: l.purchased_at,
     licenseKey: l.license_key,
@@ -182,13 +179,11 @@ export async function getAppPopularity(
 
   const counts: Record<string, { name: string; count: number }> = {};
   for (const l of data) {
-    const appName = (l as Record<string, unknown>).ksp_apps
-      ? ((l as Record<string, unknown>).ksp_apps as { name: string }).name
-      : "Unknown";
-    if (!counts[l.app_id]) {
-      counts[l.app_id] = { name: appName, count: 0 };
+    const appName = l.ksp_apps?.name ?? "Unknown";
+    if (!counts[l.app_id!]) {
+      counts[l.app_id!] = { name: appName, count: 0 };
     }
-    counts[l.app_id].count++;
+    counts[l.app_id!].count++;
   }
 
   const total = data.length || 1;

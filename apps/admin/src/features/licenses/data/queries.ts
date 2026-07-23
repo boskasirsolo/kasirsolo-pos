@@ -1,5 +1,5 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-import type { LicenseFilter, LicenseWithClient } from "./types";
+import type { LicenseFilter, LicenseWithClient, KspLicenseStatus, KspPlanType, LicenseClientAppRaw } from "./types";
 
 export async function getLicenses(
   supabase: SupabaseClient,
@@ -30,15 +30,12 @@ export async function getLicenses(
 
   if (error) throw new Error(error.message);
 
-  const licenses: LicenseWithClient[] = (data ?? []).map((l) => {
-    const rec = l as Record<string, unknown>;
-    return {
-      ...l,
-      client_name: rec.ksp_clients ? (rec.ksp_clients as { name: string }).name : undefined,
-      client_phone: rec.ksp_clients ? (rec.ksp_clients as { phone: string }).phone : undefined,
-      app_name: rec.ksp_apps ? (rec.ksp_apps as { name: string }).name : undefined,
-    };
-  });
+  const licenses: LicenseWithClient[] = (data ?? []).map((l: LicenseClientAppRaw) => ({
+    ...l,
+    client_name: l.ksp_clients?.name,
+    client_phone: l.ksp_clients?.phone,
+    app_name: l.ksp_apps?.name,
+  }));
 
   return { data: licenses, total: count ?? 0 };
 }
