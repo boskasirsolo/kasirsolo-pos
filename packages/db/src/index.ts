@@ -1,5 +1,10 @@
 // Client
-export { createSupabaseClient, createBrowserClient, createServerClient } from "./client";
+export {
+  createSupabaseClient,
+  createBrowserClient,
+  createServerClient,
+  isSupabaseConfigured,
+} from "./client";
 export type { SupabaseClientInstance } from "./client";
 
 // Types
