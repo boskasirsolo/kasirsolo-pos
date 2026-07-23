@@ -83,8 +83,7 @@ type UpgradeTx = IDBPTransaction<KspPosDB, Array<keyof KspPosDB>, "versionchange
 export function runMigrations(
   db: UpgradeDB,
   oldVersion: number,
-  newVersion: number,
-  _tx: UpgradeTx
+  newVersion: number
 ): void {
   if (oldVersion < 1) {
     migrateV1(db);
