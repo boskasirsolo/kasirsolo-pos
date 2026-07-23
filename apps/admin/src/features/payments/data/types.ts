@@ -41,5 +41,5 @@ export interface PaymentClientRaw {
   verified_at: string | null;
   notes: string | null;
   created_at: string;
-  ksp_clients: { name?: string; phone?: string } | null;
+  ksp_clients: Array<{ name?: string; phone?: string }> | null;
 }

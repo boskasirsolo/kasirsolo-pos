@@ -33,6 +33,6 @@ export interface LicenseClientAppRaw {
   auto_renew: boolean;
   created_at: string;
   updated_at: string;
-  ksp_clients: { name?: string; phone?: string } | null;
-  ksp_apps: { name?: string } | null;
+  ksp_clients: Array<{ name?: string; phone?: string }> | null;
+  ksp_apps: Array<{ name?: string }> | null;
 }

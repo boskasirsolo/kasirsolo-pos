@@ -27,8 +27,8 @@ export async function getPayments(
 
   const payments: PaymentWithClient[] = (data ?? []).map((p: PaymentClientRaw) => ({
     ...p,
-    client_name: p.ksp_clients?.name,
-    client_phone: p.ksp_clients?.phone,
+    client_name: p.ksp_clients?.[0]?.name,
+    client_phone: p.ksp_clients?.[0]?.phone,
   }));
 
   return { data: payments, total: count ?? 0 };

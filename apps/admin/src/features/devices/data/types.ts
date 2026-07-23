@@ -20,14 +20,14 @@ export interface DeviceFilter {
 /** Hasil dari `.select("*, ksp_licenses(license_key, ksp_clients(name), ksp_apps(name))")` di ksp_devices */
 export interface DeviceLicenseRaw {
   license_key?: string;
-  ksp_clients?: { name?: string } | null;
-  ksp_apps?: { name?: string } | null;
+  ksp_clients?: Array<{ name?: string }> | null;
+  ksp_apps?: Array<{ name?: string }> | null;
 }
 
 export interface DeviceLicenseFullRaw {
   license_key?: string;
-  ksp_clients?: { name?: string } | null;
-  ksp_apps?: { name?: string } | null;
+  ksp_clients?: Array<{ name?: string }> | null;
+  ksp_apps?: Array<{ name?: string }> | null;
 }
 
 /** Hasil dari `.select("*, ksp_licenses(...)")` di ksp_devices */

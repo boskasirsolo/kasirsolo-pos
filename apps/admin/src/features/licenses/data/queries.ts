@@ -32,9 +32,9 @@ export async function getLicenses(
 
   const licenses: LicenseWithClient[] = (data ?? []).map((l: LicenseClientAppRaw) => ({
     ...l,
-    client_name: l.ksp_clients?.name,
-    client_phone: l.ksp_clients?.phone,
-    app_name: l.ksp_apps?.name,
+    client_name: l.ksp_clients?.[0]?.name,
+    client_phone: l.ksp_clients?.[0]?.phone,
+    app_name: l.ksp_apps?.[0]?.name,
   }));
 
   return { data: licenses, total: count ?? 0 };

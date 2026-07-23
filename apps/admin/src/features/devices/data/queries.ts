@@ -30,8 +30,8 @@ export async function getDevices(
     return {
       ...d,
       license_key: license?.license_key,
-      client_name: license?.ksp_clients?.name,
-      app_name: license?.ksp_apps?.name,
+      client_name: license?.ksp_clients?.[0]?.name,
+      app_name: license?.ksp_apps?.[0]?.name,
     };
   });
 
