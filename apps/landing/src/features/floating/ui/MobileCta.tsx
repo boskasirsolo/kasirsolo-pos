@@ -1,11 +1,9 @@
 'use client';
 
+import { waLink } from '@/lib/wa';
 import { useFloatingUI } from '../logic/useFloatingUI';
 
-const WA_NUMBER = '628816566935';
-const WA_MESSAGE = encodeURIComponent(
-  'Halo KASIRSOLO, saya tertarik dengan aplikasi kasir Anda.'
-);
+const WA_MESSAGE = 'Halo KASIRSOLO, saya tertarik dengan aplikasi kasir Anda.';
 
 export function MobileCta() {
   const { showMobileCta } = useFloatingUI();
@@ -18,7 +16,7 @@ export function MobileCta() {
         Coba Gratis
       </a>
       <a
-        href={`https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`}
+        href={waLink(WA_MESSAGE)}
         target="_blank"
         rel="noopener noreferrer"
         className="btn btn-wa"

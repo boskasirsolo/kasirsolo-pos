@@ -1,0 +1,17 @@
+{
+  "name": "KASIRSOLO - Aplikasi Kasir & Manajemen Bisnis",
+  "short_name": "KASIRSOLO",
+  "description": "Aplikasi kasir & manajemen bisnis terlengkap. Bayar sekali, pakai seumur hidup.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#FF5F1F",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ]
+}

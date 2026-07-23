@@ -1,9 +1,7 @@
-const WA_NUMBER = '628816566935';
+import { waLink } from '@/lib/wa';
 
 export function FinalCta() {
-  const waMessage = encodeURIComponent(
-    'Halo KASIRSOLO, saya tertarik dengan aplikasi Anda. Bisa info lebih lanjut?'
-  );
+  const waMessage = 'Halo KASIRSOLO, saya tertarik dengan aplikasi Anda. Bisa info lebih lanjut?';
 
   return (
     <section className="final-cta">
@@ -20,7 +18,7 @@ export function FinalCta() {
             Coba Gratis 7 Hari
           </a>
           <a
-            href={`https://wa.me/${WA_NUMBER}?text=${waMessage}`}
+            href={waLink(waMessage)}
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-wa btn-lg"

@@ -1,14 +1,27 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import { faqData } from '../data/faq-data';
+import { useState, useCallback, useEffect } from 'react';
+import { fetchFaqs, type FaqItem } from '../data/queries';
 
 export function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [faqs, setFaqs] = useState<FaqItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchFaqs().then((data) => {
+      setFaqs(data);
+      setLoading(false);
+    });
+  }, []);
 
   const toggle = useCallback((index: number) => {
     setOpenIndex((prev) => (prev === index ? null : index));
   }, []);
+
+  if (loading || faqs.length === 0) {
+    return null;
+  }
 
   return (
     <section className="faq-section" id="faq">
@@ -23,8 +36,8 @@ export function FaqSection() {
       </div>
 
       <div className="faq-list">
-        {faqData.map((faq, i) => (
-          <div key={i} className={`faq-item ${openIndex === i ? 'open' : ''}`}>
+        {faqs.map((faq, i) => (
+          <div key={faq.id} className={`faq-item ${openIndex === i ? 'open' : ''}`}>
             <button className="faq-question" onClick={() => toggle(i)}>
               <span>{faq.question}</span>
               <span className="faq-toggle">+</span>

@@ -1,3 +1,5 @@
+import { waLink } from '@/lib/wa';
+
 const pricingFeatures = [
   'Akses semua fitur',
   'Update gratis selamanya',
@@ -9,12 +11,9 @@ const pricingFeatures = [
   'Kustomisasi gratis',
 ];
 
-const WA_NUMBER = '628816566935';
-
 export function PricingSection() {
-  const waMessage = encodeURIComponent(
-    'Halo KASIRSOLO, saya tertarik dengan aplikasi Anda. Bisa info lebih lanjut tentang harga?'
-  );
+  const waMessage =
+    'Halo KASIRSOLO, saya tertarik dengan aplikasi Anda. Bisa info lebih lanjut tentang harga?';
 
   return (
     <section className="pricing-section" id="harga">
@@ -61,7 +60,7 @@ export function PricingSection() {
               Coba Gratis 7 Hari
             </a>
             <a
-              href={`https://wa.me/${WA_NUMBER}?text=${waMessage}`}
+              href={waLink(waMessage)}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-secondary btn-lg"
