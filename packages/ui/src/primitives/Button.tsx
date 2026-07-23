@@ -1,3 +1,5 @@
+"use client";
+
 import React, { forwardRef, type ButtonHTMLAttributes } from "react";
 import { colors, radii, fonts, fontSizes, fontWeights, transitions } from "../theme";
 

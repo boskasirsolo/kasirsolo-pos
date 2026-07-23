@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useMemo, type ReactNode } from "react";
 import { colors, radii, fonts, fontSizes, fontWeights, spacing, transitions, shadows } from "../theme";
 
