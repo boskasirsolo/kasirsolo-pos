@@ -74,7 +74,7 @@ export interface LicenseWithRelationsRaw {
   license_key: string;
   plan_type: string;
   purchased_at: string;
-  app_id: string | null;
+  app_id?: string | null;
   ksp_clients: Array<{ name: string }> | null;
   ksp_apps: Array<{ name: string }> | null;
 }
