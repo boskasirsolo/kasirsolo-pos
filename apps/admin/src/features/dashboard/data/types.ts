@@ -64,7 +64,7 @@ export interface PaymentWithClientRaw {
   method: string;
   created_at: string;
   proof_url: string | null;
-  ksp_clients: { name: string } | null;
+  ksp_clients: Array<{ name: string }> | null;
 }
 
 /** Hasil dari `.select("..., ksp_clients(name), ksp_apps(name)")` di ksp_licenses */
@@ -75,12 +75,12 @@ export interface LicenseWithRelationsRaw {
   plan_type: string;
   purchased_at: string;
   app_id: string | null;
-  ksp_clients: { name: string } | null;
-  ksp_apps: { name: string } | null;
+  ksp_clients: Array<{ name: string }> | null;
+  ksp_apps: Array<{ name: string }> | null;
 }
 
 /** Hasil dari `.select("app_id, ksp_apps(name)")` di ksp_licenses (status active) */
 export interface LicenseAppRaw {
   app_id: string | null;
-  ksp_apps: { name: string } | null;
+  ksp_apps: Array<{ name: string }> | null;
 }

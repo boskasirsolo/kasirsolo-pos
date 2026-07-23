@@ -156,7 +156,7 @@ export async function getPendingPayments(
 
   return data.map((p: PaymentWithClientRaw) => ({
     id: p.id,
-    clientName: p.ksp_clients?.name ?? "Unknown",
+    clientName: p.ksp_clients?.[0]?.name ?? "Unknown",
     amount: p.amount,
     method: p.method ?? "-",
     submittedAt: p.created_at,
@@ -192,8 +192,8 @@ export async function getRecentActivations(
 
   return data.map((l: LicenseWithRelationsRaw) => ({
     id: l.id,
-    clientName: l.ksp_clients?.name ?? "Unknown",
-    appName: l.ksp_apps?.name ?? "Unknown",
+    clientName: l.ksp_clients?.[0]?.name ?? "Unknown",
+    appName: l.ksp_apps?.[0]?.name ?? "Unknown",
     planType: l.plan_type,
     activatedAt: l.purchased_at,
     licenseKey: l.license_key,
