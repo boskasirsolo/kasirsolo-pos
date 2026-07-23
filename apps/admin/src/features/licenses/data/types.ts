@@ -2,10 +2,15 @@ import type { KspLicense, KspLicenseStatus, KspPlanType } from "@kasirsolo/db/ty
 
 export type { KspLicense, KspLicenseStatus, KspPlanType };
 
-export interface LicenseWithClient extends KspLicense {
+export interface LicenseWithClient extends Pick<KspLicense, 'id' | 'client_id' | 'license_key' | 'status' | 'max_devices' | 'purchased_at' | 'expires_at' | 'amount_paid' | 'auto_renew' | 'created_at'> {
   client_name?: string;
   client_phone?: string;
   app_name?: string;
+  app_id?: string | null;
+  plan_type?: string;
+  payment_method?: string | null;
+  features?: Record<string, boolean | string | number> | null;
+  upgraded_from?: string | null;
 }
 
 export interface LicenseFilter {

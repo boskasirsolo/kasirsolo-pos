@@ -216,7 +216,7 @@ export async function getAppPopularity(
 
   if (error || !data) return [];
 
-  return data.map((row) => ({
+  return data.map((row: { app_id: string; app_name: string; count: number; percentage: number }) => ({
     appId: row.app_id,
     appName: row.app_name ?? 'Unknown',
     count: row.count,

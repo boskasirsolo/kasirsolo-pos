@@ -9,6 +9,14 @@ interface DashboardGridProps {
   loading: boolean;
 }
 
+interface KPICardProps {
+  label: string;
+  value: string | number;
+  icon: React.ReactNode;
+  color: string;
+  bgColor: string;
+}
+
 function KPICard({ label, value, icon, color, bgColor }: KPICardProps) {
   return (
     <div className="card flex items-start gap-4">

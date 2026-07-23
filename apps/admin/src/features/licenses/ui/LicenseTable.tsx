@@ -124,8 +124,8 @@ export default function LicenseTable({
                   </td>
                   <td className="table-cell text-sm">{license.app_name ?? "-"}</td>
                   <td className="table-cell">
-                    <span className={`badge ${planBadge[license.plan_type] ?? "bg-gray-50 text-gray-700"}`}>
-                      {license.plan_type.toUpperCase()}
+                    <span className={`badge ${planBadge[license.plan_type as keyof typeof planBadge] ?? "bg-gray-50 text-gray-700"}`}>
+                      {license.plan_type?.toUpperCase() ?? "UNKNOWN"}
                     </span>
                   </td>
                   <td className="table-cell">
