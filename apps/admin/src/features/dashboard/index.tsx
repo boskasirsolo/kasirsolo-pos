@@ -37,7 +37,7 @@ export default function DashboardFeature() {
       <div className="flex items-center justify-between">
         <h1 className="font-heading text-2xl font-bold text-gray-900">Dashboard</h1>
         <button
-          onClick={() => fetchAll()}
+          onClick={refresh}
           disabled={loading}
           className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 disabled:opacity-50"
         >

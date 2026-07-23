@@ -165,7 +165,7 @@ export function useDashboard() {
     activityFeed,
     loading,
     error,
-    refresh: fetchAll,
+    refresh: () => fetchAll(),
     handleApprove,
     handleReject,
     followUpPage,
