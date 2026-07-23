@@ -212,7 +212,7 @@ export async function getRecentActivationsTotalCount(supabase: SupabaseClient): 
 export async function getAppPopularity(
   supabase: SupabaseClient
 ): Promise<AppPopularityItem[]> {
-  const { data, error } = await supabase.rpc<{ app_id: string; app_name: string; count: number; percentage: number }[]>('get_app_popularity_top10');
+  const { data, error } = await supabase.rpc('get_app_popularity_top10') as { data: { app_id: string; app_name: string; count: number; percentage: number }[] | null; error: any };
 
   if (error || !data) return [];
 
