@@ -96,6 +96,9 @@ importers:
 
   apps/kasir-fnb:
     dependencies:
+      '@kasirsolo/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
       '@kasirsolo/db':
         specifier: workspace:*
         version: link:../../packages/db
@@ -154,6 +157,9 @@ importers:
 
   apps/kasir-retail:
     dependencies:
+      '@kasirsolo/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
       '@kasirsolo/db':
         specifier: workspace:*
         version: link:../../packages/db
@@ -248,6 +254,22 @@ importers:
         version: 3.4.19(yaml@2.9.0)
       typescript:
         specifier: ^5.4.5
+        version: 5.9.3
+
+  packages/auth:
+    dependencies:
+      '@kasirsolo/db':
+        specifier: workspace:*
+        version: link:../db
+      '@kasirsolo/utils':
+        specifier: workspace:*
+        version: link:../utils
+      '@supabase/supabase-js':
+        specifier: ^2.49.0
+        version: 2.110.8
+    devDependencies:
+      typescript:
+        specifier: ^5.7.0
         version: 5.9.3
 
   packages/db:
