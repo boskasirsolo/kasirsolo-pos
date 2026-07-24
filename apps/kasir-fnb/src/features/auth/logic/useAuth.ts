@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   login as loginFn,
   logout as logoutFn,
@@ -9,8 +9,8 @@ import {
   getCurrentUser,
   onAuthStateChange,
   type AuthUser,
-} from "@/lib/auth";
-import type { Session } from "@supabase/supabase-js";
+} from '@kasirsolo/auth';
+import type { Session } from '@supabase/supabase-js';
 
 export function useAuth() {
   const router = useRouter();
@@ -23,10 +23,7 @@ export function useAuth() {
   useEffect(() => {
     async function init() {
       try {
-        const [currentSession, currentUser] = await Promise.all([
-          getSession(),
-          getCurrentUser(),
-        ]);
+        const [currentSession, currentUser] = await Promise.all([getSession(), getCurrentUser()]);
         setSession(currentSession);
         setUser(currentUser);
       } catch {
@@ -61,7 +58,7 @@ export function useAuth() {
       setSession(result.session);
       return result;
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Login gagal";
+      const message = err instanceof Error ? err.message : 'Login gagal';
       setError(message);
       throw err;
     } finally {
@@ -74,9 +71,9 @@ export function useAuth() {
       await logoutFn();
       setUser(null);
       setSession(null);
-      router.replace("/login");
+      router.replace('/login');
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Logout gagal";
+      const message = err instanceof Error ? err.message : 'Logout gagal';
       setError(message);
     }
   }, [router]);

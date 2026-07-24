@@ -1,12 +1,15 @@
-"use client";
+'use client';
 
-import { useEffect, useState, type ReactNode } from "react";
-import { useRouter } from "next/navigation";
-import { TopBar } from "./TopBar";
-import { BottomNav } from "./BottomNav";
-import { LockScreen } from "./LockScreen";
-import { getLicenseStatus, type LicenseStatus } from "@/lib/license";
-import { getCurrentUser, type AuthUser } from "@/lib/auth";
+import { useEffect, useState, type ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
+import { TopBar } from './TopBar';
+import { BottomNav } from './BottomNav';
+import { LockScreen } from './LockScreen';
+import { getLicenseStatus, type LicenseStatus } from '@kasirsolo/auth/license';
+import { getCurrentUser, type AuthUser } from '@kasirsolo/auth';
+
+// F&B app-specific auth config
+const FNB_AUTH_CONFIG = { prefix: 'kasirsolo_fnb' };
 
 interface FnbShellProps {
   children: ReactNode;
@@ -24,18 +27,18 @@ export function FnbShell({ children, hideNav = false }: FnbShellProps) {
       try {
         const [currentUser, status] = await Promise.all([
           getCurrentUser(),
-          getLicenseStatus(),
+          getLicenseStatus(FNB_AUTH_CONFIG),
         ]);
 
         if (!currentUser) {
-          router.replace("/login");
+          router.replace('/login');
           return;
         }
 
         setUser(currentUser);
         setLicenseStatus(status);
       } catch {
-        router.replace("/login");
+        router.replace('/login');
       } finally {
         setLoading(false);
       }
@@ -53,19 +56,14 @@ export function FnbShell({ children, hideNav = false }: FnbShellProps) {
   }
 
   // Show lock screen if license/trial expired
-  if (licenseStatus && !licenseStatus.valid && licenseStatus.type !== "none") {
+  if (licenseStatus && !licenseStatus.valid && licenseStatus.type !== 'none') {
     return <LockScreen status={licenseStatus} />;
   }
 
   return (
     <div className="min-h-screen bg-pos-bg flex flex-col">
-      <TopBar
-        storeName={user?.name ?? "KASIRSOLO F&B"}
-        licenseStatus={licenseStatus}
-      />
-      <main className={`flex-1 ${!hideNav ? "pb-safe" : ""}`}>
-        {children}
-      </main>
+      <TopBar storeName={user?.name ?? 'KASIRSOLO F&B'} licenseStatus={licenseStatus} />
+      <main className={`flex-1 ${!hideNav ? 'pb-safe' : ''}`}>{children}</main>
       {!hideNav && <BottomNav />}
     </div>
   );

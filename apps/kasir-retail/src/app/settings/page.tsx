@@ -1,11 +1,13 @@
-"use client";
+'use client';
 
-import { PosShell } from "@/components/layout/PosShell";
-import { SettingsPage, useSettings } from "@/features/settings";
-import { useAuth } from "@/features/auth";
-import { useToast } from "@kasirsolo/ui";
-import { getLicenseStatus, type LicenseStatus } from "@/lib/license";
-import { useEffect, useState } from "react";
+import { PosShell } from '@/components/layout/PosShell';
+import { SettingsPage, useSettings } from '@/features/settings';
+import { useAuth } from '@/features/auth';
+import { useToast } from '@kasirsolo/ui';
+import { getLicenseStatus, type LicenseStatus } from '@kasirsolo/auth/license';
+
+const RETAIL_AUTH_CONFIG = { prefix: 'kasirsolo' };
+import { useEffect, useState } from 'react';
 
 export default function SettingsPageRoute() {
   const { settings, loading, saving, updateSettings } = useSettings();
@@ -14,15 +16,17 @@ export default function SettingsPageRoute() {
   const [licenseStatus, setLicenseStatus] = useState<LicenseStatus | null>(null);
 
   useEffect(() => {
-    getLicenseStatus().then(setLicenseStatus).catch(() => {});
+    getLicenseStatus(RETAIL_AUTH_CONFIG)
+      .then(setLicenseStatus)
+      .catch(() => {});
   }, []);
 
   async function handleUpdateSettings(updates: Parameters<typeof updateSettings>[0]) {
     try {
       await updateSettings(updates);
-      addToast({ type: "success", title: "Pengaturan disimpan" });
+      addToast({ type: 'success', title: 'Pengaturan disimpan' });
     } catch {
-      addToast({ type: "error", title: "Gagal menyimpan pengaturan" });
+      addToast({ type: 'error', title: 'Gagal menyimpan pengaturan' });
     }
   }
 

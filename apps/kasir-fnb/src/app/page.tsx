@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { getSession } from "@/lib/auth";
-import { checkDeviceBinding } from "@/lib/device";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { getSession } from '@kasirsolo/auth';
+import { checkDeviceBinding } from '@kasirsolo/auth/device';
 
 export default function HomePage() {
   const router = useRouter();
@@ -14,19 +14,19 @@ export default function HomePage() {
       try {
         const session = await getSession();
         if (!session) {
-          router.replace("/login");
+          router.replace('/login');
           return;
         }
 
         const binding = await checkDeviceBinding();
         if (!binding.bound) {
-          router.replace("/login");
+          router.replace('/login');
           return;
         }
 
-        router.replace("/pos");
+        router.replace('/pos');
       } catch {
-        router.replace("/login");
+        router.replace('/login');
       } finally {
         setChecking(false);
       }

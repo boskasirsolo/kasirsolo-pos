@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { Badge, Button } from "@kasirsolo/ui";
-import { formatDate } from "@kasirsolo/utils";
-import { getDeviceInfo, getLicenseDevices, removeDevice } from "@/lib/device";
-import type { DeviceInfo } from "@/lib/device";
-import type { KspDevice } from "@kasirsolo/db";
-import type { LicenseStatus } from "@/lib/license";
-import { useToast } from "@kasirsolo/ui";
+import { useEffect, useState } from 'react';
+import { Badge, Button } from '@kasirsolo/ui';
+import { formatDate } from '@kasirsolo/utils';
+import { getDeviceInfo, getLicenseDevices, removeDevice } from '@kasirsolo/auth/device';
+import type { DeviceInfo } from '@kasirsolo/auth/device';
+import type { KspDevice } from '@kasirsolo/db';
+import type { LicenseStatus } from '@kasirsolo/auth/license';
+import { useToast } from '@kasirsolo/ui';
 
 interface DeviceSettingsProps {
   licenseStatus: LicenseStatus | null;
@@ -22,10 +22,7 @@ export function DeviceSettings({ licenseStatus }: DeviceSettingsProps) {
   useEffect(() => {
     async function load() {
       try {
-        const [info, devs] = await Promise.all([
-          getDeviceInfo(),
-          getLicenseDevices(),
-        ]);
+        const [info, devs] = await Promise.all([getDeviceInfo(), getLicenseDevices()]);
         setDeviceInfo(info);
         setDevices(devs);
       } catch {
@@ -38,13 +35,13 @@ export function DeviceSettings({ licenseStatus }: DeviceSettingsProps) {
   }, []);
 
   async function handleUnbind(deviceId: string) {
-    if (!confirm("Lepas perangkat ini? Perangkat harus diaktivasi ulang.")) return;
+    if (!confirm('Lepas perangkat ini? Perangkat harus diaktivasi ulang.')) return;
     try {
       await removeDevice(deviceId);
       setDevices((prev) => prev.filter((d) => d.id !== deviceId));
-      addToast({ type: "success", title: "Perangkat dilepas" });
+      addToast({ type: 'success', title: 'Perangkat dilepas' });
     } catch {
-      addToast({ type: "error", title: "Gagal melepas perangkat" });
+      addToast({ type: 'error', title: 'Gagal melepas perangkat' });
     }
   }
 
@@ -63,18 +60,18 @@ export function DeviceSettings({ licenseStatus }: DeviceSettingsProps) {
           {licenseStatus && (
             <Badge
               status={
-                licenseStatus.type === "licensed"
-                  ? "active"
-                  : licenseStatus.type === "trial"
-                    ? "trial"
-                    : "expired"
+                licenseStatus.type === 'licensed'
+                  ? 'active'
+                  : licenseStatus.type === 'trial'
+                    ? 'trial'
+                    : 'expired'
               }
             >
-              {licenseStatus.type === "licensed"
-                ? "Aktif"
-                : licenseStatus.type === "trial"
+              {licenseStatus.type === 'licensed'
+                ? 'Aktif'
+                : licenseStatus.type === 'trial'
                   ? `Trial (${licenseStatus.trialDaysLeft}h)`
-                  : "Expired"}
+                  : 'Expired'}
             </Badge>
           )}
         </div>
@@ -116,7 +113,10 @@ export function DeviceSettings({ licenseStatus }: DeviceSettingsProps) {
             Perangkat Terdaftar ({devices.filter((d) => d.is_active).length})
           </h4>
           {devices.map((device) => (
-            <div key={device.id} className="flex items-center justify-between py-2 border-t border-pos-border first:border-t-0">
+            <div
+              key={device.id}
+              className="flex items-center justify-between py-2 border-t border-pos-border first:border-t-0"
+            >
               <div>
                 <p className="text-sm text-gray-900">
                   {device.device_name || `Perangkat ${device.device_number}`}
@@ -128,8 +128,8 @@ export function DeviceSettings({ licenseStatus }: DeviceSettingsProps) {
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <Badge status={device.is_active ? "active" : "locked"} size="sm">
-                  {device.is_active ? "Aktif" : "Nonaktif"}
+                <Badge status={device.is_active ? 'active' : 'locked'} size="sm">
+                  {device.is_active ? 'Aktif' : 'Nonaktif'}
                 </Badge>
                 {device.is_active && (
                   <button
