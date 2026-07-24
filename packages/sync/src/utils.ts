@@ -49,19 +49,6 @@ export function isNewerThan(
   return timeA > timeB;
 }
 
-/**
- * Returns the newer of two timestamps. Handles null values.
- */
-export function newerTimestamp(
-  a: string | null | undefined,
-  b: string | null | undefined,
-): string | null {
-  if (!a && !b) return null;
-  if (!a) return b!;
-  if (!b) return a;
-  return isNewerThan(a, b) ? a : b;
-}
-
 // ---------------------------------------------------------------------------
 // Record diffing
 // ---------------------------------------------------------------------------
