@@ -15,6 +15,7 @@ If you discover a security vulnerability, please report it responsibly.
 Instead, please email: [security@kasirsolo.com](mailto:security@kasirsolo.com)
 
 Include:
+
 - Description of the vulnerability
 - Steps to reproduce
 - Potential impact

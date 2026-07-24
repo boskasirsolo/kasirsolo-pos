@@ -36,14 +36,14 @@ pnpm dev --filter=kasir-retail
 
 ## Common Commands
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Start all apps in dev mode |
-| `pnpm build` | Build all apps |
-| `pnpm lint` | Lint all packages |
-| `pnpm typecheck` | TypeScript type checking |
-| `pnpm test:e2e` | Run Playwright e2e tests |
-| `pnpm clean` | Clean build artifacts |
+| Command          | Description                |
+| ---------------- | -------------------------- |
+| `pnpm dev`       | Start all apps in dev mode |
+| `pnpm build`     | Build all apps             |
+| `pnpm lint`      | Lint all packages          |
+| `pnpm typecheck` | TypeScript type checking   |
+| `pnpm test:e2e`  | Run Playwright e2e tests   |
+| `pnpm clean`     | Clean build artifacts      |
 
 ## Project Structure
 
