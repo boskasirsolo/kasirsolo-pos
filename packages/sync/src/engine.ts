@@ -1,4 +1,4 @@
-import { getAll } from "@kasirsolo/local-db";
+import { getAll } from '@kasirsolo/local-db';
 
 import type {
   SyncConfig,
@@ -8,12 +8,44 @@ import type {
   SyncEventHandler,
   SyncConflict,
   SyncPendingByStore,
-} from "./types";
-import { pushToCloud } from "./push";
-import { pullFromCloud } from "./pull";
-import { SyncQueue } from "./queue";
-import { RealtimeManager } from "./realtime";
-import { logInfo, logWarn, logError, now, getErrorMessage } from "./utils";
+} from './types';
+import { pushToCloud } from './push';
+import { pullFromCloud } from './pull';
+import { SyncQueue } from './queue';
+import { RealtimeManager } from './realtime';
+import { logInfo, logWarn, logError, now, getErrorMessage } from './utils';
+
+// ---------------------------------------------------------------------------
+// Retry helpers
+// ---------------------------------------------------------------------------
+
+/**
+ * Execute an async function with exponential backoff retry.
+ * Default: max 3 retries with delays of 1s, 2s, 4s.
+ */
+async function retryWithBackoff<T>(
+  fn: () => Promise<T>,
+  maxRetries: number = 3,
+  baseDelayMs: number = 1000,
+): Promise<T> {
+  let lastError: unknown;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastError = err;
+      if (attempt < maxRetries) {
+        const delay = baseDelayMs * Math.pow(2, attempt); // 1s, 2s, 4s
+        logWarn(
+          `Sync operation failed, retrying in ${delay / 1000}s (attempt ${attempt + 1}/${maxRetries})`,
+          getErrorMessage(err),
+        );
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+    }
+  }
+  throw lastError;
+}
 
 // ---------------------------------------------------------------------------
 // Default configuration values
@@ -65,7 +97,7 @@ export class SyncEngine {
     };
 
     this.state = {
-      status: "idle",
+      status: 'idle',
       isRunning: false,
       lastSyncAt: null,
       pendingCount: 0,
@@ -87,13 +119,13 @@ export class SyncEngine {
       maxRetries: this.config.maxRetries,
       onProcess: async (item) => {
         switch (item.operation) {
-          case "push":
+          case 'push':
             await this.executePush();
             break;
-          case "pull":
+          case 'pull':
             await this.executePull();
             break;
-          case "full":
+          case 'full':
             await this.executeFullSync();
             break;
         }
@@ -105,7 +137,7 @@ export class SyncEngine {
       this.emit(event, data);
     });
 
-    logInfo("SyncEngine initialized", {
+    logInfo('SyncEngine initialized', {
       licenseId: this.config.licenseId,
       deviceId: this.config.deviceId,
       interval: this.config.intervalMs,
@@ -120,20 +152,20 @@ export class SyncEngine {
    * Push all pending local records to the cloud.
    */
   async push(): Promise<SyncResult> {
-    if (this.disposed) throw new Error("SyncEngine is disposed");
+    if (this.disposed) throw new Error('SyncEngine is disposed');
 
     return new Promise<SyncResult>((resolve, reject) => {
       // If already syncing, queue it
       if (this.state.currentOperation) {
-        this.queue.enqueue("push");
+        this.queue.enqueue('push');
         // Return a pending result
         resolve({
-          direction: "push",
+          direction: 'push',
           pushed: 0,
           pulled: 0,
           conflicts: 0,
           conflictDetails: [],
-          errors: ["Queued: another sync is in progress"],
+          errors: ['Queued: another sync is in progress'],
           success: true,
           startedAt: now(),
           completedAt: now(),
@@ -150,18 +182,18 @@ export class SyncEngine {
    * Pull updated records from the cloud to local.
    */
   async pull(): Promise<SyncResult> {
-    if (this.disposed) throw new Error("SyncEngine is disposed");
+    if (this.disposed) throw new Error('SyncEngine is disposed');
 
     return new Promise<SyncResult>((resolve, reject) => {
       if (this.state.currentOperation) {
-        this.queue.enqueue("pull");
+        this.queue.enqueue('pull');
         resolve({
-          direction: "pull",
+          direction: 'pull',
           pushed: 0,
           pulled: 0,
           conflicts: 0,
           conflictDetails: [],
-          errors: ["Queued: another sync is in progress"],
+          errors: ['Queued: another sync is in progress'],
           success: true,
           startedAt: now(),
           completedAt: now(),
@@ -178,18 +210,18 @@ export class SyncEngine {
    * Perform a full sync: push first, then pull.
    */
   async fullSync(): Promise<SyncResult> {
-    if (this.disposed) throw new Error("SyncEngine is disposed");
+    if (this.disposed) throw new Error('SyncEngine is disposed');
 
     return new Promise<SyncResult>((resolve, reject) => {
       if (this.state.currentOperation) {
-        this.queue.enqueue("full");
+        this.queue.enqueue('full');
         resolve({
-          direction: "full",
+          direction: 'full',
           pushed: 0,
           pulled: 0,
           conflicts: 0,
           conflictDetails: [],
-          errors: ["Queued: another sync is in progress"],
+          errors: ['Queued: another sync is in progress'],
           success: true,
           startedAt: now(),
           completedAt: now(),
@@ -210,13 +242,13 @@ export class SyncEngine {
    * Start periodic sync. Also subscribes to realtime if enabled.
    */
   start(): void {
-    if (this.disposed) throw new Error("SyncEngine is disposed");
+    if (this.disposed) throw new Error('SyncEngine is disposed');
     if (this.state.isRunning) {
-      logWarn("SyncEngine is already running");
+      logWarn('SyncEngine is already running');
       return;
     }
 
-    logInfo("SyncEngine starting periodic sync");
+    logInfo('SyncEngine starting periodic sync');
 
     this.state.isRunning = true;
     this.updateState({ isRunning: true });
@@ -224,8 +256,8 @@ export class SyncEngine {
     // Start periodic sync
     this.intervalId = setInterval(() => {
       if (!this.state.currentOperation) {
-        this.fullSync().catch((err) => {
-          logError("Periodic sync failed", getErrorMessage(err));
+        retryWithBackoff(() => this.fullSync(), this.config.maxRetries ?? 3).catch((err) => {
+          logError('Periodic sync failed after retries', getErrorMessage(err));
         });
       }
     }, this.config.intervalMs!);
@@ -235,9 +267,9 @@ export class SyncEngine {
       this.realtime.subscribe();
     }
 
-    // Do an initial sync
-    this.fullSync().catch((err) => {
-      logError("Initial sync failed", getErrorMessage(err));
+    // Do an initial sync with retry
+    retryWithBackoff(() => this.fullSync(), this.config.maxRetries ?? 3).catch((err) => {
+      logError('Initial sync failed after retries', getErrorMessage(err));
     });
   }
 
@@ -245,7 +277,7 @@ export class SyncEngine {
    * Stop periodic sync and unsubscribe from realtime.
    */
   stop(): void {
-    logInfo("SyncEngine stopping");
+    logInfo('SyncEngine stopping');
 
     if (this.intervalId) {
       clearInterval(this.intervalId);
@@ -256,7 +288,7 @@ export class SyncEngine {
     this.queue.clear();
 
     this.state.isRunning = false;
-    this.updateState({ isRunning: false, status: "idle", currentOperation: null });
+    this.updateState({ isRunning: false, status: 'idle', currentOperation: null });
   }
 
   /**
@@ -273,7 +305,7 @@ export class SyncEngine {
     this.stop();
     this.eventHandlers.clear();
     this.disposed = true;
-    logInfo("SyncEngine disposed");
+    logInfo('SyncEngine disposed');
   }
 
   // =========================================================================
@@ -309,18 +341,17 @@ export class SyncEngine {
    */
   async getPendingByStore(): Promise<SyncPendingByStore> {
     const filterPending = <T extends { sync_status?: string }>(items: T[]): number =>
-      items.filter((item) => item.sync_status === "pending").length;
+      items.filter((item) => item.sync_status === 'pending').length;
 
     try {
-      const [products, transactions, categories, stockAdj, receipts, reports] =
-        await Promise.all([
-          getAll("products").then(filterPending),
-          getAll("transactions").then(filterPending),
-          getAll("categories").then(filterPending),
-          getAll("stock_adjustments").then(filterPending),
-          getAll("receipts").then(() => 0), // Receipts may not have sync_status
-          getAll("daily_reports").then(() => 0), // Reports may not have sync_status
-        ]);
+      const [products, transactions, categories, stockAdj, receipts, reports] = await Promise.all([
+        getAll('products').then(filterPending),
+        getAll('transactions').then(filterPending),
+        getAll('categories').then(filterPending),
+        getAll('stock_adjustments').then(filterPending),
+        getAll('receipts').then(() => 0), // Receipts may not have sync_status
+        getAll('daily_reports').then(() => 0), // Reports may not have sync_status
+      ]);
 
       return {
         products,
@@ -331,7 +362,7 @@ export class SyncEngine {
         dailyReports: reports,
       };
     } catch (err) {
-      logWarn("Failed to count pending records", getErrorMessage(err));
+      logWarn('Failed to count pending records', getErrorMessage(err));
       return {
         products: 0,
         transactions: 0,
@@ -372,13 +403,13 @@ export class SyncEngine {
   // =========================================================================
 
   private async executePush(): Promise<SyncResult> {
-    this.updateState({ status: "syncing", currentOperation: "push" });
-    this.emit("sync:push:start");
+    this.updateState({ status: 'syncing', currentOperation: 'push' });
+    this.emit('sync:push:start');
 
     try {
       const result = await pushToCloud(this.config);
 
-      this.emit("sync:push:complete", result);
+      this.emit('sync:push:complete', result);
 
       if (result.errors.length > 0) {
         this.updateState({
@@ -389,8 +420,8 @@ export class SyncEngine {
       return result;
     } catch (error) {
       const msg = getErrorMessage(error);
-      this.updateState({ status: "error", errors: [msg] });
-      this.emit("sync:error", { error: msg, operation: "push" });
+      this.updateState({ status: 'error', errors: [msg] });
+      this.emit('sync:error', { error: msg, operation: 'push' });
       throw error;
     } finally {
       this.updateState({ currentOperation: null });
@@ -398,20 +429,20 @@ export class SyncEngine {
   }
 
   private async executePull(): Promise<SyncResult> {
-    this.updateState({ status: "syncing", currentOperation: "pull" });
-    this.emit("sync:pull:start");
+    this.updateState({ status: 'syncing', currentOperation: 'pull' });
+    this.emit('sync:pull:start');
 
     try {
       const result = await pullFromCloud(this.config);
 
-      this.emit("sync:pull:complete", result);
+      this.emit('sync:pull:complete', result);
 
       if (result.conflictDetails.length > 0) {
         this.updateState({
           conflicts: [...this.state.conflicts, ...result.conflictDetails],
         });
         for (const conflict of result.conflictDetails) {
-          this.emit("sync:conflict", conflict);
+          this.emit('sync:conflict', conflict);
         }
       }
 
@@ -422,8 +453,8 @@ export class SyncEngine {
       return result;
     } catch (error) {
       const msg = getErrorMessage(error);
-      this.updateState({ status: "error", errors: [msg] });
-      this.emit("sync:error", { error: msg, operation: "pull" });
+      this.updateState({ status: 'error', errors: [msg] });
+      this.emit('sync:error', { error: msg, operation: 'pull' });
       throw error;
     } finally {
       this.updateState({ currentOperation: null });
@@ -434,8 +465,8 @@ export class SyncEngine {
     const startedAt = now();
     const startTime = Date.now();
 
-    this.updateState({ status: "syncing", currentOperation: "full" });
-    this.emit("sync:start", { direction: "full" });
+    this.updateState({ status: 'syncing', currentOperation: 'full' });
+    this.emit('sync:start', { direction: 'full' });
 
     const allErrors: string[] = [];
     const allConflicts: SyncConflict[] = [];
@@ -448,10 +479,10 @@ export class SyncEngine {
         const pushResult = await pushToCloud(this.config);
         totalPushed = pushResult.pushed;
         allErrors.push(...pushResult.errors);
-        this.emit("sync:push:complete", pushResult);
+        this.emit('sync:push:complete', pushResult);
       } catch (pushErr) {
         allErrors.push(`Push: ${getErrorMessage(pushErr)}`);
-        logError("Full sync push phase failed", getErrorMessage(pushErr));
+        logError('Full sync push phase failed', getErrorMessage(pushErr));
       }
 
       try {
@@ -459,10 +490,10 @@ export class SyncEngine {
         totalPulled = pullResult.pulled;
         allConflicts.push(...pullResult.conflictDetails);
         allErrors.push(...pullResult.errors);
-        this.emit("sync:pull:complete", pullResult);
+        this.emit('sync:pull:complete', pullResult);
       } catch (pullErr) {
         allErrors.push(`Pull: ${getErrorMessage(pullErr)}`);
-        logError("Full sync pull phase failed", getErrorMessage(pullErr));
+        logError('Full sync pull phase failed', getErrorMessage(pullErr));
       }
 
       // Update pending counts
@@ -470,7 +501,7 @@ export class SyncEngine {
 
       const completedAt = now();
       const result: SyncResult = {
-        direction: "full",
+        direction: 'full',
         pushed: totalPushed,
         pulled: totalPulled,
         conflicts: allConflicts.length,
@@ -483,20 +514,21 @@ export class SyncEngine {
       };
 
       this.updateState({
-        status: allErrors.length > 0 ? "error" : "idle",
+        status: allErrors.length > 0 ? 'error' : 'idle',
         lastSyncAt: completedAt,
-        conflicts: allConflicts.length > 0
-          ? [...this.state.conflicts, ...allConflicts]
-          : this.state.conflicts,
+        conflicts:
+          allConflicts.length > 0
+            ? [...this.state.conflicts, ...allConflicts]
+            : this.state.conflicts,
         errors: allErrors,
       });
 
-      this.emit("sync:complete", result);
+      this.emit('sync:complete', result);
       return result;
     } catch (error) {
       const msg = getErrorMessage(error);
-      this.updateState({ status: "error", errors: [msg], currentOperation: null });
-      this.emit("sync:error", { error: msg, operation: "full" });
+      this.updateState({ status: 'error', errors: [msg], currentOperation: null });
+      this.emit('sync:error', { error: msg, operation: 'full' });
       throw error;
     } finally {
       this.updateState({ currentOperation: null });
@@ -509,7 +541,7 @@ export class SyncEngine {
 
   private updateState(partial: Partial<SyncState>): void {
     this.state = { ...this.state, ...partial };
-    this.emit("sync:state-change", this.state);
+    this.emit('sync:state-change', this.state);
   }
 
   private emit(event: SyncEvent, data?: unknown): void {

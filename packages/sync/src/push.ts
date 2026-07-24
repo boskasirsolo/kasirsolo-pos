@@ -1,4 +1,4 @@
-import { getAll, put } from "@kasirsolo/local-db";
+import { getAll, put } from '@kasirsolo/local-db';
 import type {
   PosProduct,
   PosTransaction,
@@ -6,8 +6,8 @@ import type {
   PosStockAdjustment,
   PosReceipt,
   PosDailyReport,
-} from "@kasirsolo/local-db";
-import type { SyncConfig, SyncResult, SyncableStore, SyncConflict, SyncLogEntry } from "./types";
+} from '@kasirsolo/local-db';
+import type { SyncConfig, SyncResult, SyncableStore, SyncConflict, SyncLogEntry } from './types';
 import {
   mapLocalToCloud,
   toBatches,
@@ -17,7 +17,7 @@ import {
   logInfo,
   logWarn,
   logError,
-} from "./utils";
+} from './utils';
 
 // ---------------------------------------------------------------------------
 // Types for pending record collection
@@ -32,7 +32,8 @@ interface PendingRecords {
   daily_reports: PosDailyReport[];
 }
 
-type SyncableRecord = PosProduct | PosTransaction | PosCategory | PosStockAdjustment | PosReceipt | PosDailyReport;
+type SyncableRecord =
+  PosProduct | PosTransaction | PosCategory | PosStockAdjustment | PosReceipt | PosDailyReport;
 
 // ---------------------------------------------------------------------------
 // Push: Local → Cloud
@@ -47,13 +48,13 @@ export async function pushToCloud(config: SyncConfig): Promise<SyncResult> {
   const errors: string[] = [];
   let totalPushed = 0;
 
-  logInfo("Push started", { licenseId: config.licenseId, deviceId: config.deviceId });
+  logInfo('Push started', { licenseId: config.licenseId, deviceId: config.deviceId });
 
   // Log sync start
   const logId = await writeSyncLog(config, {
-    direction: "push",
+    direction: 'push',
     started_at: startedAt,
-    status: "started",
+    status: 'started',
   });
 
   try {
@@ -62,13 +63,13 @@ export async function pushToCloud(config: SyncConfig): Promise<SyncResult> {
     const totalPending = countPendingRecords(pending);
 
     if (totalPending === 0) {
-      logInfo("Push: no pending records");
+      logInfo('Push: no pending records');
       await updateSyncLog(config, logId, {
-        status: "completed",
+        status: 'completed',
         records_pushed: 0,
         completed_at: now(),
       });
-      return buildResult("push", 0, 0, 0, [], errors, startedAt);
+      return buildResult('push', 0, 0, 0, [], errors, startedAt);
     }
 
     logInfo(`Push: found ${totalPending} pending records`);
@@ -77,37 +78,49 @@ export async function pushToCloud(config: SyncConfig): Promise<SyncResult> {
     const batchSize = config.batchSize ?? 50;
 
     // Push categories first (products may reference them)
-    totalPushed += await pushStore(config, "categories", pending.categories, batchSize, errors);
-    totalPushed += await pushStore(config, "products", pending.products, batchSize, errors);
-    totalPushed += await pushStore(config, "transactions", pending.transactions, batchSize, errors);
-    totalPushed += await pushStore(config, "stock_adjustments", pending.stock_adjustments, batchSize, errors);
-    totalPushed += await pushStore(config, "receipts", pending.receipts, batchSize, errors);
-    totalPushed += await pushStore(config, "daily_reports", pending.daily_reports, batchSize, errors);
+    totalPushed += await pushStore(config, 'categories', pending.categories, batchSize, errors);
+    totalPushed += await pushStore(config, 'products', pending.products, batchSize, errors);
+    totalPushed += await pushStore(config, 'transactions', pending.transactions, batchSize, errors);
+    totalPushed += await pushStore(
+      config,
+      'stock_adjustments',
+      pending.stock_adjustments,
+      batchSize,
+      errors,
+    );
+    totalPushed += await pushStore(config, 'receipts', pending.receipts, batchSize, errors);
+    totalPushed += await pushStore(
+      config,
+      'daily_reports',
+      pending.daily_reports,
+      batchSize,
+      errors,
+    );
 
     // 3. Update sync log
-    const finalStatus = errors.length > 0 ? "partial" : "completed";
+    const finalStatus = errors.length > 0 ? 'partial' : 'completed';
     await updateSyncLog(config, logId, {
-      status: finalStatus as "completed" | "partial",
+      status: finalStatus as 'completed' | 'partial',
       records_pushed: totalPushed,
       completed_at: now(),
-      error_message: errors.length > 0 ? errors.join("; ") : null,
+      error_message: errors.length > 0 ? errors.join('; ') : null,
     });
 
     logInfo(`Push completed: ${totalPushed} records pushed, ${errors.length} errors`);
   } catch (error) {
     const msg = getErrorMessage(error);
     errors.push(msg);
-    logError("Push failed", msg);
+    logError('Push failed', msg);
 
     await updateSyncLog(config, logId, {
-      status: "failed",
+      status: 'failed',
       records_pushed: totalPushed,
       completed_at: now(),
       error_message: msg,
     });
   }
 
-  return buildResult("push", totalPushed, 0, 0, [], errors, startedAt);
+  return buildResult('push', totalPushed, 0, 0, [], errors, startedAt);
 }
 
 // ---------------------------------------------------------------------------
@@ -119,7 +132,7 @@ async function pushStore(
   store: SyncableStore,
   records: SyncableRecord[],
   batchSize: number,
-  errors: string[]
+  errors: string[],
 ): Promise<number> {
   if (records.length === 0) return 0;
 
@@ -136,7 +149,7 @@ async function pushStore(
       // Upsert to Supabase
       const { error } = await config.supabase
         .from(tableName)
-        .upsert(cloudRecords, { onConflict: "id" });
+        .upsert(cloudRecords, { onConflict: 'id' });
 
       if (error) {
         const msg = `Push ${store}: ${error.message}`;
@@ -146,17 +159,22 @@ async function pushStore(
       }
 
       // Mark local records as synced
+      let _markErrors = 0;
       for (const record of batch) {
         try {
-          const synced = { ...record, sync_status: "synced" as const };
+          const synced = { ...record, sync_status: 'synced' as const };
           // We need to write back to the correct local store
           await put(store as never, synced as never);
         } catch (markErr) {
-          const msg = `Failed to mark ${store}/${(record as { id: string }).id} as synced: ${getErrorMessage(markErr)}`;
-          logWarn(msg);
-          // Don't add to errors array since the cloud write succeeded
+          _markErrors++;
+          const recordId = (record as { id?: string }).id ?? 'unknown';
+          const msg = `Failed to mark ${store}/${recordId} as synced after successful cloud push: ${getErrorMessage(markErr)}`;
+          logError(msg);
         }
       }
+      // Note: mark errors are NOT added to the `errors` array since the cloud
+      // write already succeeded. These are logged separately so they don't cause
+      // false-flagged sync failures — but they'll be visible in console logs.
 
       pushed += batch.length;
       logInfo(`Pushed ${batch.length} ${store} records`);
@@ -176,21 +194,20 @@ async function pushStore(
 
 async function collectPendingRecords(): Promise<PendingRecords> {
   const filterPending = <T extends { sync_status?: string }>(items: T[]): T[] =>
-    items.filter((item) => item.sync_status === "pending");
+    items.filter((item) => item.sync_status === 'pending');
 
-  const [products, transactions, categories, stockAdj, receipts, reports] =
-    await Promise.all([
-      getAll("products").then(filterPending),
-      getAll("transactions").then(filterPending),
-      getAll("categories").then(filterPending),
-      getAll("stock_adjustments").then(filterPending),
-      getAll("receipts").then((items) => {
-        // Receipts don't have sync_status in original type, treat all as pending
-        // Actually, we'll check if they've already been synced via a marker
-        return items;
-      }),
-      getAll("daily_reports").then((items) => items),
-    ]);
+  const [products, transactions, categories, stockAdj, receipts, reports] = await Promise.all([
+    getAll('products').then(filterPending),
+    getAll('transactions').then(filterPending),
+    getAll('categories').then(filterPending),
+    getAll('stock_adjustments').then(filterPending),
+    getAll('receipts').then((items) => {
+      // Receipts don't have sync_status in original type, treat all as pending
+      // Actually, we'll check if they've already been synced via a marker
+      return items;
+    }),
+    getAll('daily_reports').then((items) => items),
+  ]);
 
   return {
     products: products as PosProduct[],
@@ -219,15 +236,15 @@ function countPendingRecords(pending: PendingRecords): number {
 
 async function writeSyncLog(
   config: SyncConfig,
-  entry: Partial<SyncLogEntry>
+  entry: Partial<SyncLogEntry>,
 ): Promise<string | null> {
   try {
     const { data, error } = await config.supabase
-      .from("ksp_sync_log")
+      .from('ksp_sync_log')
       .insert({
         license_id: config.licenseId,
         device_id: config.deviceId,
-        direction: entry.direction ?? "push",
+        direction: entry.direction ?? 'push',
         records_pushed: entry.records_pushed ?? 0,
         records_pulled: entry.records_pulled ?? 0,
         conflicts: entry.conflicts ?? 0,
@@ -235,18 +252,18 @@ async function writeSyncLog(
         metadata: entry.metadata ?? {},
         started_at: entry.started_at ?? now(),
         completed_at: entry.completed_at ?? null,
-        status: entry.status ?? "started",
+        status: entry.status ?? 'started',
       })
-      .select("id")
+      .select('id')
       .single();
 
     if (error) {
-      logWarn("Failed to write sync log", error.message);
+      logWarn('Failed to write sync log', error.message);
       return null;
     }
     return data?.id ?? null;
   } catch (err) {
-    logWarn("Failed to write sync log", getErrorMessage(err));
+    logWarn('Failed to write sync log', getErrorMessage(err));
     return null;
   }
 }
@@ -254,16 +271,13 @@ async function writeSyncLog(
 async function updateSyncLog(
   config: SyncConfig,
   logId: string | null,
-  updates: Partial<SyncLogEntry>
+  updates: Partial<SyncLogEntry>,
 ): Promise<void> {
   if (!logId) return;
   try {
-    await config.supabase
-      .from("ksp_sync_log")
-      .update(updates)
-      .eq("id", logId);
+    await config.supabase.from('ksp_sync_log').update(updates).eq('id', logId);
   } catch (err) {
-    logWarn("Failed to update sync log", getErrorMessage(err));
+    logWarn('Failed to update sync log', getErrorMessage(err));
   }
 }
 
@@ -272,13 +286,13 @@ async function updateSyncLog(
 // ---------------------------------------------------------------------------
 
 function buildResult(
-  direction: "push" | "pull" | "full",
+  direction: 'push' | 'pull' | 'full',
   pushed: number,
   pulled: number,
   conflicts: number,
   conflictDetails: SyncConflict[],
   errors: string[],
-  startedAt: string
+  startedAt: string,
 ): SyncResult {
   const completedAt = now();
   return {
