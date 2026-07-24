@@ -41,6 +41,11 @@ Thumbs.db
 
 # Testing
 coverage/
+playwright-report/
+test-results/
+
+# Package managers
+package-lock.json
 
 # Misc
 *.pem

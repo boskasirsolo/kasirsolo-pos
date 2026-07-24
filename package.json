@@ -8,10 +8,6 @@
     "email": "owner.kasirsolo@gmail.com"
   },
   "license": "UNLICENSED",
-  "workspaces": [
-    "packages/*",
-    "apps/*"
-  ],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -22,17 +18,37 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
     "test:fnb": "playwright test e2e/fnb.spec.ts",
-    "test:retail": "playwright test e2e/retail.spec.ts"
+    "test:retail": "playwright test e2e/retail.spec.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test:unit": "vitest run",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "husky": "^9.1.7",
+    "jsdom": "^29.1.1",
+    "lint-staged": "^17.2.0",
+    "prettier": "^3.9.6",
     "turbo": "^2.5.0",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.65.0",
+    "vitest": "^4.1.10"
   },
   "engines": {
     "node": ">=18.0.0"
   },
   "packageManager": "pnpm@10.0.0",
-  "dependencies": {
-    "@playwright/test": "^1.61.1"
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css,md}": [
+      "prettier --write"
+    ]
   }
 }
