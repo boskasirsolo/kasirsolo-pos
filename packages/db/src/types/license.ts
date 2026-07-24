@@ -35,13 +35,13 @@ export interface KspLicense {
   created_at: string;
 }
 
-export type KspPlanType = "trial" | "basic" | "pro" | "enterprise" | "lifetime";
+export type KspPlanType = 'trial' | 'basic' | 'pro' | 'enterprise' | 'lifetime';
 
-export type KspLicenseStatus = "active" | "expired" | "revoked" | "suspended" | "pending";
+export type KspLicenseStatus = 'trial' | 'active' | 'expired' | 'suspended' | 'revoked' | 'pending';
 
-export type KspLicenseInsert = Omit<KspLicense, "id" | "created_at"> & {
+export type KspLicenseInsert = Omit<KspLicense, 'id' | 'created_at'> & {
   id?: string;
   created_at?: string;
 };
 
-export type KspLicenseUpdate = Partial<Omit<KspLicense, "id" | "created_at">>;
+export type KspLicenseUpdate = Partial<Omit<KspLicense, 'id' | 'created_at'>>;
