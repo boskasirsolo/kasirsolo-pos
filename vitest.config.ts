@@ -4,7 +4,14 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    include: ['**/*.test.{ts,tsx}'],
-    exclude: ['node_modules', 'dist', '.next', 'e2e', 'playwright-report', 'test-results'],
+    include: ['packages/**/*.test.{ts,tsx}'],
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/.next/**',
+      'e2e',
+      'playwright-report',
+      'test-results',
+    ],
   },
 });
