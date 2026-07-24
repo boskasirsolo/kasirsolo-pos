@@ -14,6 +14,48 @@ const activationPayloadSchema = z.object({
   device_name: z.string().optional(),
 });
 
+// --- Rate limiter (in-memory, per-IP, sliding window) ---
+interface RateLimitEntry {
+  timestamps: number[];
+}
+
+const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
+const RATE_LIMIT_MAX_REQUESTS = 10; // max 10 requests per window
+
+const rateLimitStore = new Map<string, RateLimitEntry>();
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitStore.get(ip);
+
+  if (!entry) {
+    rateLimitStore.set(ip, { timestamps: [now] });
+    return true;
+  }
+
+  // Prune old timestamps outside the window
+  entry.timestamps = entry.timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+
+  if (entry.timestamps.length >= RATE_LIMIT_MAX_REQUESTS) {
+    return false;
+  }
+
+  entry.timestamps.push(now);
+  rateLimitStore.set(ip, entry);
+  return true;
+}
+
+// Clean up stale entries every ~5 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, entry] of rateLimitStore.entries()) {
+    entry.timestamps = entry.timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+    if (entry.timestamps.length === 0) {
+      rateLimitStore.delete(ip);
+    }
+  }
+}, 5 * 60 * 1000);
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -22,7 +64,7 @@ export async function POST(request: NextRequest) {
     if (!validation.success) {
       const errors = validation.error.flatten().fieldErrors as Record<string, string[]>;
       return NextResponse.json(
-        { error: errors.license_key?.[0] || errors.fingerprint?.[0] || "Validasi gagal" },
+        { error: "Validasi gagal" },
         { status: 400 }
       );
     }
@@ -32,30 +74,37 @@ export async function POST(request: NextRequest) {
     const supabase = createServerClient();
     if (!supabase) {
       return NextResponse.json(
-        { error: "Gagal terhubung ke database" },
+        { error: "Aktivasi gagal" },
         { status: 500 }
       );
     }
 
-    // Validate license
-    const license = await getLicenseByKey(supabase, license_key);
-    if (!license) {
+    // Check rate limit by IP
+    const ip = request.headers.get("x-forwarded-for")
+      || request.headers.get("x-real-ip")
+      || request.ip
+      || "unknown";
+    if (!checkRateLimit(ip)) {
+      console.error("[activation] Rate limit exceeded for:", ip);
       return NextResponse.json(
-        { error: "Kode lisensi tidak ditemukan" },
-        { status: 404 }
+        { error: "Aktivasi gagal" },
+        { status: 429 }
       );
     }
 
-    if (license.status !== "active") {
+    // Validate license — always return generic error to prevent enumeration
+    const license = await getLicenseByKey(supabase, license_key);
+    if (!license || license.status !== "active") {
       return NextResponse.json(
-        { error: `Lisensi tidak aktif (${license.status})` },
+        { error: "Aktivasi gagal" },
         { status: 403 }
       );
     }
 
+    // Check expiration server-side
     if (license.expires_at && new Date(license.expires_at) < new Date()) {
       return NextResponse.json(
-        { error: "Lisensi telah kadaluarsa" },
+        { error: "Aktivasi gagal" },
         { status: 403 }
       );
     }
@@ -86,11 +135,11 @@ export async function POST(request: NextRequest) {
     if (activeCount >= license.max_devices) {
       return NextResponse.json(
         {
-          error: `Batas perangkat tercapai (${license.max_devices}). Lepas salah satu perangkat untuk melanjutkan.`,
+          error: "Batas perangkat tercapai",
           active_devices: activeCount,
           max_devices: license.max_devices,
         },
-        { status: 409 }
+        { status: 403 }
       );
     }
 
@@ -116,10 +165,11 @@ export async function POST(request: NextRequest) {
       message: "Perangkat berhasil diaktivasi",
     });
   } catch (error) {
-    console.error("Activation error:", error);
+    // Sanitized error logging — never dump full error object
+    console.error("[activation] Error:", error instanceof Error ? error.message : "unknown error");
     return NextResponse.json(
-      { error: "Terjadi kesalahan server" },
-      { status: 500 }
+      { error: "Aktivasi gagal" },
+      { status: 403 }
     );
   }
 }

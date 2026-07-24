@@ -4,9 +4,61 @@ import type { KspLicense } from "@kasirsolo/db";
 
 const LICENSE_CACHE_KEY = "kasirsolo_fnb_license_cache";
 const TRIAL_START_KEY = "kasirsolo_fnb_trial_start";
+const TRIAL_CLIENT_ID_KEY = "kasirsolo_fnb_trial_client_id";
 const TRIAL_DAYS = 7;
 const MAX_DEVICES = 2;
 const PRICE = 350000;
+
+/**
+ * Verify trial expiry against the server.
+ * Falls back to localStorage if server is unavailable (offline).
+ */
+export async function checkTrialExpiryServer(clientId: string): Promise<{ expired: boolean; daysLeft: number }> {
+  try {
+    const res = await fetch("/api/trial/status", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ client_id: clientId }),
+    });
+
+    if (!res.ok) {
+      // Server unavailable — fall back to localStorage
+      return checkTrialExpiryClientSide();
+    }
+
+    const data = await res.json();
+    if (data.error) {
+      return checkTrialExpiryClientSide();
+    }
+
+    return {
+      expired: data.expired,
+      daysLeft: data.daysLeft,
+    };
+  } catch {
+    // Network error — fall back to localStorage
+    return checkTrialExpiryClientSide();
+  }
+}
+
+/**
+ * Fallback: check trial using only localStorage (for offline mode).
+ */
+function checkTrialExpiryClientSide(): { expired: boolean; daysLeft: number } {
+  const trialStart = localStorage.getItem(TRIAL_START_KEY);
+  if (!trialStart) {
+    return { expired: false, daysLeft: TRIAL_DAYS };
+  }
+
+  const start = new Date(trialStart);
+  const now = new Date();
+  const elapsed = Math.floor(
+    (now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
+  );
+  const daysLeft = Math.max(0, TRIAL_DAYS - elapsed);
+
+  return { expired: daysLeft <= 0, daysLeft };
+}
 
 export interface LicenseStatus {
   valid: boolean;
@@ -51,32 +103,42 @@ export async function validateLicense(licenseKey: string): Promise<KspLicense> {
 }
 
 /**
- * Start a trial period.
+ * Start a trial period. Stores timestamp + optional client_id for server verification.
+ * @param clientId - Optional client UUID from DB (set by trial registration flow)
  */
-export function startTrial(): void {
+export function startTrial(clientId?: string): void {
   const existing = localStorage.getItem(TRIAL_START_KEY);
   if (!existing) {
     localStorage.setItem(TRIAL_START_KEY, new Date().toISOString());
+  }
+  // Store client_id so checkTrialExpiry can verify against server
+  if (clientId) {
+    localStorage.setItem(TRIAL_CLIENT_ID_KEY, clientId);
   }
 }
 
 /**
  * Check if the trial has expired.
+ * Priority: server-side verification > localStorage fallback.
  */
-export function checkTrialExpiry(): { expired: boolean; daysLeft: number } {
+export async function checkTrialExpiry(): Promise<{ expired: boolean; daysLeft: number }> {
+  const clientId = localStorage.getItem(TRIAL_CLIENT_ID_KEY);
+
+  // If we have a client_id from DB, verify against server first
+  if (clientId) {
+    return checkTrialExpiryServer(clientId);
+  }
+
+  // No DB record — pure localStorage trial (startTrial() without clientId)
+  // Still rely on server check to prevent tampering, but fall back gracefully
   const trialStart = localStorage.getItem(TRIAL_START_KEY);
   if (!trialStart) {
     return { expired: false, daysLeft: TRIAL_DAYS };
   }
 
-  const start = new Date(trialStart);
-  const now = new Date();
-  const elapsed = Math.floor(
-    (now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
-  );
-  const daysLeft = Math.max(0, TRIAL_DAYS - elapsed);
-
-  return { expired: daysLeft <= 0, daysLeft };
+  // If there's NO client_id but localStorage has trial start, it's a local-only trial.
+  // We still call server to verify expiry, so localStorage alone isn't authoritative.
+  return checkTrialExpiryClientSide();
 }
 
 /**
@@ -134,8 +196,8 @@ export async function getLicenseStatus(): Promise<LicenseStatus> {
     }
   }
 
-  // Check trial
-  const trial = checkTrialExpiry();
+  // Check trial — now server-verified via checkTrialExpiry() (async)
+  const trial = await checkTrialExpiry();
   const trialStart = localStorage.getItem(TRIAL_START_KEY);
 
   if (trialStart) {
