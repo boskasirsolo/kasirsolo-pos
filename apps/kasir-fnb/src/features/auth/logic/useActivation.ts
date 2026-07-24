@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from 'react';
 import {
   checkDeviceBinding,
   activateDevice,
@@ -9,9 +9,12 @@ import {
   setLicenseId,
   getDeviceInfo,
   type DeviceInfo,
-} from "@/lib/device";
-import { validateLicense, startTrial } from "@/lib/license";
-import type { KspDevice } from "@kasirsolo/db";
+} from '@kasirsolo/auth/device';
+import { validateLicense, startTrial } from '@kasirsolo/auth/license';
+import type { KspDevice } from '@kasirsolo/db';
+
+// App-specific auth config
+const AUTH_CONFIG = { prefix: 'kasirsolo_fnb' };
 
 export function useActivation() {
   const [bound, setBound] = useState(false);
@@ -25,7 +28,7 @@ export function useActivation() {
   const check = useCallback(async () => {
     setLoading(true);
     try {
-      const result = await checkDeviceBinding();
+      const result = await checkDeviceBinding(AUTH_CONFIG);
       setBound(result.bound);
       setDevice(result.device);
 
@@ -42,39 +45,36 @@ export function useActivation() {
     check();
   }, [check]);
 
-  const activate = useCallback(
-    async (licenseKey: string) => {
-      setActivating(true);
-      setError(null);
+  const activate = useCallback(async (licenseKey: string) => {
+    setActivating(true);
+    setError(null);
 
-      try {
-        const license = await validateLicense(licenseKey);
-        setLicenseId(license.id);
+    try {
+      const license = await validateLicense(licenseKey, AUTH_CONFIG);
+      setLicenseId(license.id, AUTH_CONFIG);
 
-        const boundDevice = await activateDevice(license.id, license.max_devices);
-        setDevice(boundDevice);
-        setBound(true);
+      const boundDevice = await activateDevice(license.id, license.max_devices, AUTH_CONFIG);
+      setDevice(boundDevice);
+      setBound(true);
 
-        return boundDevice;
-      } catch (err) {
-        const message = err instanceof Error ? err.message : "Aktivasi gagal";
-        setError(message);
-        throw err;
-      } finally {
-        setActivating(false);
-      }
-    },
-    []
-  );
+      return boundDevice;
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Aktivasi gagal';
+      setError(message);
+      throw err;
+    } finally {
+      setActivating(false);
+    }
+  }, []);
 
   const activateTrial = useCallback(async () => {
-    startTrial();
+    startTrial(undefined, AUTH_CONFIG);
     setBound(true);
   }, []);
 
   const loadDevices = useCallback(async () => {
     try {
-      const devs = await getLicenseDevices();
+      const devs = await getLicenseDevices(AUTH_CONFIG);
       setDevices(devs);
     } catch {
       // Ignore - might be offline
@@ -86,7 +86,7 @@ export function useActivation() {
       await removeDevice(deviceId);
       setDevices((prev) => prev.filter((d) => d.id !== deviceId));
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Gagal melepas perangkat";
+      const message = err instanceof Error ? err.message : 'Gagal melepas perangkat';
       setError(message);
       throw err;
     }

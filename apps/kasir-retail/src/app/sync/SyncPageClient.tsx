@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useSync } from "@/features/sync/logic/useSync";
-import { SyncConflictModal } from "@/features/sync/ui/SyncConflictModal";
-import { UpgradePrompt } from "@/features/sync/ui/UpgradePrompt";
-import type { LicenseStatus } from "@/lib/license";
+import { useState, useEffect } from 'react';
+import { useSync } from '@/features/sync/logic/useSync';
+import { SyncConflictModal } from '@/features/sync/ui/SyncConflictModal';
+import { UpgradePrompt } from '@/features/sync/ui/UpgradePrompt';
+import type { LicenseStatus } from '@kasirsolo/auth/license';
 
 // ---------------------------------------------------------------------------
 // /sync — Client-side sync page (extracted for ssr:false)
@@ -19,11 +19,11 @@ export default function SyncPageClient() {
   useEffect(() => {
     async function loadLicenseInfo() {
       try {
-        const { getLicenseStatus: getLicStatus } = await import("@/lib/license");
+        const { getLicenseStatus: getLicStatus } = await import('@kasirsolo/auth/license');
         const status = await getLicStatus();
         setLicenseStatus(status);
 
-        const { checkDeviceBinding } = await import("@/lib/device");
+        const { checkDeviceBinding } = await import('@kasirsolo/auth/device');
         const binding = await checkDeviceBinding();
         if (binding.device) {
           setDeviceId(binding.device.id);
@@ -62,8 +62,18 @@ export default function SyncPageClient() {
             className="p-1 rounded-lg hover:bg-gray-100 transition-colors"
             aria-label="Kembali"
           >
-            <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <svg
+              className="w-5 h-5 text-gray-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
           </a>
           <div>
@@ -84,26 +94,26 @@ export default function SyncPageClient() {
             <div className="flex items-center gap-1.5">
               <div
                 className={`w-2.5 h-2.5 rounded-full ${
-                  sync.displayStatus === "synced"
-                    ? "bg-green-400"
-                    : sync.displayStatus === "pending"
-                    ? "bg-yellow-400"
-                    : sync.displayStatus === "syncing"
-                    ? "bg-blue-400 animate-pulse"
-                    : sync.displayStatus === "offline"
-                    ? "bg-gray-400"
-                    : sync.displayStatus === "error"
-                    ? "bg-red-400"
-                    : "bg-gray-300"
+                  sync.displayStatus === 'synced'
+                    ? 'bg-green-400'
+                    : sync.displayStatus === 'pending'
+                      ? 'bg-yellow-400'
+                      : sync.displayStatus === 'syncing'
+                        ? 'bg-blue-400 animate-pulse'
+                        : sync.displayStatus === 'offline'
+                          ? 'bg-gray-400'
+                          : sync.displayStatus === 'error'
+                            ? 'bg-red-400'
+                            : 'bg-gray-300'
                 }`}
               />
               <span className="text-xs text-gray-600">
-                {sync.displayStatus === "synced" && "Tersinkron"}
-                {sync.displayStatus === "pending" && `${sync.pendingCount} menunggu`}
-                {sync.displayStatus === "syncing" && "Menyinkronkan..."}
-                {sync.displayStatus === "offline" && "Offline"}
-                {sync.displayStatus === "error" && "Error"}
-                {sync.displayStatus === "disabled" && "Tidak aktif"}
+                {sync.displayStatus === 'synced' && 'Tersinkron'}
+                {sync.displayStatus === 'pending' && `${sync.pendingCount} menunggu`}
+                {sync.displayStatus === 'syncing' && 'Menyinkronkan...'}
+                {sync.displayStatus === 'offline' && 'Offline'}
+                {sync.displayStatus === 'error' && 'Error'}
+                {sync.displayStatus === 'disabled' && 'Tidak aktif'}
               </span>
             </div>
           </div>
@@ -113,25 +123,25 @@ export default function SyncPageClient() {
               <span>Terakhir sinkron</span>
               <span className="text-gray-700">
                 {sync.lastSyncAt
-                  ? new Date(sync.lastSyncAt).toLocaleString("id-ID", {
-                      day: "numeric",
-                      month: "short",
-                      hour: "2-digit",
-                      minute: "2-digit",
+                  ? new Date(sync.lastSyncAt).toLocaleString('id-ID', {
+                      day: 'numeric',
+                      month: 'short',
+                      hour: '2-digit',
+                      minute: '2-digit',
                     })
-                  : "Belum pernah"}
+                  : 'Belum pernah'}
               </span>
             </div>
             <div className="flex justify-between">
               <span>Auto-sync</span>
               <span className="text-gray-700">
-                {sync.isRunning ? "Aktif (setiap 5 menit)" : "Nonaktif"}
+                {sync.isRunning ? 'Aktif (setiap 5 menit)' : 'Nonaktif'}
               </span>
             </div>
             <div className="flex justify-between">
               <span>Koneksi</span>
-              <span className={sync.isOnline ? "text-green-600" : "text-red-600"}>
-                {sync.isOnline ? "Online" : "Offline"}
+              <span className={sync.isOnline ? 'text-green-600' : 'text-red-600'}>
+                {sync.isOnline ? 'Online' : 'Offline'}
               </span>
             </div>
           </div>
@@ -147,12 +157,12 @@ export default function SyncPageClient() {
               {Object.entries(pendingByStore).map(([key, count]) => {
                 if (count === 0) return null;
                 const names: Record<string, string> = {
-                  products: "Produk",
-                  transactions: "Transaksi",
-                  categories: "Kategori",
-                  stockAdjustments: "Stok",
-                  receipts: "Struk",
-                  dailyReports: "Laporan",
+                  products: 'Produk',
+                  transactions: 'Transaksi',
+                  categories: 'Kategori',
+                  stockAdjustments: 'Stok',
+                  receipts: 'Struk',
+                  dailyReports: 'Laporan',
                 };
                 return (
                   <div key={key} className="flex justify-between text-xs">
@@ -170,23 +180,34 @@ export default function SyncPageClient() {
           <button
             type="button"
             onClick={() => sync.syncNow()}
-            disabled={sync.displayStatus === "syncing" || sync.displayStatus === "offline"}
+            disabled={sync.displayStatus === 'syncing' || sync.displayStatus === 'offline'}
             className={`w-full py-3.5 rounded-xl text-sm font-bold transition-all ${
-              sync.displayStatus === "syncing" || sync.displayStatus === "offline"
-                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : "bg-brand-primary text-white hover:bg-brand-primary/90 active:scale-[0.98] shadow-sm"
+              sync.displayStatus === 'syncing' || sync.displayStatus === 'offline'
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                : 'bg-brand-primary text-white hover:bg-brand-primary/90 active:scale-[0.98] shadow-sm'
             }`}
           >
-            {sync.displayStatus === "syncing" ? (
+            {sync.displayStatus === 'syncing' ? (
               <span className="flex items-center justify-center gap-2">
                 <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                  />
                 </svg>
                 Menyinkronkan...
               </span>
             ) : (
-              "Sinkronkan Sekarang"
+              'Sinkronkan Sekarang'
             )}
           </button>
         )}
@@ -215,9 +236,7 @@ export default function SyncPageClient() {
         {/* Errors */}
         {sync.errors.length > 0 && (
           <div className="bg-white rounded-xl border border-red-200 p-4">
-            <h2 className="text-sm font-semibold text-red-800 mb-2">
-              Kesalahan
-            </h2>
+            <h2 className="text-sm font-semibold text-red-800 mb-2">Kesalahan</h2>
             <ul className="text-xs text-red-600 space-y-1">
               {sync.errors.slice(0, 5).map((err, i) => (
                 <li key={i}>{err}</li>
@@ -229,9 +248,7 @@ export default function SyncPageClient() {
         {/* Sync History */}
         {sync.history.length > 0 && (
           <div className="bg-white rounded-xl border border-gray-200 p-4">
-            <h2 className="text-sm font-semibold text-gray-900 mb-3">
-              Riwayat
-            </h2>
+            <h2 className="text-sm font-semibold text-gray-900 mb-3">Riwayat</h2>
             <div className="space-y-2">
               {sync.history.slice(0, 10).map((entry) => (
                 <div
@@ -241,13 +258,13 @@ export default function SyncPageClient() {
                   <div className="flex items-center gap-2">
                     <div
                       className={`w-2 h-2 rounded-full ${
-                        entry.success ? "bg-green-400" : "bg-red-400"
+                        entry.success ? 'bg-green-400' : 'bg-red-400'
                       }`}
                     />
                     <span className="text-gray-600">
-                      {new Date(entry.completedAt).toLocaleTimeString("id-ID", {
-                        hour: "2-digit",
-                        minute: "2-digit",
+                      {new Date(entry.completedAt).toLocaleTimeString('id-ID', {
+                        hour: '2-digit',
+                        minute: '2-digit',
                       })}
                     </span>
                   </div>
@@ -263,9 +280,7 @@ export default function SyncPageClient() {
         )}
 
         {/* Upgrade Prompt for offline users */}
-        {!sync.isCloudUser && (
-          <UpgradePrompt show={true} />
-        )}
+        {!sync.isCloudUser && <UpgradePrompt show={true} />}
       </div>
 
       {/* Conflict Modal */}

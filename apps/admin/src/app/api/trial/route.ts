@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
+import { getSupabaseServer } from "@/lib/supabase.server";
 
 const trialRequestSchema = z.object({
   name: z.string().min(2, "Nama minimal 2 karakter"),
@@ -25,19 +25,7 @@ export async function POST(request: NextRequest) {
 
     const { name, phone, email, business_name, app_id, source } = parsed.data;
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-    if (!supabaseUrl || !serviceRoleKey) {
-      return NextResponse.json(
-        { error: "Server configuration error" },
-        { status: 500 }
-      );
-    }
-
-    const supabase = createClient(supabaseUrl, serviceRoleKey, {
-      auth: { persistSession: false, autoRefreshToken: false },
-    });
+    const supabase = getSupabaseServer();
 
     // Check if phone already exists
     const { data: existing } = await supabase

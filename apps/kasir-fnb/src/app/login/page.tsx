@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { useAuth, useActivation, LoginForm, ActivationForm } from "@/features/auth";
-import { startTrial } from "@/lib/license";
-import { openDatabase } from "@/lib/db";
-import { useState, useEffect } from "react";
+import { useRouter } from 'next/navigation';
+import { useAuth, useActivation, LoginForm, ActivationForm } from '@/features/auth';
+import { startTrial } from '@kasirsolo/auth/license';
+import { openDatabase } from '@/lib/db';
+import { useState, useEffect } from 'react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -23,7 +23,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (isAuthenticated && bound) {
-      router.replace("/pos");
+      router.replace('/pos');
     }
   }, [isAuthenticated, bound, router]);
 
@@ -44,9 +44,9 @@ export default function LoginPage() {
       startTrial();
       await openDatabase();
       activateTrial();
-      router.replace("/pos");
+      router.replace('/pos');
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Gagal memulai trial");
+      setError(err instanceof Error ? err.message : 'Gagal memulai trial');
     }
   }
 
@@ -55,7 +55,7 @@ export default function LoginPage() {
       setError(null);
       await activate(licenseKey);
       await openDatabase();
-      router.replace("/pos");
+      router.replace('/pos');
     } catch {
       // Error handled by useActivation
     }

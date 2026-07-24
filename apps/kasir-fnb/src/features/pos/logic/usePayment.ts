@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useCallback } from "react";
-import { getCurrentUser } from "@/lib/auth";
-import { saveTransaction, saveKitchenOrder, saveReceipt, getSettings } from "../data/queries";
-import type { FnbCartState, FnbPaymentMethod } from "../data/types";
+import { useState, useCallback } from 'react';
+import { getCurrentUser } from '@kasirsolo/auth';
+import { saveTransaction, saveKitchenOrder, saveReceipt, getSettings } from '../data/queries';
+import type { FnbCartState, FnbPaymentMethod } from '../data/types';
 
 export interface FnbTransactionResult {
   id: string;
@@ -54,7 +54,7 @@ export function usePayment() {
       cart: FnbCartState,
       method: FnbPaymentMethod,
       amountPaid: number,
-      paymentRef: string | null
+      paymentRef: string | null,
     ): Promise<FnbTransactionResult> => {
       setProcessing(true);
       setError(null);
@@ -64,13 +64,13 @@ export function usePayment() {
         const settings = await getSettings();
         const now = new Date();
         const txId = crypto.randomUUID();
-        const txNumber = `FNB-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}-${String(now.getHours()).padStart(2, "0")}${String(now.getMinutes()).padStart(2, "0")}${String(now.getSeconds()).padStart(2, "0")}`;
+        const txNumber = `FNB-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}-${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
 
         // Generate queue number for takeaway
         let queueNumber = cart.queueNumber;
-        if (cart.orderType === "takeaway" && settings.queue_enabled && !queueNumber) {
+        if (cart.orderType === 'takeaway' && settings.queue_enabled && !queueNumber) {
           const dateKey = `fnb_queue_${now.toISOString().slice(0, 10)}`;
-          const current = parseInt(localStorage.getItem(dateKey) || "0", 10);
+          const current = parseInt(localStorage.getItem(dateKey) || '0', 10);
           queueNumber = current + 1;
           localStorage.setItem(dateKey, String(queueNumber));
         }
@@ -112,8 +112,8 @@ export function usePayment() {
           customer_phone: cart.customerPhone,
           delivery_platform: cart.deliveryPlatform,
           notes: cart.notes,
-          status: "completed",
-          kitchen_status: settings.kds_enabled ? "sent" : "served",
+          status: 'completed',
+          kitchen_status: settings.kds_enabled ? 'sent' : 'served',
           is_void: false,
           void_reason: null,
           created_at: now.toISOString(),
@@ -130,10 +130,10 @@ export function usePayment() {
             items: cart.items.map((item) => ({
               name: item.name,
               quantity: item.quantity,
-              modifiers: item.modifiers.map((m) => `${m.name}: ${m.option}`).join(", "),
+              modifiers: item.modifiers.map((m) => `${m.name}: ${m.option}`).join(', '),
               notes: item.notes,
             })),
-            status: "new",
+            status: 'new',
             table_number: cart.tableNumber,
             order_type: cart.orderType,
             queue_number: queueNumber,
@@ -148,33 +148,37 @@ export function usePayment() {
         const receipt: FnbReceiptData = {
           id: txId,
           transactionNumber: txNumber,
-          storeName: settings.store_name || "KASIRSOLO F&B",
+          storeName: settings.store_name || 'KASIRSOLO F&B',
           storeAddress: settings.store_address,
           storePhone: settings.store_phone,
-          orderType: cart.orderType === "dine_in" ? "Dine In" : cart.orderType === "takeaway" ? "Takeaway" : "Delivery",
+          orderType:
+            cart.orderType === 'dine_in'
+              ? 'Dine In'
+              : cart.orderType === 'takeaway'
+                ? 'Takeaway'
+                : 'Delivery',
           tableNumber: cart.tableNumber,
           queueNumber,
           items: cart.items.map((item) => ({
             name: item.name,
             quantity: item.quantity,
             price: item.price + item.modifiersTotal,
-            modifiers: item.modifiers.map((m) => `${m.name}: ${m.option}`).join(", "),
+            modifiers: item.modifiers.map((m) => `${m.name}: ${m.option}`).join(', '),
             total: item.total,
           })),
           subtotal: cart.subtotal,
-          discountLabel: cart.discountType === "percentage"
-            ? `Diskon ${cart.discountValue}%`
-            : cart.discountAmount > 0
-              ? "Diskon"
-              : null,
+          discountLabel:
+            cart.discountType === 'percentage'
+              ? `Diskon ${cart.discountValue}%`
+              : cart.discountAmount > 0
+                ? 'Diskon'
+                : null,
           discountAmount: cart.discountAmount,
           serviceChargeLabel: cart.serviceChargeEnabled
             ? `Service Charge ${cart.serviceChargePercentage}%`
             : null,
           serviceChargeAmount: cart.serviceChargeAmount,
-          taxLabel: cart.taxEnabled
-            ? `${settings.tax_label} ${cart.taxPercentage}%`
-            : null,
+          taxLabel: cart.taxEnabled ? `${settings.tax_label} ${cart.taxPercentage}%` : null,
           taxAmount: cart.taxAmount,
           total: cart.total,
           amountPaid: amountPaid,
@@ -182,16 +186,23 @@ export function usePayment() {
           paymentMethod: method,
           cashierName: user?.name ?? user?.email ?? null,
           customerName: cart.customerName,
-          footerMessage: settings.receipt_footer || "Terima kasih atas kunjungan Anda!",
+          footerMessage: settings.receipt_footer || 'Terima kasih atas kunjungan Anda!',
           createdAt: now.toISOString(),
         };
 
-        await saveReceipt({ id: txId, transaction_id: txId, receipt_data: receipt, printed_at: null });
+        await saveReceipt({
+          id: txId,
+          transaction_id: txId,
+          receipt_data: receipt,
+          printed_at: null,
+        });
 
         // Play success sound
         if (settings.sound_enabled !== false) {
           try {
-            const audio = new Audio("data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=");
+            const audio = new Audio(
+              'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=',
+            );
             audio.volume = 0.3;
             audio.play().catch(() => {});
           } catch {
@@ -203,14 +214,14 @@ export function usePayment() {
         setLastResult(result);
         return result;
       } catch (err) {
-        const message = err instanceof Error ? err.message : "Pembayaran gagal";
+        const message = err instanceof Error ? err.message : 'Pembayaran gagal';
         setError(message);
         throw err;
       } finally {
         setProcessing(false);
       }
     },
-    []
+    [],
   );
 
   return {

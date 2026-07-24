@@ -1,9 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Button } from "@kasirsolo/ui";
-import { BRAND_NAME, formatRupiah, isValidKey, waSupportLink } from "@kasirsolo/utils";
-import { PRICE, MAX_DEVICES } from "@/lib/license";
+import { useState } from 'react';
+import { Button } from '@kasirsolo/ui';
+import { BRAND_NAME, formatRupiah, isValidKey, waSupportLink } from '@kasirsolo/utils';
+// FNB-specific constants (overridable via AuthConfig)
+const PRICE = 350000;
+const MAX_DEVICES = 2;
 
 interface ActivationFormProps {
   onActivate: (licenseKey: string) => Promise<void>;
@@ -12,21 +14,16 @@ interface ActivationFormProps {
   error: string | null;
 }
 
-export function ActivationForm({
-  onActivate,
-  onStartTrial,
-  loading,
-  error,
-}: ActivationFormProps) {
-  const [key, setKey] = useState("");
+export function ActivationForm({ onActivate, onStartTrial, loading, error }: ActivationFormProps) {
+  const [key, setKey] = useState('');
   const [keyError, setKeyError] = useState<string | null>(null);
 
   function handleKeyChange(value: string) {
-    let cleaned = value.toUpperCase().replace(/[^A-Z0-9-]/g, "");
+    let cleaned = value.toUpperCase().replace(/[^A-Z0-9-]/g, '');
 
-    if (cleaned.length > 0 && !cleaned.startsWith("KSP-")) {
-      if (cleaned.startsWith("KSP")) {
-        cleaned = "KSP-" + cleaned.slice(3);
+    if (cleaned.length > 0 && !cleaned.startsWith('KSP-')) {
+      if (cleaned.startsWith('KSP')) {
+        cleaned = 'KSP-' + cleaned.slice(3);
       }
     }
 
@@ -38,30 +35,22 @@ export function ActivationForm({
     e.preventDefault();
 
     if (!isValidKey(key)) {
-      setKeyError("Format kode lisensi tidak valid. Format: KSP-XXXX-XXXX-XXXX");
+      setKeyError('Format kode lisensi tidak valid. Format: KSP-XXXX-XXXX-XXXX');
       return;
     }
 
     await onActivate(key);
   }
 
-  const waUrl = waSupportLink(
-    "Saya ingin membeli lisensi KASIRSOLO F&B",
-    undefined,
-    "kasir-fnb"
-  );
+  const waUrl = waSupportLink('Saya ingin membeli lisensi KASIRSOLO F&B', undefined, 'kasir-fnb');
 
   return (
     <div className="min-h-screen bg-brand-dark flex flex-col items-center justify-center p-6">
       <div className="w-full max-w-sm">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-heading font-bold text-white mb-2">
-            Aktivasi Perangkat
-          </h1>
-          <p className="text-gray-400 text-sm">
-            Masukkan kode lisensi atau mulai trial gratis
-          </p>
+          <h1 className="text-2xl font-heading font-bold text-white mb-2">Aktivasi Perangkat</h1>
+          <p className="text-gray-400 text-sm">Masukkan kode lisensi atau mulai trial gratis</p>
         </div>
 
         {/* License Key Form */}
@@ -79,9 +68,7 @@ export function ActivationForm({
               maxLength={19}
               autoComplete="off"
             />
-            {keyError && (
-              <p className="text-red-400 text-xs mt-1">{keyError}</p>
-            )}
+            {keyError && <p className="text-red-400 text-xs mt-1">{keyError}</p>}
           </div>
 
           {error && (
@@ -90,13 +77,7 @@ export function ActivationForm({
             </div>
           )}
 
-          <Button
-            type="submit"
-            variant="primary"
-            fullWidth
-            size="lg"
-            loading={loading}
-          >
+          <Button type="submit" variant="primary" fullWidth size="lg" loading={loading}>
             Aktivasi
           </Button>
         </form>
@@ -105,9 +86,7 @@ export function ActivationForm({
         <div className="mt-6 bg-white/5 rounded-xl p-4">
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm text-gray-300">{BRAND_NAME} F&B</span>
-            <span className="text-lg font-bold text-brand-accent">
-              {formatRupiah(PRICE)}
-            </span>
+            <span className="text-lg font-bold text-brand-accent">{formatRupiah(PRICE)}</span>
           </div>
           <ul className="text-xs text-gray-400 space-y-1">
             <li>Sekali bayar, pakai selamanya</li>

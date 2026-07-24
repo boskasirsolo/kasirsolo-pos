@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useCallback, useRef } from "react";
-import type { SyncState, SyncResult, SyncEvent, SyncConflict } from "@kasirsolo/sync";
-import { SyncEngine } from "@kasirsolo/sync";
-import { createBrowserClient } from "@kasirsolo/db";
-import { getPendingCounts, getLastSyncAt } from "@kasirsolo/local-db";
-import { getLicenseId } from "@/lib/device";
-import type { SyncDisplayStatus, SyncHistoryEntry } from "../data/types";
-import { isCloudPlan } from "../data/types";
+import { useState, useEffect, useCallback, useRef } from 'react';
+import type { SyncState, SyncResult, SyncEvent, SyncConflict } from '@kasirsolo/sync';
+import { SyncEngine } from '@kasirsolo/sync';
+import { createBrowserClient } from '@kasirsolo/db';
+import { getPendingCounts, getLastSyncAt } from '@kasirsolo/local-db';
+import { getLicenseId } from '@kasirsolo/auth/device';
+import type { SyncDisplayStatus, SyncHistoryEntry } from '../data/types';
+import { isCloudPlan } from '../data/types';
 
 // ---------------------------------------------------------------------------
 // useSync — Main sync hook
@@ -69,12 +69,12 @@ export function useSync(options: UseSyncOptions): UseSyncReturn {
 
   // Determine display status
   const displayStatus: SyncDisplayStatus = (() => {
-    if (!isCloudUser) return "disabled";
-    if (!isOnline) return "offline";
-    if (syncState?.status === "syncing") return "syncing";
-    if (syncState?.status === "error" || errors.length > 0) return "error";
-    if (pendingCount > 0) return "pending";
-    return "synced";
+    if (!isCloudUser) return 'disabled';
+    if (!isOnline) return 'offline';
+    if (syncState?.status === 'syncing') return 'syncing';
+    if (syncState?.status === 'error' || errors.length > 0) return 'error';
+    if (pendingCount > 0) return 'pending';
+    return 'synced';
   })();
 
   // -------------------------------------------------------------------------
@@ -82,7 +82,7 @@ export function useSync(options: UseSyncOptions): UseSyncReturn {
   // -------------------------------------------------------------------------
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === 'undefined') return;
 
     setIsOnline(navigator.onLine);
 
@@ -100,12 +100,12 @@ export function useSync(options: UseSyncOptions): UseSyncReturn {
       setIsOnline(false);
     };
 
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
 
     return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
     };
   }, []);
 
@@ -114,7 +114,7 @@ export function useSync(options: UseSyncOptions): UseSyncReturn {
   // -------------------------------------------------------------------------
 
   useEffect(() => {
-    if (typeof document === "undefined") return;
+    if (typeof document === 'undefined') return;
 
     const handleVisibility = () => {
       if (!engineRef.current) return;
@@ -132,9 +132,9 @@ export function useSync(options: UseSyncOptions): UseSyncReturn {
       }
     };
 
-    document.addEventListener("visibilitychange", handleVisibility);
+    document.addEventListener('visibilitychange', handleVisibility);
     return () => {
-      document.removeEventListener("visibilitychange", handleVisibility);
+      document.removeEventListener('visibilitychange', handleVisibility);
     };
   }, [autoStart, isCloudUser, isOnline, licenseId, deviceId]);
 
@@ -159,11 +159,11 @@ export function useSync(options: UseSyncOptions): UseSyncReturn {
     });
 
     // Register event handlers
-    engine.on("sync:state-change", (state) => {
+    engine.on('sync:state-change', (state) => {
       setSyncState(state as SyncState);
     });
 
-    engine.on("sync:complete", (result) => {
+    engine.on('sync:complete', (result) => {
       const r = result as SyncResult;
       setLastSyncAt(r.completedAt);
       setErrors(r.errors);
@@ -184,11 +184,11 @@ export function useSync(options: UseSyncOptions): UseSyncReturn {
       });
     });
 
-    engine.on("sync:conflict", (conflict) => {
+    engine.on('sync:conflict', (conflict) => {
       setConflicts((prev) => [...prev, conflict as SyncConflict].slice(0, 50));
     });
 
-    engine.on("sync:error", (errorData) => {
+    engine.on('sync:error', (errorData) => {
       const e = errorData as { error: string };
       setErrors((prev) => [...prev, e.error].slice(0, 10));
     });
@@ -245,7 +245,7 @@ export function useSync(options: UseSyncOptions): UseSyncReturn {
     try {
       return await engineRef.current.fullSync();
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Sync failed";
+      const msg = err instanceof Error ? err.message : 'Sync failed';
       setErrors((prev) => [...prev, msg]);
       return null;
     }

@@ -1,9 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Button, Input } from "@kasirsolo/ui";
-import { BRAND_NAME, formatRupiah, isValidKey, waSupportLink } from "@kasirsolo/utils";
-import { PRICE, MAX_DEVICES } from "@/lib/license";
+import { useState } from 'react';
+import { Button, Input } from '@kasirsolo/ui';
+import { BRAND_NAME, formatRupiah, isValidKey, waSupportLink } from '@kasirsolo/utils';
+// Retail-specific constants
+const PRICE = 250000;
+const MAX_DEVICES = 2;
 
 interface ActivationScreenProps {
   onActivate: (licenseKey: string) => Promise<void>;
@@ -18,17 +20,17 @@ export function ActivationScreen({
   loading,
   error,
 }: ActivationScreenProps) {
-  const [key, setKey] = useState("");
+  const [key, setKey] = useState('');
   const [keyError, setKeyError] = useState<string | null>(null);
 
   function handleKeyChange(value: string) {
     // Auto-format: uppercase, insert dashes
-    let cleaned = value.toUpperCase().replace(/[^A-Z0-9-]/g, "");
+    let cleaned = value.toUpperCase().replace(/[^A-Z0-9-]/g, '');
 
     // Auto-insert prefix and dashes
-    if (cleaned.length > 0 && !cleaned.startsWith("KSP-")) {
-      if (cleaned.startsWith("KSP")) {
-        cleaned = "KSP-" + cleaned.slice(3);
+    if (cleaned.length > 0 && !cleaned.startsWith('KSP-')) {
+      if (cleaned.startsWith('KSP')) {
+        cleaned = 'KSP-' + cleaned.slice(3);
       }
     }
 
@@ -40,7 +42,7 @@ export function ActivationScreen({
     e.preventDefault();
 
     if (!isValidKey(key)) {
-      setKeyError("Format kode lisensi tidak valid. Format: KSP-XXXX-XXXX-XXXX");
+      setKeyError('Format kode lisensi tidak valid. Format: KSP-XXXX-XXXX-XXXX');
       return;
     }
 
@@ -48,9 +50,9 @@ export function ActivationScreen({
   }
 
   const waUrl = waSupportLink(
-    "Saya ingin membeli lisensi KASIRSOLO Retail",
+    'Saya ingin membeli lisensi KASIRSOLO Retail',
     undefined,
-    "kasir-retail"
+    'kasir-retail',
   );
 
   return (
@@ -58,12 +60,8 @@ export function ActivationScreen({
       <div className="w-full max-w-sm">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-heading font-bold text-white mb-2">
-            Aktivasi Perangkat
-          </h1>
-          <p className="text-gray-400 text-sm">
-            Masukkan kode lisensi atau mulai trial gratis
-          </p>
+          <h1 className="text-2xl font-heading font-bold text-white mb-2">Aktivasi Perangkat</h1>
+          <p className="text-gray-400 text-sm">Masukkan kode lisensi atau mulai trial gratis</p>
         </div>
 
         {/* License Key Form */}
@@ -81,9 +79,7 @@ export function ActivationScreen({
               maxLength={19}
               autoComplete="off"
             />
-            {keyError && (
-              <p className="text-red-400 text-xs mt-1">{keyError}</p>
-            )}
+            {keyError && <p className="text-red-400 text-xs mt-1">{keyError}</p>}
           </div>
 
           {error && (
@@ -92,13 +88,7 @@ export function ActivationScreen({
             </div>
           )}
 
-          <Button
-            type="submit"
-            variant="primary"
-            fullWidth
-            size="lg"
-            loading={loading}
-          >
+          <Button type="submit" variant="primary" fullWidth size="lg" loading={loading}>
             Aktivasi
           </Button>
         </form>
@@ -107,9 +97,7 @@ export function ActivationScreen({
         <div className="mt-6 bg-white/5 rounded-xl p-4">
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm text-gray-300">{BRAND_NAME} Retail</span>
-            <span className="text-lg font-bold text-brand-accent">
-              {formatRupiah(PRICE)}
-            </span>
+            <span className="text-lg font-bold text-brand-accent">{formatRupiah(PRICE)}</span>
           </div>
           <ul className="text-xs text-gray-400 space-y-1">
             <li>Sekali bayar, pakai selamanya</li>

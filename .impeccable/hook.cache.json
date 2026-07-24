@@ -1,1 +1,228 @@
-{"version":1,"sessions":{"7b7c9ba1-9e39-409d-9bfe-e230dcba74dc":{"updatedAt":1784826150044,"files":{"C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\landing\\src\\app\\landing.css":{"editCount":4,"findings":["gradient-text:137","gradient-text:144","gradient-text:1714","bounce-easing:2111:bouncein","layout-transition:437","layout-transition:484","layout-transition:2200","gradient-text:1722","bounce-easing:2119:bouncein","layout-transition:445","layout-transition:492","layout-transition:2208","gradient-text:142","gradient-text:149","gradient-text:1727","bounce-easing:2124:bouncein","layout-transition:450","layout-transition:497","layout-transition:2213","bounce-easing:2810:animate-bounce"]},"C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\components\\SkeletonLoader.tsx":{"editCount":1,"findings":[]},"C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\DashboardGrid.tsx":{"editCount":2,"findings":[]},"C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\ActivityFeed.tsx":{"editCount":2,"findings":[]},"C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\PendingPayments.tsx":{"editCount":1,"findings":[]},"C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\FollowUpQueue.tsx":{"editCount":1,"findings":[]},"C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\AppPopularity.tsx":{"editCount":1,"findings":[]},"C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\RecentActivations.tsx":{"editCount":1,"findings":[]}}}}}
+{
+  "version": 1,
+  "sessions": {
+    "7b7c9ba1-9e39-409d-9bfe-e230dcba74dc": {
+      "updatedAt": 1784826150044,
+      "files": {
+        "C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\landing\\src\\app\\landing.css": {
+          "editCount": 4,
+          "findings": [
+            "gradient-text:137",
+            "gradient-text:144",
+            "gradient-text:1714",
+            "bounce-easing:2111:bouncein",
+            "layout-transition:437",
+            "layout-transition:484",
+            "layout-transition:2200",
+            "gradient-text:1722",
+            "bounce-easing:2119:bouncein",
+            "layout-transition:445",
+            "layout-transition:492",
+            "layout-transition:2208",
+            "gradient-text:142",
+            "gradient-text:149",
+            "gradient-text:1727",
+            "bounce-easing:2124:bouncein",
+            "layout-transition:450",
+            "layout-transition:497",
+            "layout-transition:2213",
+            "bounce-easing:2810:animate-bounce"
+          ]
+        },
+        "C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\components\\SkeletonLoader.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\DashboardGrid.tsx": {
+          "editCount": 2,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\ActivityFeed.tsx": {
+          "editCount": 2,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\PendingPayments.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\FollowUpQueue.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\AppPopularity.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\RecentActivations.tsx": {
+          "editCount": 1,
+          "findings": []
+        }
+      }
+    },
+    "bb7b09aa-7790-4583-8dfb-bf03f8cdcd1b": {
+      "updatedAt": 1784869140570,
+      "files": {
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\admin\\src\\lib\\supabase.server.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\admin\\src\\app\\api\\trial\\route.ts": {
+          "editCount": 2,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\admin\\src\\lib\\supabase.ts": {
+          "editCount": 4,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-fnb\\src\\app\\api\\activate\\route.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-retail\\src\\app\\api\\activate\\route.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-fnb\\src\\app\\api\\trial\\status\\route.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-retail\\src\\app\\api\\trial\\status\\route.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-fnb\\src\\lib\\license.ts": {
+          "editCount": 4,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-retail\\src\\lib\\license.ts": {
+          "editCount": 4,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\packages\\auth\\src\\auth.ts": {
+          "editCount": 2,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\packages\\auth\\src\\license.ts": {
+          "editCount": 10,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\packages\\auth\\src\\device.ts": {
+          "editCount": 5,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\packages\\auth\\src\\index.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-fnb\\src\\features\\auth\\logic\\useActivation.ts": {
+          "editCount": 2,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-fnb\\src\\features\\auth\\logic\\useAuth.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-fnb\\src\\features\\auth\\ui\\ActivationForm.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-retail\\src\\features\\auth\\logic\\useDeviceBinding.ts": {
+          "editCount": 2,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-retail\\src\\features\\auth\\logic\\useAuth.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-fnb\\src\\features\\auth\\data\\queries.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-fnb\\src\\app\\settings\\page.tsx": {
+          "editCount": 3,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-fnb\\src\\app\\page.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-fnb\\src\\app\\globals.css": {
+          "editCount": 0,
+          "findings": ["side-tab:139", "side-tab:143", "side-tab:147", "side-tab:151"]
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-fnb\\src\\app\\login\\page.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-fnb\\src\\components\\layout\\TopBar.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-fnb\\src\\components\\layout\\LockScreen.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-fnb\\src\\components\\layout\\FnbShell.tsx": {
+          "editCount": 3,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-fnb\\src\\features\\settings\\ui\\DeviceInfo.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-fnb\\src\\features\\pos\\logic\\usePayment.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-retail\\src\\app\\page.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-retail\\src\\app\\sync\\SyncPageClient.tsx": {
+          "editCount": 3,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-retail\\src\\app\\login\\page.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-retail\\src\\features\\stock\\logic\\useStock.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-retail\\src\\app\\settings\\page.tsx": {
+          "editCount": 3,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-retail\\src\\features\\settings\\ui\\SettingsPage.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-retail\\src\\features\\settings\\ui\\DeviceSettings.tsx": {
+          "editCount": 2,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-retail\\src\\features\\sync\\logic\\useSync.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-retail\\src\\features\\pos\\logic\\usePayment.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-retail\\src\\components\\layout\\TopBar.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-retail\\src\\components\\layout\\PosShell.tsx": {
+          "editCount": 3,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-fluffy-fiesta\\apps\\kasir-retail\\src\\components\\layout\\LockScreen.tsx": {
+          "editCount": 3,
+          "findings": []
+        }
+      }
+    }
+  }
+}
