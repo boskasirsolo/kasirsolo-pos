@@ -1,1 +1,112 @@
-{"version":1,"sessions":{"7b7c9ba1-9e39-409d-9bfe-e230dcba74dc":{"updatedAt":1784826150044,"files":{"C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\landing\\src\\app\\landing.css":{"editCount":4,"findings":["gradient-text:137","gradient-text:144","gradient-text:1714","bounce-easing:2111:bouncein","layout-transition:437","layout-transition:484","layout-transition:2200","gradient-text:1722","bounce-easing:2119:bouncein","layout-transition:445","layout-transition:492","layout-transition:2208","gradient-text:142","gradient-text:149","gradient-text:1727","bounce-easing:2124:bouncein","layout-transition:450","layout-transition:497","layout-transition:2213","bounce-easing:2810:animate-bounce"]},"C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\components\\SkeletonLoader.tsx":{"editCount":1,"findings":[]},"C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\DashboardGrid.tsx":{"editCount":2,"findings":[]},"C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\ActivityFeed.tsx":{"editCount":2,"findings":[]},"C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\PendingPayments.tsx":{"editCount":1,"findings":[]},"C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\FollowUpQueue.tsx":{"editCount":1,"findings":[]},"C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\AppPopularity.tsx":{"editCount":1,"findings":[]},"C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\RecentActivations.tsx":{"editCount":1,"findings":[]}}}}}
+{
+  "version": 1,
+  "sessions": {
+    "7b7c9ba1-9e39-409d-9bfe-e230dcba74dc": {
+      "updatedAt": 1784826150044,
+      "files": {
+        "C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\landing\\src\\app\\landing.css": {
+          "editCount": 4,
+          "findings": [
+            "gradient-text:137",
+            "gradient-text:144",
+            "gradient-text:1714",
+            "bounce-easing:2111:bouncein",
+            "layout-transition:437",
+            "layout-transition:484",
+            "layout-transition:2200",
+            "gradient-text:1722",
+            "bounce-easing:2119:bouncein",
+            "layout-transition:445",
+            "layout-transition:492",
+            "layout-transition:2208",
+            "gradient-text:142",
+            "gradient-text:149",
+            "gradient-text:1727",
+            "bounce-easing:2124:bouncein",
+            "layout-transition:450",
+            "layout-transition:497",
+            "layout-transition:2213",
+            "bounce-easing:2810:animate-bounce"
+          ]
+        },
+        "C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\components\\SkeletonLoader.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\DashboardGrid.tsx": {
+          "editCount": 2,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\ActivityFeed.tsx": {
+          "editCount": 2,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\PendingPayments.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\FollowUpQueue.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\AppPopularity.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-automatic-sniffle\\apps\\admin\\src\\features\\dashboard\\ui\\RecentActivations.tsx": {
+          "editCount": 1,
+          "findings": []
+        }
+      }
+    },
+    "b1384eb3-38f9-40df-9ba0-46d406ca67d1": {
+      "updatedAt": 1784867303412,
+      "files": {
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-studious-telegram\\packages\\sync\\src\\push.ts": {
+          "editCount": 2,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-studious-telegram\\packages\\sync\\src\\pull.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-studious-telegram\\packages\\sync\\src\\engine.ts": {
+          "editCount": 2,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-studious-telegram\\packages\\sync\\src\\utils.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-studious-telegram\\packages\\utils\\src\\constants.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-studious-telegram\\packages\\db\\src\\index.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-studious-telegram\\packages\\db\\src\\types\\index.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-studious-telegram\\playwright.config.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-studious-telegram\\packages\\utils\\src\\utils.test.ts": {
+          "editCount": 2,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-studious-telegram\\vitest.config.ts": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\Admin\\.copilot\\repos\\copilot-worktrees\\kasirsolo-pos\\boskasirsolo-studious-telegram\\packages\\utils\\src\\index.ts": {
+          "editCount": 1,
+          "findings": []
+        }
+      }
+    }
+  }
+}

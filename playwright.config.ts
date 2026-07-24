@@ -38,23 +38,18 @@ export default defineConfig({
     },
   ],
 
-  // Disable webServer for now - start apps manually with: npm run dev
-  // Or update below if apps support parallel startup
   webServer: [
-    // {
-    //   command: 'npm run dev',
-    //   url: 'http://localhost:3003',
-    //   reuseExistingServer: !process.env.CI,
-    //   timeout: 120 * 1000,
-    // },
-    // {
-    //   command: 'npm run dev',
-    //   url: 'http://localhost:3010',
-    //   reuseExistingServer: !process.env.CI,
-    //   timeout: 120 * 1000,
-    //   env: {
-    //     PORT: '3010',
-    //   },
-    // },
+    {
+      command: 'pnpm --filter @kasirsolo/kasir-fnb dev',
+      url: 'http://localhost:3003',
+      reuseExistingServer: !process.env.CI,
+      timeout: 120 * 1000,
+    },
+    {
+      command: 'pnpm --filter @kasirsolo/kasir-retail dev',
+      url: 'http://localhost:3010',
+      reuseExistingServer: !process.env.CI,
+      timeout: 120 * 1000,
+    },
   ],
 });

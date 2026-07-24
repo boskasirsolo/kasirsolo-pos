@@ -1,7 +1,7 @@
-import { get, put } from "@kasirsolo/local-db";
-import type { PosSettings, SyncStatus } from "@kasirsolo/local-db";
-import type { SyncConfig, SyncResult, SyncableStore, SyncConflict } from "./types";
-import { ALL_SYNCABLE_STORES } from "./types";
+import { get, put } from '@kasirsolo/local-db';
+import type { PosSettings, SyncStatus } from '@kasirsolo/local-db';
+import type { SyncConfig, SyncResult, SyncableStore, SyncConflict } from './types';
+import { ALL_SYNCABLE_STORES } from './types';
 import {
   mapCloudToLocal,
   getCloudTable,
@@ -10,8 +10,8 @@ import {
   logInfo,
   logWarn,
   logError,
-} from "./utils";
-import { resolveConflict } from "./conflict";
+} from './utils';
+import { resolveConflict } from './conflict';
 
 // ---------------------------------------------------------------------------
 // Pull: Cloud → Local
@@ -27,7 +27,7 @@ export async function pullFromCloud(config: SyncConfig): Promise<SyncResult> {
   const allConflicts: SyncConflict[] = [];
   let totalPulled = 0;
 
-  logInfo("Pull started", { licenseId: config.licenseId });
+  logInfo('Pull started', { licenseId: config.licenseId });
 
   // Get the last sync timestamp from local settings
   const lastSyncAt = await getLastSyncTimestamp();
@@ -50,16 +50,18 @@ export async function pullFromCloud(config: SyncConfig): Promise<SyncResult> {
     // Update last sync timestamp in local settings
     await updateLastSyncTimestamp(now());
 
-    logInfo(`Pull completed: ${totalPulled} records pulled, ${allConflicts.length} conflicts, ${errors.length} errors`);
+    logInfo(
+      `Pull completed: ${totalPulled} records pulled, ${allConflicts.length} conflicts, ${errors.length} errors`,
+    );
   } catch (error) {
     const msg = getErrorMessage(error);
     errors.push(msg);
-    logError("Pull failed", msg);
+    logError('Pull failed', msg);
   }
 
   const completedAt = now();
   return {
-    direction: "pull",
+    direction: 'pull',
     pushed: 0,
     pulled: totalPulled,
     conflicts: allConflicts.length,
@@ -85,7 +87,7 @@ interface PullStoreResult {
 async function pullStore(
   config: SyncConfig,
   store: SyncableStore,
-  lastSyncAt: string | null
+  lastSyncAt: string | null,
 ): Promise<PullStoreResult> {
   const tableName = getCloudTable(store);
   const errors: string[] = [];
@@ -95,13 +97,13 @@ async function pullStore(
   // Build query: fetch records for this license updated since last sync
   let query = config.supabase
     .from(tableName)
-    .select("*")
-    .eq("license_id", config.licenseId)
-    .is("deleted_at", null)
-    .order("updated_at", { ascending: true });
+    .select('*')
+    .eq('license_id', config.licenseId)
+    .is('deleted_at', null)
+    .order('updated_at', { ascending: true });
 
   if (lastSyncAt) {
-    query = query.gt("updated_at", lastSyncAt);
+    query = query.gt('updated_at', lastSyncAt);
   }
 
   // Paginate through results
@@ -167,7 +169,7 @@ interface MergeResult {
 async function mergeCloudRecord(
   _config: SyncConfig,
   store: SyncableStore,
-  cloudRecord: Record<string, unknown>
+  cloudRecord: Record<string, unknown>,
 ): Promise<MergeResult> {
   const recordId = cloudRecord.id as string;
 
@@ -182,24 +184,26 @@ async function mergeCloudRecord(
 
   if (!localRecord) {
     // No local record: insert cloud version as "synced"
-    const localVersion = mapCloudToLocal(cloudRecord, "synced");
+    const localVersion = mapCloudToLocal(cloudRecord, 'synced');
     await put(store as never, localVersion as never);
     return { pulled: true, conflict: null };
   }
 
   const localSyncStatus = localRecord.sync_status as SyncStatus | undefined;
 
-  if (localSyncStatus === "synced") {
+  if (localSyncStatus === 'synced') {
     // Local record is already synced: safe to overwrite with cloud version
-    const localVersion = mapCloudToLocal(cloudRecord, "synced");
+    const localVersion = mapCloudToLocal(cloudRecord, 'synced');
     await put(store as never, localVersion as never);
     return { pulled: true, conflict: null };
   }
 
-  if (localSyncStatus === "pending") {
+  if (localSyncStatus === 'pending') {
     // CONFLICT: local has unsaved changes AND cloud has a newer version
-    const localUpdatedAt = (localRecord.updated_at as string) ?? (localRecord.created_at as string) ?? "";
-    const cloudUpdatedAt = (cloudRecord.updated_at as string) ?? (cloudRecord.created_at as string) ?? "";
+    const localUpdatedAt =
+      (localRecord.updated_at as string) ?? (localRecord.created_at as string) ?? '';
+    const cloudUpdatedAt =
+      (cloudRecord.updated_at as string) ?? (cloudRecord.created_at as string) ?? '';
 
     const resolution = resolveConflict({
       store,
@@ -210,9 +214,9 @@ async function mergeCloudRecord(
       cloudUpdatedAt,
     });
 
-    if (resolution.winner === "cloud") {
+    if (resolution.winner === 'cloud') {
       // Cloud wins: overwrite local
-      const localVersion = mapCloudToLocal(cloudRecord, "synced");
+      const localVersion = mapCloudToLocal(cloudRecord, 'synced');
       await put(store as never, localVersion as never);
       return { pulled: true, conflict: resolution.conflict };
     } else {
@@ -222,10 +226,10 @@ async function mergeCloudRecord(
     }
   }
 
-  if (localSyncStatus === "conflict") {
+  if (localSyncStatus === 'conflict') {
     // Already in conflict state: resolve with last-write-wins
-    const localUpdatedAt = (localRecord.updated_at as string) ?? "";
-    const cloudUpdatedAt = (cloudRecord.updated_at as string) ?? "";
+    const localUpdatedAt = (localRecord.updated_at as string) ?? '';
+    const cloudUpdatedAt = (cloudRecord.updated_at as string) ?? '';
 
     const resolution = resolveConflict({
       store,
@@ -238,14 +242,14 @@ async function mergeCloudRecord(
 
     const localVersion = mapCloudToLocal(
       resolution.winningRecord,
-      resolution.winner === "cloud" ? "synced" : "pending"
+      resolution.winner === 'cloud' ? 'synced' : 'pending',
     );
     await put(store as never, localVersion as never);
     return { pulled: true, conflict: resolution.conflict };
   }
 
   // Unknown status: treat as safe to overwrite
-  const localVersion = mapCloudToLocal(cloudRecord, "synced");
+  const localVersion = mapCloudToLocal(cloudRecord, 'synced');
   await put(store as never, localVersion as never);
   return { pulled: true, conflict: null };
 }
@@ -258,17 +262,17 @@ async function pullDeletedRecords(
   config: SyncConfig,
   store: SyncableStore,
   lastSyncAt: string,
-  errors: string[]
+  errors: string[],
 ): Promise<void> {
   const tableName = getCloudTable(store);
 
   try {
     const { data, error } = await config.supabase
       .from(tableName)
-      .select("id")
-      .eq("license_id", config.licenseId)
-      .not("deleted_at", "is", null)
-      .gt("deleted_at", lastSyncAt);
+      .select('id')
+      .eq('license_id', config.licenseId)
+      .not('deleted_at', 'is', null)
+      .gt('deleted_at', lastSyncAt);
 
     if (error) {
       errors.push(`Pull deleted ${store}: ${error.message}`);
@@ -287,8 +291,9 @@ async function pullDeletedRecords(
           // For safety, we'll just log it - actual deletion should be explicit
           logInfo(`Cloud record deleted: ${store}/${deletedRecord.id}`);
         }
-      } catch {
-        // Ignore
+      } catch (err) {
+        const msg = `Failed to check local record for deleted ${store}/${(deletedRecord as { id?: string }).id}: ${getErrorMessage(err)}`;
+        logWarn(msg);
       }
     }
   } catch (err) {
@@ -302,8 +307,8 @@ async function pullDeletedRecords(
 
 async function getLastSyncTimestamp(): Promise<string | null> {
   try {
-    const settings = await get("settings", "settings");
-    if (settings && typeof settings === "object" && "last_synced_at" in settings) {
+    const settings = await get('settings', 'settings');
+    if (settings && typeof settings === 'object' && 'last_synced_at' in settings) {
       return (settings as PosSettings).last_synced_at;
     }
   } catch {
@@ -314,16 +319,16 @@ async function getLastSyncTimestamp(): Promise<string | null> {
 
 async function updateLastSyncTimestamp(timestamp: string): Promise<void> {
   try {
-    const settings = await get("settings", "settings");
-    if (settings && typeof settings === "object") {
-      await put("settings", {
+    const settings = await get('settings', 'settings');
+    if (settings && typeof settings === 'object') {
+      await put('settings', {
         ...(settings as PosSettings),
         last_synced_at: timestamp,
         updated_at: timestamp,
       } as never);
     }
   } catch (err) {
-    logWarn("Failed to update last_synced_at", getErrorMessage(err));
+    logWarn('Failed to update last_synced_at', getErrorMessage(err));
   }
 }
 
@@ -334,15 +339,15 @@ async function updateLastSyncTimestamp(timestamp: string): Promise<void> {
 export async function pullSingleRecord(
   config: SyncConfig,
   store: SyncableStore,
-  recordId: string
+  recordId: string,
 ): Promise<MergeResult> {
   const tableName = getCloudTable(store);
 
   const { data, error } = await config.supabase
     .from(tableName)
-    .select("*")
-    .eq("id", recordId)
-    .eq("license_id", config.licenseId)
+    .select('*')
+    .eq('id', recordId)
+    .eq('license_id', config.licenseId)
     .single();
 
   if (error) {
