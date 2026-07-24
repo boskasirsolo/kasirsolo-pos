@@ -12,6 +12,7 @@
     "clean": "rm -rf .next .turbo node_modules"
   },
   "dependencies": {
+    "@kasirsolo/auth": "workspace:*",
     "@kasirsolo/db": "workspace:*",
     "@kasirsolo/local-db": "workspace:*",
     "@kasirsolo/sync": "workspace:*",
