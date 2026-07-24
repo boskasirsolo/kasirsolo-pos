@@ -1,6 +1,6 @@
-import type { SyncStatus } from "@kasirsolo/local-db";
-import type { SyncableStore } from "./types";
-import { STORE_TO_TABLE } from "./types";
+import type { SyncStatus } from '@kasirsolo/local-db';
+import type { SyncableStore } from './types';
+import { STORE_TO_TABLE } from './types';
 
 // ---------------------------------------------------------------------------
 // Local → Cloud mapping
@@ -11,10 +11,12 @@ import { STORE_TO_TABLE } from "./types";
  */
 export function mapLocalToCloud<T>(
   record: T,
-  licenseId: string
-): Omit<T, "sync_status"> & { license_id: string } {
+  licenseId: string,
+): Omit<T, 'sync_status'> & { license_id: string } {
   const { sync_status, ...rest } = record as Record<string, unknown>;
-  return { ...rest, license_id: licenseId } as unknown as Omit<T, "sync_status"> & { license_id: string };
+  return { ...rest, license_id: licenseId } as unknown as Omit<T, 'sync_status'> & {
+    license_id: string;
+  };
 }
 
 /**
@@ -22,8 +24,8 @@ export function mapLocalToCloud<T>(
  */
 export function mapCloudToLocal<T extends { license_id?: string; deleted_at?: string | null }>(
   record: T,
-  syncStatus: SyncStatus = "synced"
-): Omit<T, "license_id" | "deleted_at"> & { sync_status: SyncStatus } {
+  syncStatus: SyncStatus = 'synced',
+): Omit<T, 'license_id' | 'deleted_at'> & { sync_status: SyncStatus } {
   const { license_id, deleted_at, ...rest } = record;
   return { ...rest, sync_status: syncStatus };
 }
@@ -36,18 +38,24 @@ export function mapCloudToLocal<T extends { license_id?: string; deleted_at?: st
  * Returns true if `a` is strictly newer than `b` based on timestamp strings.
  * Handles both ISO strings and date objects.
  */
-export function isNewerThan(a: string | Date | null | undefined, b: string | Date | null | undefined): boolean {
+export function isNewerThan(
+  a: string | Date | null | undefined,
+  b: string | Date | null | undefined,
+): boolean {
   if (!a) return false;
   if (!b) return true;
-  const timeA = typeof a === "string" ? new Date(a).getTime() : a.getTime();
-  const timeB = typeof b === "string" ? new Date(b).getTime() : b.getTime();
+  const timeA = typeof a === 'string' ? new Date(a).getTime() : a.getTime();
+  const timeB = typeof b === 'string' ? new Date(b).getTime() : b.getTime();
   return timeA > timeB;
 }
 
 /**
  * Returns the newer of two timestamps. Handles null values.
  */
-export function newerTimestamp(a: string | null | undefined, b: string | null | undefined): string | null {
+export function newerTimestamp(
+  a: string | null | undefined,
+  b: string | null | undefined,
+): string | null {
   if (!a && !b) return null;
   if (!a) return b!;
   if (!b) return a;
@@ -64,7 +72,7 @@ export function newerTimestamp(a: string | null | undefined, b: string | null | 
  */
 export function diffRecords<T extends Record<string, unknown>>(
   local: T,
-  cloud: T
+  cloud: T,
 ): Partial<Record<keyof T, { local: unknown; cloud: unknown }>> {
   const diff: Partial<Record<keyof T, { local: unknown; cloud: unknown }>> = {};
 
@@ -75,12 +83,12 @@ export function diffRecords<T extends Record<string, unknown>>(
     const cloudVal = cloud[key];
 
     // Skip internal fields
-    if (key === "sync_status" || key === "license_id" || key === "deleted_at") {
+    if (key === 'sync_status' || key === 'license_id' || key === 'deleted_at') {
       continue;
     }
 
     // Deep comparison for objects/arrays
-    if (typeof localVal === "object" || typeof cloudVal === "object") {
+    if (typeof localVal === 'object' || typeof cloudVal === 'object') {
       if (JSON.stringify(localVal) !== JSON.stringify(cloudVal)) {
         diff[key] = { local: localVal, cloud: cloudVal };
       }
@@ -129,15 +137,6 @@ export function now(): string {
   return new Date().toISOString();
 }
 
-/**
- * Parse an ISO timestamp or return null if invalid.
- */
-export function parseTimestamp(value: string | null | undefined): Date | null {
-  if (!value) return null;
-  const d = new Date(value);
-  return isNaN(d.getTime()) ? null : d;
-}
-
 // ---------------------------------------------------------------------------
 // Error helpers
 // ---------------------------------------------------------------------------
@@ -147,11 +146,11 @@ export function parseTimestamp(value: string | null | undefined): Date | null {
  */
 export function getErrorMessage(error: unknown): string {
   if (error instanceof Error) return error.message;
-  if (typeof error === "string") return error;
+  if (typeof error === 'string') return error;
   try {
     return JSON.stringify(error);
   } catch {
-    return "Unknown error";
+    return 'Unknown error';
   }
 }
 
@@ -159,16 +158,16 @@ export function getErrorMessage(error: unknown): string {
 // Logging helpers
 // ---------------------------------------------------------------------------
 
-const LOG_PREFIX = "[sync]";
+const LOG_PREFIX = '[sync]';
 
 export function logInfo(message: string, data?: unknown): void {
-  console.info(`${LOG_PREFIX} ${message}`, data ?? "");
+  console.info(`${LOG_PREFIX} ${message}`, data ?? '');
 }
 
 export function logWarn(message: string, data?: unknown): void {
-  console.warn(`${LOG_PREFIX} ${message}`, data ?? "");
+  console.warn(`${LOG_PREFIX} ${message}`, data ?? '');
 }
 
 export function logError(message: string, data?: unknown): void {
-  console.error(`${LOG_PREFIX} ${message}`, data ?? "");
+  console.error(`${LOG_PREFIX} ${message}`, data ?? '');
 }
