@@ -1,0 +1,15 @@
+# Default owners for everything
+* @boskasirsolo/engineering
+
+# Apps
+/apps/admin @boskasirsolo/engineering
+/apps/landing @boskasirsolo/engineering
+/apps/kasir-retail @boskasirsolo/engineering
+/apps/kasir-fnb @boskasirsolo/engineering
+
+# Packages
+/packages/* @boskasirsolo/engineering
+
+# Infra
+/supabase/* @boskasirsolo/engineering
+/turbo.json @boskasirsolo/engineering
