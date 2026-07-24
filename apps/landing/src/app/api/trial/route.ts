@@ -45,6 +45,20 @@ setInterval(cleanupExpiredEntries, 5 * 60 * 1000);
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
+// Map app slug to ksp_apps UUID (must match seed data in 002_seed.sql)
+const APP_SLUG_TO_ID: Record<string, string> = {};
+
+async function getAppId(supabase: any, slug: string): Promise<string | null> {
+  // Try cache first
+  if (APP_SLUG_TO_ID[slug]) return APP_SLUG_TO_ID[slug];
+  const { data, error } = await supabase.from('ksp_apps').select('id').eq('slug', slug).single();
+  if (!error && data) {
+    APP_SLUG_TO_ID[slug] = data.id;
+    return data.id;
+  }
+  return null;
+}
+
 const trialPayloadSchema = z.object({
   nama: z.string().min(3, 'Nama minimal 3 karakter').trim(),
   alamat: z.string().min(5, 'Alamat minimal 5 karakter').trim(),
@@ -94,17 +108,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         success: true,
         message: 'Trial berhasil didaftarkan (demo mode)',
-        client: { id: 'demo', ...data, status: 'trial' },
+        client: { id: 'demo', name: data.nama, status: 'trial' },
       });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Check for existing trial with same WA number
+    // Check for existing trial with same WA number (column is 'whatsapp')
     const { data: existing } = await supabase
       .from('ksp_clients')
-      .select('id, status')
-      .eq('wa', data.wa)
+      .select('id')
+      .eq('whatsapp', data.wa)
       .single();
 
     if (existing) {
@@ -117,18 +131,32 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create client with trial status
+    // Resolve app slug to ksp_apps UUID
+    const appId = await getAppId(supabase, data.app);
+    if (!appId) {
+      return NextResponse.json(
+        { success: false, errors: { form: 'Aplikasi tidak valid. Silakan pilih ulang.' } },
+        { status: 400 }
+      );
+    }
+
+    // Generate unique placeholder email for trial (email is required NOT NULL in DB)
+    const trialEmail = `${data.wa}@trial.kspsolo.app`;
+
+    // Create client record — use actual DB column names
     const { data: client, error: clientError } = await supabase
       .from('ksp_clients')
       .insert({
-        nama: data.nama,
-        alamat: data.alamat,
-        wa: data.wa,
-        app: data.app,
-        status: 'trial',
-        created_at: new Date().toISOString(),
+        name: data.nama,
+        address: data.alamat,
+        whatsapp: data.wa,
+        email: trialEmail,
+        metadata: {
+          app: data.app,
+          trial_source: 'landing_page',
+        },
       })
-      .select()
+      .select('id, name')
       .single();
 
     if (clientError) {
@@ -139,17 +167,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Log the trial registration
+    // Create trial license (7 days from now)
+    const trialEndsAt = new Date();
+    trialEndsAt.setDate(trialEndsAt.getDate() + 7);
+
+    await supabase.from('ksp_licenses').insert({
+      client_id: client.id,
+      app_id: appId,
+      license_key: `TRIAL-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
+      plan_type: 'offline',
+      status: 'trial',
+      trial_ends_at: trialEndsAt.toISOString(),
+    });
+
+    // Log the trial registration (use valid enum value + correct column name)
     await supabase.from('ksp_logs').insert({
-      action: 'trial_registered',
+      action: 'auth.register',
       entity_type: 'client',
       entity_id: client.id,
-      details: {
-        nama: data.nama,
+      metadata: {
+        name: data.nama,
         app: data.app,
         source: 'landing_page',
       },
-      created_at: new Date().toISOString(),
     });
 
     return NextResponse.json({
@@ -157,8 +197,7 @@ export async function POST(request: NextRequest) {
       message: 'Trial berhasil didaftarkan!',
       client: {
         id: client.id,
-        nama: client.nama,
-        status: client.status,
+        name: client.name,
       },
     });
   } catch (error) {
