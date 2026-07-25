@@ -246,7 +246,9 @@ This store typically holds a single record (`id: 'current'`). Cart state is over
 - `theme` - light / dark / system
 - `language` - id / en
 - `last_sync_at` - Timestamp of last successful sync
-- `license_key` - Cached license key for offline validation
+- `license_id` - Cached license UUID for offline reference
+- `client_whatsapp` - Cached owner WhatsApp number (for display, not auth)
+- `auth_token` - Cached JWT session token for offline-to-online transition
 
 ---
 

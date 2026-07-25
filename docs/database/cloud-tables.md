@@ -2,11 +2,19 @@
 
 All cloud tables are stored in Supabase PostgreSQL. They use the `ksp_` prefix (KasirSolo Platform). All tables have Row Level Security (RLS) enabled.
 
+## Auth Context
+
+KASIRSOLO uses **dual auth**:
+- **Kasir apps**: Custom auth via `whatsapp` + `pin_hash` (bcrypt). Does NOT use Supabase Auth (`auth.users`).
+- **Admin dashboard**: Supabase Auth (email + password) via `auth_user_id` → `auth.users`.
+
+RLS policies currently reference `auth.uid()` (Supabase Auth). These will need to be updated when the custom WA+PIN auth is implemented — kasir app requests will use a service role with custom JWT claims instead.
+
 ---
 
 ## ksp_apps
 
-**Purpose**: Product catalog of all 8 KASIRSOLO applications. Rarely changes; seeded via migration.
+**Purpose**: Dynamic product catalog of KASIRSOLO applications. Managed via admin dashboard — apps can be added, edited, or deactivated at any time. Do NOT hardcode the number of apps anywhere in the codebase.
 
 | Column | Type | Nullable | Default | Description |
 |--------|------|----------|---------|-------------|
@@ -25,21 +33,24 @@ All cloud tables are stored in Supabase PostgreSQL. They use the `ksp_` prefix (
 
 **RLS**: Public read (active apps only), admin write.
 
+**Important**: Landing page, trial form dropdown, and admin dashboard all fetch apps from this table. Never hardcode app lists.
+
 ---
 
 ## ksp_clients
 
-**Purpose**: Customer/business records. Each client is a business entity that purchases licenses.
+**Purpose**: Customer/business records. Each client is a business entity that purchases licenses. Primary identifier is **WhatsApp number** (not email).
 
 | Column | Type | Nullable | Default | Description |
 |--------|------|----------|---------|-------------|
 | `id` | UUID | NO | gen_random_uuid() | Primary key |
-| `auth_user_id` | UUID | YES | - | FK to auth.users (Supabase Auth) |
+| `auth_user_id` | UUID | YES | - | FK to auth.users — **admin dashboard only**. NULL for kasir-only clients. |
 | `name` | VARCHAR(200) | NO | - | Contact person name |
 | `business_name` | VARCHAR(200) | YES | - | Business/company name |
-| `email` | VARCHAR(255) | NO | - | Unique email address |
-| `phone` | VARCHAR(20) | YES | - | Phone number |
-| `whatsapp` | VARCHAR(20) | YES | - | WhatsApp number |
+| `whatsapp` | VARCHAR(20) | **NO** | - | **Primary identifier**. Unique WhatsApp number (format: 08xx or +628xx) |
+| `pin_hash` | VARCHAR(255) | YES | - | **Bcrypt hash** of 6-digit PIN. Used for kasir app login. |
+| `email` | VARCHAR(255) | YES | - | Email address — **nullable**. Only required for admin dashboard users. |
+| `phone` | VARCHAR(20) | YES | - | Phone number (if different from WA) |
 | `address` | TEXT | YES | - | Full address |
 | `city` | VARCHAR(100) | YES | - | City name |
 | `province` | VARCHAR(100) | YES | - | Province name |
@@ -49,7 +60,13 @@ All cloud tables are stored in Supabase PostgreSQL. They use the `ksp_` prefix (
 | `created_at` | TIMESTAMPTZ | NO | NOW() | Record creation time |
 | `updated_at` | TIMESTAMPTZ | NO | NOW() | Last modification time |
 
-**RLS**: Clients can only read/update their own record (matched by auth_user_id).
+**Auth flow**:
+- Registration: user provides WA number → server generates 6-digit PIN → hashes with bcrypt → stores in `pin_hash` → sends plain PIN via WhatsApp API
+- Login: user enters WA + PIN → server finds client by `whatsapp` → verifies `pin_hash` with bcrypt → issues JWT
+
+**RLS**: Clients can only read/update their own record.
+
+**⚠️ Migration needed**: `006_wa_pin_auth.sql` — make `whatsapp` NOT NULL + UNIQUE, add `pin_hash`, make `email` nullable, add index on `whatsapp`.
 
 ---
 
@@ -62,10 +79,10 @@ All cloud tables are stored in Supabase PostgreSQL. They use the `ksp_` prefix (
 | `id` | UUID | NO | gen_random_uuid() | Primary key |
 | `client_id` | UUID | NO | - | FK to ksp_clients |
 | `app_id` | UUID | NO | - | FK to ksp_apps |
-| `license_key` | VARCHAR(100) | NO | - | Unique license key (e.g., RET-A1B2-C3D4-E5F6-G7H8) |
+| `license_key` | VARCHAR(100) | NO | - | Unique license key (e.g., RET-A1B2-C3D4-E5F6-G7H8). Internal tracking only — NOT used for user login. |
 | `plan_type` | ksp_plan_type | NO | offline | offline / cloud_monthly / cloud_yearly |
-| `status` | ksp_license_status | NO | trial | trial / active / expired / suspended |
-| `max_devices` | INTEGER | NO | 2 | Maximum active devices (1-10) |
+| `status` | ksp_license_status | NO | trial | trial / active / expired / suspended / **revoked** / **pending** |
+| `max_devices` | INTEGER | NO | 2 | Maximum active devices (always 2 per business rule) |
 | `trial_ends_at` | TIMESTAMPTZ | YES | - | When trial period ends |
 | `activated_at` | TIMESTAMPTZ | YES | - | When license was activated |
 | `expires_at` | TIMESTAMPTZ | YES | - | When license expires (cloud plans) |
@@ -74,10 +91,11 @@ All cloud tables are stored in Supabase PostgreSQL. They use the `ksp_` prefix (
 | `updated_at` | TIMESTAMPTZ | NO | NOW() | Last modification time |
 
 **Key rules**:
-- `max_devices` CHECK: 1-10
+- `max_devices` CHECK: 1-10 (but business rule: always set to 2)
 - Offline licenses: `expires_at` is NULL (never expires)
-- Trial licenses: `trial_ends_at` is set to 14 days from creation
+- Trial licenses: `trial_ends_at` is set to **7 days** from creation (extendable via sharing)
 - Cloud licenses: `expires_at` tracks subscription end
+- `license_key` is auto-generated for internal tracking — users authenticate with WA+PIN, not license key
 
 **RLS**: Clients see their own licenses via client_id chain.
 
@@ -93,7 +111,7 @@ All cloud tables are stored in Supabase PostgreSQL. They use the `ksp_` prefix (
 | `license_id` | UUID | NO | - | FK to ksp_licenses |
 | `fingerprint` | VARCHAR(255) | NO | - | Browser/device fingerprint |
 | `device_name` | VARCHAR(200) | YES | - | Human-readable name (e.g., "Kasir 1") |
-| `device_number` | INTEGER | NO | - | Slot number (1, 2, ...) |
+| `device_number` | INTEGER | NO | - | Slot number (1 or 2) |
 | `user_agent` | TEXT | YES | - | Browser user agent string |
 | `ip_address` | INET | YES | - | Last known IP address |
 | `is_active` | BOOLEAN | NO | true | Whether device is currently bound |
@@ -106,6 +124,7 @@ All cloud tables are stored in Supabase PostgreSQL. They use the `ksp_` prefix (
 - UNIQUE (license_id, fingerprint): one fingerprint per license
 - UNIQUE (license_id, device_number): one device per slot
 - Trigger `ksp_check_max_devices`: prevents exceeding max_devices active count
+- Business rule: max 2 devices per license
 
 **RLS**: Via license -> client ownership chain.
 
@@ -113,19 +132,19 @@ All cloud tables are stored in Supabase PostgreSQL. They use the `ksp_` prefix (
 
 ## ksp_users
 
-**Purpose**: Application users with roles. Multiple users can share a license (e.g., owner + cashier).
+**Purpose**: Application users with roles. Multiple users can share a license (e.g., owner + cashier). Each user has their own PIN for quick-switch on shared devices.
 
 | Column | Type | Nullable | Default | Description |
 |--------|------|----------|---------|-------------|
 | `id` | UUID | NO | gen_random_uuid() | Primary key |
-| `auth_user_id` | UUID | YES | - | FK to auth.users (unique) |
 | `license_id` | UUID | NO | - | FK to ksp_licenses |
 | `client_id` | UUID | NO | - | FK to ksp_clients |
 | `name` | VARCHAR(200) | NO | - | User display name |
-| `email` | VARCHAR(255) | NO | - | User email |
+| `whatsapp` | VARCHAR(20) | YES | - | User WhatsApp number (required for owner/manager, optional for cashier) |
+| `email` | VARCHAR(255) | YES | - | User email — **nullable** (not required for kasir users) |
 | `phone` | VARCHAR(20) | YES | - | User phone |
 | `role` | ksp_user_role | NO | cashier | owner / manager / cashier |
-| `pin` | VARCHAR(6) | YES | - | Quick-access PIN for POS |
+| `pin_hash` | VARCHAR(255) | YES | - | **Bcrypt hash** of 6-digit PIN. Used for quick-switch on POS. |
 | `avatar_url` | TEXT | YES | - | Profile image URL |
 | `is_active` | BOOLEAN | NO | true | Active status |
 | `last_login_at` | TIMESTAMPTZ | YES | - | Last login timestamp |
@@ -134,9 +153,17 @@ All cloud tables are stored in Supabase PostgreSQL. They use the `ksp_` prefix (
 | `updated_at` | TIMESTAMPTZ | NO | NOW() | Last modification time |
 
 **Role permissions**:
-- **owner**: Full access. Manage users, view all reports, change settings.
-- **manager**: View reports, manage inventory, limited settings.
-- **cashier**: POS operations only. Cannot view reports or settings.
+- **owner**: Full access. Manage users, view all reports, change settings. Authenticates via WA+PIN at `ksp_clients` level.
+- **manager**: View reports, manage inventory, limited settings. Has own PIN for quick-switch.
+- **cashier**: POS operations only. Cannot view reports or settings. PIN-only quick-switch.
+
+**Auth flow for multi-user**:
+1. Owner logs in with WA+PIN (validated against `ksp_clients.pin_hash`)
+2. Device is bound to the license
+3. On that device, cashier/manager can switch by entering their `ksp_users.pin_hash`
+4. No WA number needed for cashier quick-switch — just PIN
+
+**⚠️ Migration needed**: `006_wa_pin_auth.sql` — rename `pin` to `pin_hash` (VARCHAR 255), make `email` nullable, remove `auth_user_id` FK.
 
 **RLS**: Users see own record + peers on same license. Owners manage all users on their license.
 
@@ -338,11 +365,11 @@ All cloud tables are stored in Supabase PostgreSQL. They use the `ksp_` prefix (
 - `app.*` - Application metadata
 - `brand.*` - Brand colors and assets
 - `company.*` - Company information
-- `trial.*` - Trial configuration
-- `license.*` - License defaults
+- `trial.*` - Trial configuration (default: 7 days)
+- `license.*` - License defaults (max_devices: 2)
 - `pricing.*` - Plan pricing details
 - `site.*` - Portfolio site defaults
-- `notification.*` - Notification configuration
+- `notification.*` - Notification configuration (WhatsApp API settings)
 - `maintenance.*` - Maintenance mode
 
 **RLS**: Public settings readable by all. Admin manages all settings.
