@@ -2,21 +2,26 @@
 
 ## Overview
 
-KASIRSOLO uses Supabase Auth for authentication. The auth system supports email/password login, role-based access control, and PIN-based quick access for POS cashiers.
+KASIRSOLO uses a **dual auth strategy**:
+- **Admin dashboard**: Supabase Auth with email + password (platform owner only)
+- **All kasir apps**: Custom auth with **WhatsApp number + 6-digit PIN** (all end-users)
+
+This decision reflects the target market: Indonesian small business owners and cashiers who are more familiar with WhatsApp numbers than email addresses.
 
 ---
 
 ## User Types
 
 | Type | Auth Method | Where | Role |
-|------|------------|-------|------|
-| Client/Owner | Email + Password | Landing, Admin, POS | owner |
-| Manager | Email + Password or PIN | POS | manager |
-| Cashier | PIN only | POS | cashier |
+|------|-------------|-------|------|
+| Platform Admin | Email + Password (Supabase Auth) | Admin Dashboard | admin |
+| Client/Owner | WhatsApp + PIN | POS Apps | owner |
+| Manager | WhatsApp + PIN | POS Apps | manager |
+| Cashier | WhatsApp + PIN | POS Apps | cashier |
 
 ---
 
-## Registration Flow
+## Registration Flow (Landing Page → Trial)
 
 ```
 LANDING PAGE (/coba-gratis)
@@ -24,146 +29,92 @@ LANDING PAGE (/coba-gratis)
         v
 +-------------------+
 | Registration Form |
-| - name            |
-| - business_name   |
-| - email           |
+| - nama_bisnis     |
+| - nama_lengkap    |
 | - whatsapp        |
-| - city            |
-| - app (select)    |
+| - alamat          |
+| - app (select     |
+|   from ksp_apps)  |
 +--------+----------+
          |
          v
 +--------+----------+
-| Server Action:    |
-| 1. supabase.auth  |
-|    .signUp({      |
-|      email,       |
-|      password:    |
-|      generated    |
-|    })             |
+| Server Action:     |
+| 1. Validate WA     |
+|    number format   |
+| 2. Check duplicate |
+|    WA number       |
 +--------+----------+
          |
          v
 +--------+----------+
-| 2. INSERT INTO    |
-|    ksp_clients    |
-|    (name, email,  |
-|     business_name,|
-|     auth_user_id) |
+| 3. INSERT INTO     |
+|    ksp_clients     |
+|    (name, phone,   |
+|     business_name, |
+|     whatsapp)      |
 +--------+----------+
          |
          v
 +--------+----------+
-| 3. INSERT INTO    |
-|    ksp_licenses   |
-|    (client_id,    |
-|     app_id,       |
-|     status: trial,|
-|     trial_ends_at:|
-|     +14 days)     |
+| 4. INSERT INTO     |
+|    ksp_licenses    |
+|    (client_id,     |
+|     app_id,        |
+|     status: trial, |
+|     trial_ends_at: |
+|     +14 days)      |
 +--------+----------+
          |
          v
 +--------+----------+
-| 4. INSERT INTO    |
-|    ksp_users      |
-|    (auth_user_id, |
-|     license_id,   |
-|     client_id,    |
-|     role: owner)  |
+| 5. INSERT INTO     |
+|    ksp_users       |
+|    (client_id,     |
+|     license_id,    |
+|     whatsapp,      |
+|     pin: generated,|
+|     role: owner)   |
 +--------+----------+
          |
          v
 +--------+----------+
-| 5. Send welcome   |
-|    email with      |
-|    credentials     |
-+--------+----------+
-         |
-         v
-+--------+----------+
-| 6. INSERT INTO    |
-|    ksp_logs       |
-|    (action:       |
-|     auth.register)|
+| 6. Send WA message |
+|    with login      |
+|    credentials:    |
+|    - WA number     |
+|    - PIN (6 digit) |
+|    - App URL       |
 +--------+----------+
          |
          v
   /coba-gratis/berhasil
-  (Success page with
-   login instructions)
 ```
 
 ---
 
-## Login Flow
+## Login Flow (All Kasir Apps)
 
-### Owner/Manager Login (Email + Password)
+### WhatsApp + PIN Login
 
 ```
-LOGIN PAGE (/login)
+POS APP (/login)
         |
         v
 +-------------------+
 | Login Form        |
-| - email           |
-| - password        |
+| - WhatsApp number |
+| - PIN (6 digits)  |
+| [_ _ _ _ _ _]     |
 +--------+----------+
          |
          v
 +--------+----------+
-| supabase.auth     |
-|   .signInWith     |
-|   Password({      |
-|     email,        |
-|     password      |
-|   })              |
-+--------+----------+
-         |
-    +----+----+
-    |         |
-  SUCCESS   FAILURE
-    |         |
-    v         v
-+---+---+  Show error
-| Fetch |  message
-| ksp_  |
-| users |
-| (by   |
-| auth_ |
-| user  |
-| _id)  |
-+---+---+
-    |
-    v
-+---+---+
-| Check |
-| role  |
-+---+---+
-    |
-    +----> owner    --> /dashboard (full access)
-    +----> manager  --> / (POS + reports)
-    +----> cashier  --> / (POS only)
-```
-
-### Cashier Login (PIN)
-
-```
-POS APP (/)
-        |
-        v
-+-------------------+
-| PIN Entry Screen  |
-| [_ _ _ _ _ _]    |
-+--------+----------+
-         |
-         v
-+--------+----------+
-| Query ksp_users   |
-| WHERE pin = input |
-| AND license_id =  |
-|   current_license |
-| AND is_active     |
+| Query ksp_users    |
+| WHERE whatsapp =   |
+|   input_whatsapp   |
+| AND pin = input_pin|
+| AND is_active      |
 +--------+----------+
          |
     +----+----+
@@ -171,83 +122,78 @@ POS APP (/)
   MATCH    NO MATCH
     |         |
     v         v
-  Set user  Show error
-  context   "PIN salah"
-  in state
+  Fetch    Show error
+  license  "Nomor WA atau
+  + client  PIN salah"
     |
     v
-  POS screen
-  (with user's
-   role permissions)
+  Check license status
+    |
+    +----> trial → check trial_ends_at
+    +----> active → proceed
+    +----> expired → show renewal CTA
+    +----> suspended → show contact admin
+    |
+    v
+  Check role → route accordingly
+    +----> owner   → /dashboard (full access)
+    +----> manager → / (POS + reports)
+    +----> cashier → / (POS only)
+```
+
+### Quick PIN Switch (Multi-User on Same Device)
+
+```
+POS APP (active session)
+  User taps "Ganti User"
+        |
+        v
++-------------------+
+| PIN Entry Screen  |
+| [_ _ _ _ _ _]     |
++--------+----------+
+         |
+         v
+| Query ksp_users    |
+| WHERE pin = input  |
+| AND license_id =   |
+|   current_license  |
+| AND is_active      |
+         |
+    MATCH → Switch user context
+    NO MATCH → Show error "PIN salah"
+```
+
+---
+
+## Admin Dashboard Login (Email + Password)
+
+```
+ADMIN (/login) → supabase.auth.signInWithPassword → Verify admin role → /dashboard
 ```
 
 ---
 
 ## Session Management
 
-### Web Session
-- Supabase Auth uses JWT tokens stored in cookies
-- Access token expires after 1 hour
-- Refresh token automatically renews the session
-- Next.js middleware validates the session on each request
-
-### Offline Session
-- Cached auth state in IndexedDB (`pos_settings.auth_cache`)
-- License key cached for offline validation
-- PIN-based access works offline (PIN stored in `ksp_users.pin`, cached locally)
+### Kasir App Session
+- Custom session stored in IndexedDB (`pos_settings.auth_cache`)
+- Session contains: user_id, license_id, client_id, role, whatsapp, name
+- Session persists across browser restarts
+- No JWT tokens — validated against ksp_users on app start
+- Offline access: cached session allows POS use without internet
 - Online re-validation required every 7 days
+
+### Admin Session
+- Supabase Auth JWT tokens in cookies
+- Auto-refresh session
 
 ---
 
-## Role Management
-
-### Adding a New User (Owner action)
-
-```
-SETTINGS > USERS > ADD USER
-        |
-        v
-+-------------------+
-| New User Form     |
-| - name            |
-| - email           |
-| - phone           |
-| - role (select)   |
-| - PIN (6 digits)  |
-+--------+----------+
-         |
-         v
-+--------+----------+
-| If role needs     |
-| Supabase auth:    |
-| supabase.auth     |
-|   .admin.create   |
-|   User({email,    |
-|     password})    |
-+--------+----------+
-         |
-         v
-+--------+----------+
-| INSERT INTO       |
-| ksp_users         |
-| (auth_user_id,    |
-|  license_id,      |
-|  client_id,       |
-|  name, email,     |
-|  role, pin)       |
-+--------+----------+
-         |
-         v
-+--------+----------+
-| Log action:       |
-| user.create       |
-+--------+----------+
-```
-
-### Role Permissions Matrix
+## Role Permissions Matrix
 
 | Permission | Owner | Manager | Cashier |
-|-----------|-------|---------|---------|
+|------------|-------|---------|---------|
 | Make sales | Yes | Yes | Yes |
 | View own sales | Yes | Yes | Yes |
 | View all sales | Yes | Yes | No |
@@ -264,73 +210,8 @@ SETTINGS > USERS > ADD USER
 
 ---
 
-## Logout Flow
+## PIN Reset
 
 ```
-USER MENU > LOGOUT
-        |
-        v
-+-------------------+
-| supabase.auth     |
-|   .signOut()      |
-+--------+----------+
-         |
-         v
-+--------+----------+
-| Clear local state |
-| (Zustand store    |
-|  reset)           |
-+--------+----------+
-         |
-         v
-+--------+----------+
-| Log action:       |
-| auth.logout       |
-+--------+----------+
-         |
-         v
-+--------+----------+
-| Redirect to       |
-| /login            |
-+--------+----------+
-```
-
-Note: Logging out does NOT clear IndexedDB data. The POS data remains on the device for the next login session.
-
----
-
-## Password Reset
-
-```
-LOGIN > FORGOT PASSWORD
-        |
-        v
-+-------------------+
-| Enter email       |
-+--------+----------+
-         |
-         v
-+--------+----------+
-| supabase.auth     |
-|   .resetPassword  |
-|   ForEmail(email) |
-+--------+----------+
-         |
-         v
-  Email sent with
-  reset link
-         |
-         v
-  User clicks link
-         |
-         v
-+--------+----------+
-| supabase.auth     |
-|   .updateUser({   |
-|     password: new |
-|   })              |
-+--------+----------+
-         |
-         v
-  Redirect to /login
+LOGIN > LUPA PIN → Enter WhatsApp → Verify exists → Generate new PIN → Send via WA → Redirect to /login
 ```
