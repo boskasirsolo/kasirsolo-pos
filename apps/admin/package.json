@@ -15,7 +15,7 @@
     "@kasirsolo/db": "workspace:*",
     "@kasirsolo/ui": "workspace:*",
     "@kasirsolo/utils": "workspace:*",
-    "@supabase/supabase-js": "^2.49.0",
+    "@supabase/supabase-js": "^2.111.0",
     "next": "^14.2.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
