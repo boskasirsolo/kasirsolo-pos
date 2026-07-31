@@ -18,7 +18,7 @@
   "dependencies": {
     "@kasirsolo/db": "workspace:*",
     "@kasirsolo/local-db": "workspace:*",
-    "@supabase/supabase-js": "^2.49.0"
+    "@supabase/supabase-js": "^2.111.0"
   },
   "devDependencies": {
     "typescript": "^5.7.0"
